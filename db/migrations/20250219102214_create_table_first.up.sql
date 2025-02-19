@@ -22,20 +22,14 @@ CREATE TABLE users
     deleted_at   bigint                                                null default null
 ) ENGINE = InnoDB;
 
-CREATE table internet_sources
-(
-    id     int auto_increment primary key,
-    name   varchar(100) not null,
-    source varchar(100)
-) ENGINE = InnoDB;
-
 CREATE table packet_internets
 (
-    code               varchar(20) primary key unique,
-    internet_source_id int,
-    packet             varchar(50),
-    price              int not null,
-    FOREIGN KEY (internet_source_id) REFERENCES internet_sources (id) on update cascade
+    code          varchar(20) primary key unique,
+    name_provider varchar(100) not null,
+    source        varchar(100),
+    packet        varchar(50),
+    Durations     bigint       not null,
+    price         int          not null
 ) ENGINE = InnoDB;
 
 #technician confuse
@@ -63,5 +57,12 @@ CREATE table subs_packet
     packet_internets_code varchar(20) not null,
     FOREIGN KEY (packet_internets_code) REFERENCES packet_internets (code) on update cascade,
     FOREIGN KEY (user_id) REFERENCES users (id) on update cascade,
-    lifetime              BIGINT default null
+    lifetime              BIGINT           default null, #lifetime = time.now + packetInternet.durations
+    payment_time          bigint,
+    status                enum ('paid', 'unpaid'),
+    created_at            bigint      not null,
+    updated_at            bigint,
+    deleted_at            bigint      null default null
 ) ENGINE = InnoDB;
+
+# I don't know need or no report
