@@ -1,0 +1,55 @@
+# DROP DATABASE  jaritmas;
+CREATE DATABASE jaritmas;
+USE  jaritmas;
+
+
+CREATE TABLE users
+(
+    id           int primary key auto_increment,
+    NIK          varchar(16) unique                                      not null,
+    full_name    varchar(100)                                            not null,
+    province     varchar(100)                                            not null,
+    district     varchar(100)                                            not null,
+    sub_district varchar(100)                                            not null,
+    village      varchar(100)                                            not null,
+    roles        enum ('admin', 'technician','region','population_data') not null,
+    username     varchar(100)                                            not null unique,
+    password     varchar(100)                                            not null,
+    created_at   bigint not null                                                  not null,
+    updated_at   bigint,
+    deleted_at   bigint null default null
+) ENGINE = InnoDB;
+
+CREATE table internet_sources
+(
+    id     int auto_increment primary key,
+    name   varchar(100) not null,
+    source varchar(100)
+) ENGINE = InnoDB;
+
+CREATE table packet_internets
+(
+    code               varchar(20) primary key unique,
+    internet_source_id int,
+    packet             varchar(50),
+    price              int not null,
+    FOREIGN KEY (internet_source_id) REFERENCES internet_sources (id) on update cascade
+) ENGINE = InnoDB;
+
+#technician confuse
+CREATE table complaints
+(
+    id                    int primary key auto_increment,
+    user_id               int,
+    packet_internets_code varchar(20)  not null,
+    village               varchar(100) not null,
+    complaint_message     text         not null,
+    technician            varchar(100),
+    reply                 text         null,
+    status                enum ('refuse', 'acc'),
+    created_at            bigint       not null,
+    updated_at            bigint,
+    deleted_at            bigint null default null,
+    FOREIGN KEY (user_id) REFERENCES users (id) on update cascade ,
+    FOREIGN KEY (packet_internets_code) REFERENCES packet_internets (code) on update cascade
+) ENGINE = InnoDB;
