@@ -26,7 +26,7 @@ VALUES
     (5, 'PKT005', 'Depok', 'Slow upload speed', 'Checked the modem, working fine', 'Escalated to senior technician', 'rejected', 1632499200000, 1632502800000, NULL),
     (6, 'PKT006', 'Bubutan', 'No connection for 2 days', 'Replaced the router', 'Service restored', 'accepted', 1632585600000, 1632589200000, NULL);
 
-INSERT INTO subs_packet (user_id, packet_internets_code, lifetime, payment_time, status, created_at, updated_at, deleted_at)
+INSERT INTO subs_packets (user_id, packet_internets_code, lifetime, payment_time, status, created_at, updated_at, deleted_at)
 VALUES
     (1, 'PKT001', 1635724800000, 1632153600000, 'paid', 1632153600000, 1632157200000, NULL),
     (2, 'PKT002', 1625097600000, 1632240000000, 'paid', 1632240000000, 1632243600000, NULL),
@@ -34,3 +34,5 @@ VALUES
     (4, 'PKT004', 1612137600000, 1632412800000, 'paid', 1632412800000, 1632416400000, NULL),
     (5, 'PKT005', 1609459200000, 1632499200000, 'unpaid', 1632499200000, 1632502800000, NULL),
     (6, 'PKT006', 1643673600000, 1632585600000, 'paid', 1632585600000, 1632589200000, NULL);
+
+show tables ;

@@ -76,7 +76,7 @@ type SubsPacket struct {
 	DeletedAt          *int64 `gorm:"index"` //soft delete
 
 	User           User           `gorm:"foreignKey:UserID;reference:ID"`
-	PacketInternet PacketInternet `gorm:"foreignKey:PacketInternet Code;reference:Code"`
+	PacketInternet PacketInternet `gorm:"foreignKey:PacketInternetCode;reference:Code"`
 }
 
 type PaymentStatus string
