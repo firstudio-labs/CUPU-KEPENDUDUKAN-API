@@ -19,23 +19,15 @@ type DataBase struct {
 	Name string
 }
 
-type Kafka struct {
-	Server  string
-	Port    string
-	GroupId string
-	Retry   string
-}
-
 type Config struct {
 	Server
 	DataBase
-	Kafka
 }
 
 // <-- CONSTRUCTOR --> //
 
 func GetConfig() *Config {
-	err := godotenv.Load()
+	err := godotenv.Load("../.env")
 	if err != nil {
 		log.Fatal("error in load .env : ", err.Error())
 	}
@@ -51,12 +43,6 @@ func GetConfig() *Config {
 			Host: os.Getenv("DB_HOST"),
 			Port: os.Getenv("DB_PORT"),
 			Name: os.Getenv("DB_NAME"),
-		},
-		Kafka: Kafka{
-			Server:  os.Getenv("KAFKA_SERVER"),
-			Port:    os.Getenv("KAFKA_PORT"),
-			GroupId: os.Getenv("KAFKA_GROUP_ID"),
-			Retry:   os.Getenv("RETRY_TIME"),
 		},
 	}
 

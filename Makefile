@@ -3,6 +3,7 @@ BINARY_NAME=myapp
 # Definition Go
 GO=go
 GOCMD=$(GO)
+.PHONY: test #biar tidak dianggap comant
 
 # Flag Go
 GO_FLAGS=-v
@@ -11,10 +12,11 @@ GO_FLAGS=-v
 build:
 	$(GOCMD) build $(GO_FLAGS) -o $(BINARY_NAME) ./cmd
 
+# running main apps
 run:
 	$(GOCMD) run ./cmd
 
-# Jalankan semua unit test
+# running all unit test
 test:
 	$(GOCMD) test -v ./...
 
