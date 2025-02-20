@@ -1,8 +1,8 @@
 # *`SubscriptionEndpoint`*
 
-### *`MENAMBHAKAN PELANGAN UNTUK BERLANGGANAN`*
+### *`Paket internet user yang sedang aktif`*
 ```
-POST /api/subscriptions
+GET /api/plans/customers
 Content-Type: application/json
 Authorization: Bearer <your-access-token>
 {
@@ -11,10 +11,20 @@ Authorization: Bearer <your-access-token>
 }
 ```
 
-
-### *`MEMBATALKAN LANGGANAN`*
+### *`Membeli create paket internet user beli`*
 ```
-POST /api/subscriptions
+POST /api/plans/customers/{id-plans} 
+Content-Type: application/json
+Authorization: Bearer <your-access-token>
+{
+
+
+}
+```
+
+### *`Update unutk jika ingin mengkadaluarsakan deleted at di isi`*
+```
+PUT /api/plans/customers/{id-plans} 
 Content-Type: application/json
 Authorization: Bearer <your-access-token>
 {

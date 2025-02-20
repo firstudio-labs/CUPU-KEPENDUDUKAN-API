@@ -24,15 +24,22 @@ CREATE TABLE users
     deleted_at   bigint                                                null default null
 ) ENGINE = InnoDB;
 
+CREATE TABLE source_internets
+(
+    id            int primary key auto_increment,
+    provider_name varchar(100) not null,
+    source        varchar(100) not null
+);
 
 CREATE table packet_internets
 (
-    code          varchar(20) primary key unique,
-    provider_name varchar(100) not null,
-    source        varchar(100),
-    packet        varchar(50),
-    duration      bigint       not null,
-    price         int          not null
+    code               varchar(20) primary key unique,
+    source_internet_id int    not null,
+    description        varchar(255) null ,
+    packet             varchar(50),
+    duration           bigint not null,
+    price              int    not null,
+    FOREIGN KEY (source_internet_id) REFERENCES source_internets (id) on update cascade
 ) ENGINE = InnoDB;
 
 #technician confuse
@@ -70,5 +77,6 @@ CREATE table subs_packets
 
 # I don't know need or no report
 
-select * from users;
+select *
+from users;
 desc users;

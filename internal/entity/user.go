@@ -30,13 +30,23 @@ const (
 	MasterCitizenData Roles = "citizen-data"
 )
 
-type PacketInternet struct {
-	Code         string `gorm:"primaryKey;unique"`
+type SourceInternet struct {
+	ID           uint `gorm:"primaryKey;autoIncrement"`
 	ProviderName string
 	Source       string
-	Packet       string
-	Duration     int64 `gorm:"not null"`
-	Price        int
+
+	PacketInternet []PacketInternet `gorm:"foreignKey:SourceInternetID;references:ID"`
+}
+
+type PacketInternet struct {
+	Code             string `gorm:"primaryKey;unique"`
+	SourceInternetID uint
+	Description      *string
+	Packet           string
+	Duration         int64 `gorm:"not null"`
+	Price            int
+
+	SourceInternet SourceInternet `gorm:"foreignKey:SourceInternetID;references:ID"`
 }
 
 type Complaint struct {

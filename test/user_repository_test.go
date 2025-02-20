@@ -21,6 +21,22 @@ func TestGetUser(t *testing.T) {
 		fmt.Println("HASIL NYA ", i, v)
 	}
 }
+
+func TestGetSourceInternet(t *testing.T) {
+	pool, err := cfg.GetPool(cfg.GetConfig())
+	assert.Nil(t, err)
+
+	var result []entity.SourceInternet
+	if err := pool.Find(&result).Error; err != nil {
+		panic(err)
+	}
+
+	for i, v := range result {
+		fmt.Println("HASIL NYA ", i, v)
+	}
+
+}
+
 func TestGetPacketInternet(t *testing.T) {
 	pool, err := cfg.GetPool(cfg.GetConfig())
 	assert.Nil(t, err)
@@ -41,7 +57,8 @@ func TestGetComplaint(t *testing.T) {
 	assert.Nil(t, err)
 
 	var result []entity.Complaint
-	if err := pool.Find(&result).Error; err != nil {
+	// Preload relasi User dan PacketInternet
+	if err := pool.Preload("User").Preload("PacketInternet").Find(&result).Error; err != nil {
 		panic(err)
 	}
 

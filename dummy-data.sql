@@ -1,38 +1,46 @@
-INSERT INTO users (NIK, full_name, province, district, sub_district, village, coordinate, roles, username, password, created_at, updated_at, deleted_at)
+INSERT INTO users (NIK, full_name, province, district, sub_district, village, coordinate, roles, username, password, created_at)
 VALUES
-    ('1234567890123456', 'John Doe', 'Jawa Barat', 'Bandung', 'Cidadap', 'Cimahi', '107.6191,-6.9147', 'admin', 'johndoe', 'password123', 1632153600000, 1632157200000, NULL),
-    ('2345678901234567', 'Jane Smith', 'Banten', 'Serang', 'Kasemen', 'Kramatwatu', '106.1504,-6.1150', 'technician', 'janesmith', 'password456', 1632240000000, 1632243600000, NULL),
-    ('3456789012345678', 'Alice Johnson', 'DKI Jakarta', 'Jakarta Selatan', 'Pondok Indah', 'Pondok Indah', '106.7944,-6.2617', 'region', 'alicejohnson', 'password789', 1632326400000, 1632330000000, NULL),
-    ('4567890123456789', 'Bob Brown', 'Jawa Tengah', 'Semarang', 'Pedurungan', 'Tlogosari', '110.4387,-7.0027', 'citizens-data', 'bobbrown', 'password101', 1632412800000, 1632416400000, NULL),
-    ('5678901234567890', 'Charlie Davis', 'Yogyakarta', 'Sleman', 'Mlati', 'Depok', '110.4143,-7.7442', 'admin', 'charliedavis', 'password202', 1632499200000, 1632502800000, NULL),
-    ('6789012345678901', 'David Miller', 'Jawa Timur', 'Surabaya', 'Gubeng', 'Bubutan', '112.7492,-7.2491', 'technician', 'davidmiller', 'password303', 1632585600000, 1632589200000, NULL);
+    ('1234567890123456', 'John Doe', 'Central Java', 'Semarang', 'Tembalang', 'Kaliwuluh', '107.2028, -6.9759', 'admin', 'john.doe', 'hashedpassword123', 1672531199000),
+    ('2345678901234567', 'Jane Smith', 'Yogyakarta', 'Sleman', 'Ngaglik', 'Sendangadi', '110.4077, -7.7107', 'technician', 'jane.smith', 'hashedpassword456', 1672531200000),
+    ('3456789012345678', 'Ali Alamsyah', 'Bali', 'Denpasar', 'Denpasar Barat', 'Pemecutan Kelod', '115.2210, -8.6570', 'region', 'ali.alamsyah', 'hashedpassword789', 1672531201000),
+    ('4567890123456789', 'Rina Hartati', 'West Java', 'Bandung', 'Cicendo', 'Cipaganti', '107.6191, -6.9175', 'citizens-data', 'rina.hartati', 'hashedpassword101', 1672531202000),
+    ('5678901234567890', 'Budi Santoso', 'East Java', 'Surabaya', 'Gubeng', 'Ketintang', '112.7521, -7.2689', 'technician', 'budi.santoso', 'hashedpassword102', 1672531203000);
 
-INSERT INTO packet_internets (code, provider_name, source, packet, duration, price)
+INSERT INTO source_internets (provider_name, source)
 VALUES
-    ('PKT001', 'Provider A', 'Fiber Optic', '100Mbps', 31536000000, 100000),
-    ('PKT002', 'Provider B', 'Satellite', '50Mbps', 25920000000, 80000),
-    ('PKT003', 'Provider C', 'Fiber Optic', '200Mbps', 31536000000, 150000),
-    ('PKT004', 'Provider D', '5G', '150Mbps', 18144000000, 120000),
-    ('PKT005', 'Provider E', 'Wi-Fi', '25Mbps', 6307200000, 50000),
-    ('PKT006', 'Provider F', 'Fiber Optic', '500Mbps', 31536000000, 200000);
+    ('Telkom', 'Fiber Optic'),
+    ('Indosat', '4G LTE'),
+    ('XL Axiata', 'LTE-A'),
+    ('Smartfren', '5G'),
+    ('First Media', 'Fiber Optic');
 
-
-INSERT INTO complaints (user_id, packet_internets_code, village, complaint_message, technician_note, reply, status, created_at, updated_at, deleted_at)
+INSERT INTO packet_internets (code, source_internet_id, description, packet, duration, price)
 VALUES
-    (1, 'PKT001', 'Cimahi', 'Connection speed is too slow', 'Checked the cable, no issues', 'Speed was restored', 'accepted', 1632153600000, 1632157200000, NULL),
-    (2, 'PKT002', 'Kramatwatu', 'No internet signal', 'Technician dispatched', 'Signal restored', 'accepted', 1632240000000, 1632243600000, NULL),
-    (3, 'PKT003', 'Pondok Indah', 'Frequent disconnections', 'Router firmware update done', 'Problem solved', 'accepted', 1632326400000, 1632330000000, NULL),
-    (4, 'PKT004', 'Tlogosari', 'Packet expired before end of term', 'Investigation completed', 'Refund issued', 'accepted', 1632412800000, 1632416400000, NULL),
-    (5, 'PKT005', 'Depok', 'Slow upload speed', 'Checked the modem, working fine', 'Escalated to senior technician', 'rejected', 1632499200000, 1632502800000, NULL),
-    (6, 'PKT006', 'Bubutan', 'No connection for 2 days', 'Replaced the router', 'Service restored', 'accepted', 1632585600000, 1632589200000, NULL);
+    ('P001', 1, 'Fast internet with 100Mbps download speed', '100Mbps', 2592000, 500000),
+    ('P002', 2, 'Affordable 4G internet package', '4G Unlimited', 8640000, 200000),
+    ('P003', 3, 'Premium internet with 200Mbps download speed', '200Mbps', 4320000, 800000),
+    ('P004', 4, 'Ultra-fast 5G internet', '5G Unlimited', 5184000, 1200000),
+    ('P005', 5, 'Home internet with 50Mbps speed', '50Mbps', 31536000, 350000);
 
-INSERT INTO subs_packets (user_id, packet_internets_code, lifetime, payment_time, status, created_at, updated_at, deleted_at)
+INSERT INTO complaints (user_id, packet_internets_code, village, complaint_message, technician_note, reply, status, created_at)
 VALUES
-    (1, 'PKT001', 1635724800000, 1632153600000, 'paid', 1632153600000, 1632157200000, NULL),
-    (2, 'PKT002', 1625097600000, 1632240000000, 'paid', 1632240000000, 1632243600000, NULL),
-    (3, 'PKT003', 1640995200000, 1632326400000, 'unpaid', 1632326400000, 1632330000000, NULL),
-    (4, 'PKT004', 1612137600000, 1632412800000, 'paid', 1632412800000, 1632416400000, NULL),
-    (5, 'PKT005', 1609459200000, 1632499200000, 'unpaid', 1632499200000, 1632502800000, NULL),
-    (6, 'PKT006', 1643673600000, 1632585600000, 'paid', 1632585600000, 1632589200000, NULL);
+    (1, 'P001', 'Kaliwuluh', 'Internet connection is intermittent and slow', NULL, NULL, 'rejected', 1672531210000),
+    (2, 'P002', 'Sendangadi', 'The internet speed is not matching the package description', NULL, NULL, 'accepted', 1672531211000),
+    (3, 'P003', 'Pemecutan Kelod', 'My internet disconnects frequently', 'Technician visit scheduled', 'Issue resolved after visit', 'accepted', 1672531212000),
+    (4, 'P004', 'Cipaganti', 'Unable to connect to the internet despite multiple attempts', 'No further issues found', 'User requested refund', 'rejected', 1672531213000),
+    (5, 'P005', 'Ketintang', 'The internet speed is very slow compared to the advertised speed', 'Technician advised upgrading the plan', 'Issue resolved after plan upgrade', 'accepted', 1672531214000);
 
-show tables ;
+INSERT INTO subs_packets (user_id, packet_internets_code, lifetime, payment_time, status, created_at)
+VALUES
+    (1, 'P001', 1672531210000 + 2592000, 1672531215000, 'paid', 1672531210000),
+    (2, 'P002', 1672531211000 + 8640000, 1672531216000, 'paid', 1672531211000),
+    (3, 'P003', 1672531212000 + 4320000, 1672531217000, 'paid', 1672531212000),
+    (4, 'P004', 1672531213000 + 5184000, 1672531218000, 'unpaid', 1672531213000),
+    (5, 'P005', 1672531214000 + 31536000, 1672531219000, 'paid', 1672531214000);
+
+
+SELECT * FROM users;
+SELECT * FROM source_internets;
+SELECT * FROM packet_internets;
+SELECT * FROM complaints;
+SELECT * FROM subs_packets;
