@@ -1,11 +1,11 @@
 INSERT INTO users (NIK, full_name, province, district, sub_district, village, coordinate, roles, username, password, created_at, updated_at, deleted_at)
 VALUES
-    ('1234567890123456', 'John Doe', 'Jawa Barat', 'Bandung', 'Cidadap', 'Cimahi', ST_GeomFromText('POINT(107.6191 -6.9147)'), 'admin', 'johndoe', 'password123', 1632153600000, 1632157200000, NULL),
-    ('2345678901234567', 'Jane Smith', 'Banten', 'Serang', 'Kasemen', 'Kramatwatu', ST_GeomFromText('POINT(106.1504 -6.1150)'), 'technician', 'janesmith', 'password456', 1632240000000, 1632243600000, NULL),
-    ('3456789012345678', 'Alice Johnson', 'DKI Jakarta', 'Jakarta Selatan', 'Pondok Indah', 'Pondok Indah', ST_GeomFromText('POINT(106.7944 -6.2617)'), 'region', 'alicejohnson', 'password789', 1632326400000, 1632330000000, NULL),
-    ('4567890123456789', 'Bob Brown', 'Jawa Tengah', 'Semarang', 'Pedurungan', 'Tlogosari', ST_GeomFromText('POINT(110.4387 -7.0027)'), 'citizens-data', 'bobbrown', 'password101', 1632412800000, 1632416400000, NULL),
-    ('5678901234567890', 'Charlie Davis', 'Yogyakarta', 'Sleman', 'Mlati', 'Depok', ST_GeomFromText('POINT(110.4143 -7.7442)'), 'admin', 'charliedavis', 'password202', 1632499200000, 1632502800000, NULL),
-    ('6789012345678901', 'David Miller', 'Jawa Timur', 'Surabaya', 'Gubeng', 'Bubutan', ST_GeomFromText('POINT(112.7492 -7.2491)'), 'technician', 'davidmiller', 'password303', 1632585600000, 1632589200000, NULL);
+    ('1234567890123456', 'John Doe', 'Jawa Barat', 'Bandung', 'Cidadap', 'Cimahi', '107.6191,-6.9147', 'admin', 'johndoe', 'password123', 1632153600000, 1632157200000, NULL),
+    ('2345678901234567', 'Jane Smith', 'Banten', 'Serang', 'Kasemen', 'Kramatwatu', '106.1504,-6.1150', 'technician', 'janesmith', 'password456', 1632240000000, 1632243600000, NULL),
+    ('3456789012345678', 'Alice Johnson', 'DKI Jakarta', 'Jakarta Selatan', 'Pondok Indah', 'Pondok Indah', '106.7944,-6.2617', 'region', 'alicejohnson', 'password789', 1632326400000, 1632330000000, NULL),
+    ('4567890123456789', 'Bob Brown', 'Jawa Tengah', 'Semarang', 'Pedurungan', 'Tlogosari', '110.4387,-7.0027', 'citizens-data', 'bobbrown', 'password101', 1632412800000, 1632416400000, NULL),
+    ('5678901234567890', 'Charlie Davis', 'Yogyakarta', 'Sleman', 'Mlati', 'Depok', '110.4143,-7.7442', 'admin', 'charliedavis', 'password202', 1632499200000, 1632502800000, NULL),
+    ('6789012345678901', 'David Miller', 'Jawa Timur', 'Surabaya', 'Gubeng', 'Bubutan', '112.7492,-7.2491', 'technician', 'davidmiller', 'password303', 1632585600000, 1632589200000, NULL);
 
 INSERT INTO packet_internets (code, provider_name, source, packet, duration, price)
 VALUES

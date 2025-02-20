@@ -15,14 +15,15 @@ CREATE TABLE users
     full_address VARCHAR(255) GENERATED ALWAYS AS (
         CONCAT_WS(', ', village, sub_district, district, province)
         ) STORED, # mix from province,district, sub_district, village
-    coordinate   point                                                 not null,
+    coordinate   varchar(255)                                          not null,
     roles        enum ('admin', 'technician','region','citizens-data') not null,
     username     varchar(100)                                          not null unique,
     password     varchar(100)                                          not null,
-    created_at            BIGINT NOT NULL COMMENT 'Unix timestamp in ms',
+    created_at   BIGINT                                                NOT NULL COMMENT 'Unix timestamp in ms',
     updated_at   bigint,
     deleted_at   bigint                                                null default null
 ) ENGINE = InnoDB;
+
 
 CREATE table packet_internets
 (
@@ -30,7 +31,7 @@ CREATE table packet_internets
     provider_name varchar(100) not null,
     source        varchar(100),
     packet        varchar(50),
-    duration     bigint       not null,
+    duration      bigint       not null,
     price         int          not null
 ) ENGINE = InnoDB;
 
@@ -42,12 +43,12 @@ CREATE table complaints
     packet_internets_code varchar(20)  not null,
     village               varchar(100) not null,
     complaint_message     text         not null,
-    technician_note       varchar(100) null default null,
+    technician_note       varchar(100) null             default null,
     reply                 text         null,
     status                ENUM ('rejected', 'accepted') DEFAULT NULL,
-    created_at            BIGINT NOT NULL COMMENT 'Unix timestamp in ms',
+    created_at            BIGINT       NOT NULL COMMENT 'Unix timestamp in ms',
     updated_at            bigint,
-    deleted_at            bigint       null default null,
+    deleted_at            bigint       null             default null,
     FOREIGN KEY (user_id) REFERENCES users (id) on update cascade,
     FOREIGN KEY (packet_internets_code) REFERENCES packet_internets (code) on update cascade
 ) ENGINE = InnoDB;
@@ -62,10 +63,12 @@ CREATE table subs_packets
     lifetime              BIGINT           default null, #lifetime = time.now + packetInternet.durations
     payment_time          bigint,
     status                enum ('paid', 'unpaid'),
-    created_at            BIGINT NOT NULL COMMENT 'Unix timestamp in ms',
+    created_at            BIGINT      NOT NULL COMMENT 'Unix timestamp in ms',
     updated_at            bigint,
     deleted_at            bigint      null default null
 ) ENGINE = InnoDB;
 
 # I don't know need or no report
 
+select * from users;
+desc users;

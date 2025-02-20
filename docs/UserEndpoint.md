@@ -1,7 +1,5 @@
 
-# *`AdminVillage`*
-
-
+# *`UserEndpoint`*
 ### *`ViewAll Citizens data by NIK`*
 ```
 GET /api/citizens-data/{NIK}

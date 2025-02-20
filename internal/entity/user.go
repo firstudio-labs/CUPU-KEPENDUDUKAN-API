@@ -9,7 +9,7 @@ type User struct {
 	SubDistrict string
 	Village     string
 	FullAddress string
-	Coordinate  string
+	Coordinate  string `gorm:"type:varchar(255)"`
 	Roles       Roles
 	Username    string
 	Password    string
