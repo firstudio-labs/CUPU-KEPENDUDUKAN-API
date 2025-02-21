@@ -2,6 +2,7 @@ package cfg
 
 import (
 	"fmt"
+	"github.com/firstudio-lab/JARITMAS-API/internal/entity"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -24,7 +25,9 @@ func GetPool(config *Config) (*gorm.DB, error) {
 		return nil, fmt.Errorf("failed to connect to the database: %v", err)
 	}
 
-	if err = db.AutoMigrate(); err != nil {
+	if err = db.AutoMigrate(
+		&entity.User{},
+	); err != nil {
 		return nil, fmt.Errorf("failed auto migrate bcs %e", err)
 	}
 

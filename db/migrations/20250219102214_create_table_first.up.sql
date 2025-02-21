@@ -3,80 +3,103 @@ CREATE DATABASE jaritmas;
 USE jaritmas;
 
 
-CREATE TABLE users
+CREATE TABLE genders
 (
-    id           int primary key auto_increment,
-    NIK          varchar(16) unique                                    not null,
-    full_name    varchar(100)                                          not null,
-    province     varchar(100)                                          not null,
-    district     varchar(100)                                          not null,
-    sub_district varchar(100)                                          not null,
-    village      varchar(100)                                          not null,
-    full_address VARCHAR(255) GENERATED ALWAYS AS (
-        CONCAT_WS(', ', village, sub_district, district, province)
-        ) STORED, # mix from province,district, sub_district, village
-    coordinate   varchar(255)                                          not null,
-    roles        enum ('admin', 'technician','region','citizens-data') not null,
-    username     varchar(100)                                          not null unique,
-    password     varchar(100)                                          not null,
-    created_at   BIGINT                                                NOT NULL COMMENT 'Unix timestamp in ms',
-    updated_at   bigint,
-    deleted_at   bigint                                                null default null
+    id   int primary key auto_increment,
+    name varchar(50) not null
 ) ENGINE = InnoDB;
 
-CREATE TABLE source_internets
+CREATE TABLE regions
+(
+    id   int primary key auto_increment,
+    name varchar(50) not null
+) ENGINE = InnoDB;
+
+CREATE TABLE status
+(
+    id   int primary key auto_increment,
+    name varchar(50) not null
+) ENGINE = InnoDB;
+
+CREATE TABLE family_status
+(
+    id   int primary key auto_increment,
+    name varchar(50) not null
+) ENGINE = InnoDB;
+
+CREATE TABLE education_status
+(
+    id   int primary key auto_increment,
+    name varchar(50) not null
+) ENGINE = InnoDB;
+CREATE TABLE jobs
+(
+    id   int primary key auto_increment,
+    name varchar(50) not null
+) ENGINE = InnoDB;
+
+CREATE TABLE provinces
 (
     id            int primary key auto_increment,
-    provider_name varchar(100) not null,
-    source        varchar(100) not null
-);
-
-CREATE table packet_internets
-(
-    code               varchar(20) primary key unique,
-    source_internet_id int    not null,
-    description        varchar(255) null ,
-    packet             varchar(50),
-    duration           bigint not null,
-    price              int    not null,
-    FOREIGN KEY (source_internet_id) REFERENCES source_internets (id) on update cascade
+    province_code varchar(20) unique,
+    name          varchar(60),
+    coordinate    varchar(100)
 ) ENGINE = InnoDB;
 
-#technician confuse
-CREATE table complaints
+CREATE TABLE districts
 (
-    id                    int primary key auto_increment,
-    user_id               int,
-    packet_internets_code varchar(20)  not null,
-    village               varchar(100) not null,
-    complaint_message     text         not null,
-    technician_note       varchar(100) null             default null,
-    reply                 text         null,
-    status                ENUM ('rejected', 'accepted') DEFAULT NULL,
-    created_at            BIGINT       NOT NULL COMMENT 'Unix timestamp in ms',
-    updated_at            bigint,
-    deleted_at            bigint       null             default null,
-    FOREIGN KEY (user_id) REFERENCES users (id) on update cascade,
-    FOREIGN KEY (packet_internets_code) REFERENCES packet_internets (code) on update cascade
+    id            int primary key auto_increment,
+    district_code varchar(20) unique,
+    name          varchar(60),
+    coordinate    varchar(100)
 ) ENGINE = InnoDB;
 
-CREATE table subs_packets
+CREATE TABLE sub_districts
 (
-    id                    int primary key auto_increment,
-    user_id               int         not null,
-    packet_internets_code varchar(20) not null,
-    FOREIGN KEY (packet_internets_code) REFERENCES packet_internets (code) on update cascade,
-    FOREIGN KEY (user_id) REFERENCES users (id) on update cascade,
-    lifetime              BIGINT           default null, #lifetime = time.now + packetInternet.durations
-    payment_time          bigint,
-    status                enum ('paid', 'unpaid'),
-    created_at            BIGINT      NOT NULL COMMENT 'Unix timestamp in ms',
-    updated_at            bigint,
-    deleted_at            bigint      null default null
+    id                int primary key auto_increment,
+    sub_district_code varchar(20) unique,
+    name              varchar(60),
+    coordinate        varchar(100)
 ) ENGINE = InnoDB;
 
-# I don't know need or no report
+CREATE TABLE villages
+(
+    id           int primary key auto_increment,
+    village_code varchar(20) unique,
+    name         varchar(60),
+    coordinate   varchar(100)
+) ENGINE = InnoDB;
 
-select *
-from users;
-desc users;
+CREATE TABLE Citizens
+(
+    id                int primary key auto_increment,
+    NIK               varchar(16) unique not null,
+    KK                varchar(16)        not null,
+    full_name         varchar(255)       not null,
+    birth_place_code  varchar(20)        not null,
+    gender_id         int                not null,
+    religion_id       int                not null,
+    status_id         int                not null,
+    family_status_id  int                not null,
+    education_status  int                not null,
+    job_type_id       int                not null,
+    mother            varchar(255),
+    father            varchar(255),
+    family_head       varchar(255)       not null,
+    province_code     varchar(20)        not null,
+    district_code     varchar(20)        not null,
+    sub_district_code varchar(20)        not null,
+    village_code      varchar(20)        not null,
+
+    FOREIGN KEY (birth_place_code) REFERENCES provinces (province_code) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (gender_id) references genders (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (religion_id) references regions (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (status_id) references status (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (family_status_id) references family_status (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (education_status) references education_status (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (job_type_id) references jobs (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (province_code) REFERENCES provinces (province_code) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (district_code) REFERENCES districts (district_code) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (sub_district_code) REFERENCES sub_districts (sub_district_code) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (village_code) REFERENCES villages (village_code) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE = InnoDB;

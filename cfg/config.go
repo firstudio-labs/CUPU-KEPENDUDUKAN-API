@@ -27,7 +27,7 @@ type Config struct {
 // <-- CONSTRUCTOR --> //
 
 func GetConfig() *Config {
-	err := godotenv.Load("../.env")
+	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("error in load .env : ", err.Error())
 	}

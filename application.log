@@ -1,2 +1,9 @@
 time="2025-02-20T00:51:03+07:00" level=debug msg=GEGEGE
 time="2025-02-20T10:31:27+07:00" level=debug msg=GEGEGE
+time="2025-02-22T02:13:02+07:00" level=debug msg="QUERY Error &{0xc0001ae1b0 Error 1146 (42S02): Table 'jaritmas.users' doesn't exist 0 0xc004404540 0}"
+time="2025-02-22T02:13:02+07:00" level=debug msg="QUERY Error &{0xc0001ae240 Error 1146 (42S02): Table 'jaritmas.users' doesn't exist 0 0xc0044048c0 0}"
+time="2025-02-22T02:16:17+07:00" level=debug msg="QUERY Error Error 1146 (42S02): Table 'jaritmas.users' doesn't exist"
+time="2025-02-22T02:16:17+07:00" level=debug msg="QUERY Error Error 1146 (42S02): Table 'jaritmas.users' doesn't exist"
+time="2025-02-22T02:16:22+07:00" level=debug msg="QUERY Error Error 1146 (42S02): Table 'jaritmas.users' doesn't exist"
+time="2025-02-22T02:16:22+07:00" level=debug msg="QUERY Error Error 1146 (42S02): Table 'jaritmas.users' doesn't exist"
+time="2025-02-22T02:17:42+07:00" level=debug msg="QUERY Error record not found"
