@@ -25,7 +25,7 @@ func WebResponses(ctx *fiber.Ctx, statusCode int, message string, data interface
 		})
 
 	case http.StatusOK:
-		if data != nil {
+		if data == nil {
 			return ctx.Status(statusCode).JSON(webResponseNoData{
 				Status:  "OK",
 				Message: message,

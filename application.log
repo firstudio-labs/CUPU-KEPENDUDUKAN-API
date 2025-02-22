@@ -7,3 +7,4 @@ time="2025-02-22T02:16:17+07:00" level=debug msg="QUERY Error Error 1146 (42S02)
 time="2025-02-22T02:16:22+07:00" level=debug msg="QUERY Error Error 1146 (42S02): Table 'jaritmas.users' doesn't exist"
 time="2025-02-22T02:16:22+07:00" level=debug msg="QUERY Error Error 1146 (42S02): Table 'jaritmas.users' doesn't exist"
 time="2025-02-22T02:17:42+07:00" level=debug msg="QUERY Error record not found"
+time="2025-02-22T11:22:40+07:00" level=debug msg=GEGEGE

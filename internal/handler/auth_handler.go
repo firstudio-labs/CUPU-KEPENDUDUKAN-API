@@ -48,7 +48,7 @@ func (h AuthHandlerImpl) Login(ctx *fiber.Ctx) error {
 	}
 
 	if err := h.AuthUsecase.Login(ctx.Context(), body); err != nil {
-		return helper.WebResponses(ctx, http.StatusBadRequest, fmt.Sprintf("%e", err), nil)
+		return helper.WebResponses(ctx, http.StatusBadRequest, fmt.Sprintf("%s", err.Error()), nil)
 	}
 	//SETTING GENERATE JWT
 	expTime := time.Now().Add(time.Minute * 35) // << KADALUARSA DALAM 35 minute
@@ -66,7 +66,7 @@ func (h AuthHandlerImpl) Login(ctx *fiber.Ctx) error {
 		return helper.WebResponses(ctx, http.StatusInternalServerError, "FAILED TO PARSE BODY", nil)
 	}
 
-	return helper.WebResponses(ctx, http.StatusOK, "Login S", map[string]interface{}{
+	return helper.WebResponses(ctx, http.StatusOK, "Login Success", map[string]interface{}{
 		"token":    tokenValue,
 		"lifetime": expTime,
 	})

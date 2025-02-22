@@ -9,6 +9,7 @@ import (
 	"github.com/firstudio-lab/JARITMAS-API/pkg/logger"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func main() {
@@ -17,17 +18,24 @@ func main() {
 	DEBE, _ := cfg.GetPool(cfg.GetConfig())
 	validate := validator.New()
 
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "*",
+		AllowHeaders:     "Origin, Content-Type, Accept, Authorization",
+		AllowMethods:     "GET, POST, PUT, DELETE, OPTIONS",
+		AllowCredentials: false,
+	}))
+
 	userRepository := repository.NewUserRepositoryImpl(DEBE)
 	authUsecase := usecase.NewAuthUsecaseImpl(userRepository, validate)
 	authHandler := handler.NewAuthHandlerImpl(authUsecase)
 
-	app.Get("/", func(c *fiber.Ctx) error {
+	app.Post("/api/login", authHandler.Login)
+	app.Post("/api/register", authHandler.Register)
+	protected := app.Group("/", cfg.JWTAuthMiddleware)
+	protected.Get("/", func(c *fiber.Ctx) error {
 		logger.Log.Debug("GEGEGE")
 		return c.SendString("Hello, World!")
 	})
-
-	app.Post("/api/login", authHandler.Login)
-	app.Post("/api/register", authHandler.Register)
 
 	app.Listen(fmt.Sprintf(":%s", cfg.GetConfig().Server.Port))
 }

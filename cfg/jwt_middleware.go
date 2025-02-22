@@ -80,9 +80,10 @@ func validateTokenClaims(claims *JWTClaim) error {
 }
 
 func unauthorized(c *fiber.Ctx, message string) error {
-	return c.Status(http.StatusUnauthorized).JSON(fiber.Map{
-		"code":   http.StatusUnauthorized,
-		"status": "Unauthorized",
-		"error":  message,
-	})
+	return c.Status(http.StatusUnauthorized).JSON(
+		struct {
+			Status  string `json:"status"`
+			Message string `json:"message"`
+		}{Status: "UNAUTHORIZED", Message: message},
+	)
 }
