@@ -53,14 +53,14 @@ type Village struct {
 
 // Citizen represents the Citizen table
 type Citizen struct {
-	ID                     int    `gorm:"primaryKey;autoIncrement"`
-	NIK                    int    `gorm:"unique;not null;size:16"`
-	KK                     int    `gorm:"not null;size:16"`
-	FullName               string `gorm:"not null;size:255"`
-	Gender                 GenderOptions
-	BirthDate              time.Time `gorm:"type:date;not null"`
-	Age                    int       `gorm:"not null"`
-	BirthPlace             string    `gorm:"not null"`
+	ID                     int           `gorm:"primaryKey;autoIncrement"`
+	NIK                    int           `gorm:"unique;not null;size:16"`
+	KK                     int           `gorm:"not null;size:16"`
+	FullName               string        `gorm:"not null;size:255"`
+	Gender                 GenderOptions `gorm:"type:enum('Laki-Laki', 'Perempuan')"` // Gender enum tag
+	BirthDate              time.Time     `gorm:"type:date;not null"`
+	Age                    int           `gorm:"not null"`
+	BirthPlace             string        `gorm:"not null"`
 	Address                string
 	ProvinceID             int
 	DistrictID             int
@@ -69,22 +69,22 @@ type Citizen struct {
 	RT                     string
 	RW                     string
 	PostalCode             int
-	CitizenStatus          CitizenStatusOption
-	BirthCertificate       AvailableStatus
-	BirthCertificateNo     int `gorm:"null;size:16"`
-	BloodType              BloodType
-	Religion               ReligionOption
-	MaritalStatus          MaritalStatusOption `gorm:"null"` // nikah
-	MaritalCertificate     AvailableStatus     `gorm:"null"` // nikah
-	MaritalCertificateNo   int                 `gorm:"null"` // nikah
+	CitizenStatus          CitizenStatusOption `gorm:"type:enum('WNA', 'WNI')"` // CitizenStatus enum tag
+	BirthCertificate       AvailableStatus     `gorm:"type:enum('Ada', 'Tidak Ada')"`
+	BirthCertificateNo     int                 `gorm:"null;size:16"`
+	BloodType              BloodType           `gorm:"type:enum('A', 'B', 'AB', 'O', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', 'Tidak Tahu')"`                                         // BloodType enum tag
+	Religion               ReligionOption      `gorm:"type:enum('Islam', 'Kristen', 'Katholik', 'Hindu', 'Buddha', 'Kong Hu Cu', 'Lainya....')"`                                               // Religion enum tag
+	MaritalStatus          MaritalStatusOption `gorm:"type:enum('Belum Kawin', 'Kawin Tercatat', 'Kawin Belum Tercatat', 'Cerai Hidup Tercatat', 'Cerai Hidup Belum Tercatat', 'Cerai Mati')"` // MaritalStatus enum tag
+	MaritalCertificate     AvailableStatus     `gorm:"type:enum('Ada', 'Tidak Ada')"`                                                                                                          // nikah
+	MaritalCertificateNo   int                 `gorm:"null"`                                                                                                                                   // nikah
 	MarriageDate           time.Time
-	DivorceCertificate     AvailableStatus `gorm:"not null"` //cerai
-	DivorceCertificateNo   int             `gorm:"not null"` //cerai
-	DivorceCertificateDate time.Time       `gorm:"not null"` //cerai
-	FamilyStatusID         int             `gorm:"not null"` // status dalam keluarga
-	MentalDisorders        AvailableStatus
+	DivorceCertificate     AvailableStatus `gorm:"type:enum('Ada', 'Tidak Ada')"` //cerai
+	DivorceCertificateNo   int             `gorm:"not null"`                      //cerai
+	DivorceCertificateDate time.Time       `gorm:"not null"`                      //cerai
+	FamilyStatusID         int             `gorm:"not null"`                      // status dalam keluarga
+	MentalDisorders        AvailableStatus `gorm:"type:enum('Ada', 'Tidak Ada')"`
 	Disabilities           DisablitesStatus
-	EducationStatus        EducationStatusOption `gorm:"not null"`
+	EducationStatus        EducationStatusOption `gorm:"type:enum('Tidak/Belum Sekolah', 'Belum tamat SD/Sederajat', 'Tamat SD', 'SLTP/SMP/Sederajat', 'SLTA/SMA/Sederajat', 'Diploma I/II', 'Akademi/Diploma III/ Sarjana Muda', 'Diploma IV/ Strata I/ Strata II', 'Strata III', 'Lainya...')"` // EducationStatus enum tag
 	JobTypeID              int                   `gorm:"not null"`
 	NIKMother              string                `gorm:"size:255"`
 	Mother                 string                `gorm:"size:255"`

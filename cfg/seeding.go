@@ -3,6 +3,7 @@ package cfg
 import (
 	"context"
 	"github.com/firstudio-lab/JARITMAS-API/internal/dto"
+	"github.com/firstudio-lab/JARITMAS-API/internal/entity"
 	"github.com/firstudio-lab/JARITMAS-API/internal/repository"
 	"github.com/firstudio-lab/JARITMAS-API/internal/usecase"
 	"github.com/firstudio-lab/JARITMAS-API/pkg/logger"
@@ -24,6 +25,13 @@ func SeedingUserAdmin(conn *gorm.DB) error {
 	}
 
 	return nil
+}
+
+func SeedingSHDK() error {
+	panic(entity.FamilyStatus{})
+}
+func SeedingJobs() error {
+	panic(entity.Job{})
 }
 
 func Province() error {
