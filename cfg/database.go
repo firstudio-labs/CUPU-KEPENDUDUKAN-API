@@ -26,6 +26,20 @@ func GetPool(config *Config) (*gorm.DB, error) {
 	}
 
 	if err = db.AutoMigrate(
+		&entity.Gender{},
+		&entity.Province{},
+		&entity.District{},
+		&entity.SubDistrict{},
+		&entity.Village{},
+		&entity.BloodType{},
+		&entity.Region{},
+		&entity.MaritalStatus{},
+		&entity.FamilyStatus{},
+		&entity.Status{},
+		&entity.EducationStatus{},
+		&entity.Job{},
+
+		&entity.Citizen{},
 		&entity.User{},
 	); err != nil {
 		return nil, fmt.Errorf("failed auto migrate bcs %e", err)
