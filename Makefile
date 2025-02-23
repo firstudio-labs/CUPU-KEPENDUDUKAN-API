@@ -23,3 +23,6 @@ test:
 # Format kode Go
 fmt:
 	$(GOCMD) fmt ./...
+
+seed:
+	SEED_DATA=true $(GOCMD) run ./cmd/main.go

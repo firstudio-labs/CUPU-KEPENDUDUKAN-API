@@ -3,9 +3,11 @@ package cfg
 import (
 	"fmt"
 	"github.com/firstudio-lab/JARITMAS-API/internal/entity"
+	log2 "github.com/firstudio-lab/JARITMAS-API/pkg/logger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+	"os"
 	"time"
 )
 
@@ -26,19 +28,14 @@ func GetPool(config *Config) (*gorm.DB, error) {
 	}
 
 	if err = db.AutoMigrate(
-		&entity.Gender{},
 		&entity.Province{},
 		&entity.District{},
 		&entity.SubDistrict{},
 		&entity.Village{},
-		&entity.BloodType{},
-		&entity.Region{},
-		&entity.MaritalStatus{},
-		&entity.FamilyStatus{},
-		&entity.Status{},
-		&entity.EducationStatus{},
+		&entity.FamilyStatus{}, //SHDK
 		&entity.Job{},
 
+		//MAIN
 		&entity.Citizen{},
 		&entity.User{},
 	); err != nil {
@@ -52,6 +49,13 @@ func GetPool(config *Config) (*gorm.DB, error) {
 	sqlPool.SetMaxOpenConns(60)
 	sqlPool.SetMaxIdleConns(30)
 	sqlPool.SetConnMaxLifetime(60 * time.Minute)
+
+	/// CALL SEEDING
+	// if we run include
+	if os.Getenv("SEED_DATA") == "true" {
+		_ = SeedingUserAdmin(db)
+		log2.Log.Debug("SUCCESS TO SEED DATA")
+	}
 
 	return db, nil
 }
