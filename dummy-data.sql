@@ -1,4 +1,4 @@
-# DROP DATABASE jaritmas;
+DROP DATABASE jaritmas;
 CREATE DATABASE jaritmas;
 use jaritmas;
 
@@ -14,3 +14,8 @@ select * from villages;
 
 
 desc citizens;
+
+
+desc citizens;
+
+select * from citizens;

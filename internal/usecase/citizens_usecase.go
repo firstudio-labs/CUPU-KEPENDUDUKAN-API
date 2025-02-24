@@ -12,11 +12,11 @@ import (
 )
 
 type CitizensUsecase interface {
-	FindCitizenByNIK(ctx context.Context, nik int) (entity.Citizen, error)
+	FindCitizenByNIK(ctx context.Context, nik int64) (entity.Citizen, error)
 	FindCitizenPage(ctx context.Context, page int) ([]entity.Citizen, error)
 	CreateCitizen(ctx context.Context, request dto.CitizenReqCreate) error
-	UpdateCitizenByNIK(ctx context.Context, nik int, request dto.CitizenReqUpdate) error
-	DeleteCitizenByNIK(ctx context.Context, nik int) error
+	UpdateCitizenByNIK(ctx context.Context, nik int64, request dto.CitizenReqUpdate) error
+	DeleteCitizenByNIK(ctx context.Context, nik int64) error
 }
 
 type CitizensUsecaseImpl struct {
@@ -29,7 +29,7 @@ func NewCitizensUsecase(citizensRepository repository.CitizensRepository, valida
 	return &CitizensUsecaseImpl{CitizensRepository: citizensRepository, Validate: validate, DB: DB}
 }
 
-func (u CitizensUsecaseImpl) FindCitizenByNIK(ctx context.Context, nik int) (entity.Citizen, error) {
+func (u CitizensUsecaseImpl) FindCitizenByNIK(ctx context.Context, nik int64) (entity.Citizen, error) {
 	citizenByNIK, err := u.CitizensRepository.GetCitizenByNIK(ctx, u.DB, nik)
 	if err != nil {
 		return entity.Citizen{}, fmt.Errorf("%d:%w", http.StatusNotFound, err)
@@ -100,12 +100,12 @@ func (u CitizensUsecaseImpl) CreateCitizen(ctx context.Context, request dto.Citi
 	return nil
 }
 
-func (u CitizensUsecaseImpl) UpdateCitizenByNIK(ctx context.Context, nik int, request dto.CitizenReqUpdate) error {
+func (u CitizensUsecaseImpl) UpdateCitizenByNIK(ctx context.Context, nik int64, request dto.CitizenReqUpdate) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (u CitizensUsecaseImpl) DeleteCitizenByNIK(ctx context.Context, nik int) error {
+func (u CitizensUsecaseImpl) DeleteCitizenByNIK(ctx context.Context, nik int64) error {
 	if err := u.CitizensRepository.ExistCitizenNIK(ctx, u.DB, nik); err != nil {
 		return fmt.Errorf("%d:%w", http.StatusNotFound, err)
 	}

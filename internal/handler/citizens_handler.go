@@ -35,7 +35,7 @@ func (h CitizensHandlerImpl) FindCitizenByNIK(ctx *fiber.Ctx) error {
 		return helper.WResponses(ctx, err, "", nil)
 	}
 
-	Citizen, err := h.CitizensUsecase.FindCitizenByNIK(ctx.Context(), atoi)
+	Citizen, err := h.CitizensUsecase.FindCitizenByNIK(ctx.Context(), int64(atoi))
 	if err != nil {
 		return helper.WResponses(ctx, err, "", nil)
 	}

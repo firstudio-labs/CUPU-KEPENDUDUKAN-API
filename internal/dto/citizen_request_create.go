@@ -6,8 +6,8 @@ import (
 )
 
 type CitizenReqCreate struct {
-	NIK                    int `validate:"required,min=16,max=16"`
-	KK                     int `validate:"required,min=16,max=16"`
+	NIK                    int64 `validate:"required,min=16,max=16"`
+	KK                     int64 `validate:"required,min=16,max=16"`
 	FullName               string
 	Gender                 entity.GenderOptions `validate:"required,oneof=1 2"`
 	BirthDate              time.Time
@@ -23,15 +23,15 @@ type CitizenReqCreate struct {
 	PostalCode             int
 	CitizenStatus          entity.CitizenStatusOption `validate:"required,oneof=1 2"` //(WNI, WNA)
 	BirthCertificate       entity.AvailableStatus     `validate:"required,oneof=1 2"` // ADA/TIDAK-ADA
-	BirthCertificateNo     int
+	BirthCertificateNo     int64
 	BloodType              entity.BloodType           `validate:"required,oneof=1 2 3 4 5 6 7 8 9 10 11 12 13"`
 	Religion               entity.ReligionOption      `validate:"required,oneof=1 2 3 4 5 6 7"`
 	MaritalStatus          entity.MaritalStatusOption `validate:"required,oneof=1 2 3 4 5 6"`
-	MaritalCertificate     entity.CitizenStatusOption `validate:"required,oneof=1 2"` // ADA/TIDAK-ADA
-	MaritalCertificateNo   int
+	MaritalCertificate     entity.AvailableStatus     `validate:"required,oneof=1 2"` // ADA/TIDAK-ADA
+	MaritalCertificateNo   int64
 	MarriageDate           time.Time
 	DivorceCertificate     entity.AvailableStatus `validate:"required,oneof=1 2"` // ADA/TIDAK-ADA
-	DivorceCertificateNo   int
+	DivorceCertificateNo   int64
 	DivorceCertificateDate time.Time
 	FamilyStatusID         int
 	MentalDisorders        entity.AvailableStatus       `validate:"required,oneof=1 2"` // ADA/TIDAK-ADA

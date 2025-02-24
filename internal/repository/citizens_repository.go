@@ -11,11 +11,11 @@ import (
 
 type CitizensRepository interface {
 	CreateCitizen(ctx context.Context, tx *gorm.DB, citizen entity.Citizen) error
-	GetCitizenByNIK(ctx context.Context, tx *gorm.DB, nik int) (entity.Citizen, error)
+	GetCitizenByNIK(ctx context.Context, tx *gorm.DB, nik int64) (entity.Citizen, error)
 	GetAllCitizenPerPage(ctx context.Context, tx *gorm.DB, page int) ([]entity.Citizen, error)
-	UpdateCitizen(ctx context.Context, tx *gorm.DB, nik int, citizenUpdate entity.Citizen) error
-	DeleteCitizenByNIK(ctx context.Context, tx *gorm.DB, nik int) error
-	ExistCitizenNIK(ctx context.Context, tx *gorm.DB, nik int) error
+	UpdateCitizen(ctx context.Context, tx *gorm.DB, nik int64, citizenUpdate entity.Citizen) error
+	DeleteCitizenByNIK(ctx context.Context, tx *gorm.DB, nik int64) error
+	ExistCitizenNIK(ctx context.Context, tx *gorm.DB, nik int64) error
 }
 
 type CitizensRepositoryImpl struct {
@@ -34,7 +34,7 @@ func (r CitizensRepositoryImpl) CreateCitizen(ctx context.Context, tx *gorm.DB, 
 	return nil
 }
 
-func (r CitizensRepositoryImpl) GetCitizenByNIK(ctx context.Context, tx *gorm.DB, nik int) (entity.Citizen, error) {
+func (r CitizensRepositoryImpl) GetCitizenByNIK(ctx context.Context, tx *gorm.DB, nik int64) (entity.Citizen, error) {
 	// CHECK NIK EXIST KAH?
 	var result entity.Citizen
 	if err := tx.WithContext(ctx).Where("nik = ?", nik).First(&result).Error; err != nil {
@@ -65,7 +65,7 @@ func (r CitizensRepositoryImpl) GetAllCitizenPerPage(ctx context.Context, tx *go
 	return results, nil
 }
 
-func (r CitizensRepositoryImpl) UpdateCitizen(ctx context.Context, tx *gorm.DB, nik int, citizenUpdate entity.Citizen) error {
+func (r CitizensRepositoryImpl) UpdateCitizen(ctx context.Context, tx *gorm.DB, nik int64, citizenUpdate entity.Citizen) error {
 	if err := tx.WithContext(ctx).Where("nik = ?", nik).Updates(citizenUpdate).Error; err != nil {
 		logger.Log.Errorf("QUERY Error %v", err)
 		return err
@@ -74,7 +74,7 @@ func (r CitizensRepositoryImpl) UpdateCitizen(ctx context.Context, tx *gorm.DB, 
 	return nil
 }
 
-func (r CitizensRepositoryImpl) DeleteCitizenByNIK(ctx context.Context, tx *gorm.DB, nik int) error {
+func (r CitizensRepositoryImpl) DeleteCitizenByNIK(ctx context.Context, tx *gorm.DB, nik int64) error {
 	if err := tx.WithContext(ctx).Where("nik = ?", nik).Delete(&entity.Citizen{}).Error; err != nil {
 		logger.Log.Errorf("QUERY Error %v", err)
 		return err
@@ -83,7 +83,7 @@ func (r CitizensRepositoryImpl) DeleteCitizenByNIK(ctx context.Context, tx *gorm
 	return nil
 }
 
-func (r CitizensRepositoryImpl) ExistCitizenNIK(ctx context.Context, tx *gorm.DB, nik int) error {
+func (r CitizensRepositoryImpl) ExistCitizenNIK(ctx context.Context, tx *gorm.DB, nik int64) error {
 	// find onlu oen field biar cepet
 	var exists bool
 	if err := tx.WithContext(ctx).Table("citizens").Select("1").Where("nik = ?", nik).
