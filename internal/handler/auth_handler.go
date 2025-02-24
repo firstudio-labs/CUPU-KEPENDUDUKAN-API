@@ -22,7 +22,7 @@ type AuthHandlerImpl struct {
 	usecase.AuthUsecase
 }
 
-func NewAuthHandlerImpl(authUsecase usecase.AuthUsecase) *AuthHandlerImpl {
+func NewAuthHandler(authUsecase usecase.AuthUsecase) *AuthHandlerImpl {
 	return &AuthHandlerImpl{AuthUsecase: authUsecase}
 }
 

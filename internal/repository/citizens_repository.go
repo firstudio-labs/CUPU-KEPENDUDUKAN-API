@@ -21,7 +21,7 @@ type CitizensRepository interface {
 type CitizensRepositoryImpl struct {
 }
 
-func NewCitizensRepositoryImpl() *CitizensRepositoryImpl {
+func NewCitizensRepository() *CitizensRepositoryImpl {
 	return &CitizensRepositoryImpl{}
 }
 
@@ -93,6 +93,7 @@ func (r CitizensRepositoryImpl) ExistCitizenNIK(ctx context.Context, tx *gorm.DB
 	}
 
 	if !exists {
+		//if data not found return error
 		return fmt.Errorf("citizen with NIK %d not found", nik)
 	}
 

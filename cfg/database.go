@@ -54,6 +54,15 @@ func GetPool(config *Config) (*gorm.DB, error) {
 	// if we run include
 	if os.Getenv("SEED_DATA") == "true" {
 		_ = SeedingUserAdmin(db)
+		_ = SeedingJobs(db)
+		_ = SeedingSHDK(db)
+
+		// INI NANTI DI UBAH PKAI DATA EXEL
+		_ = Province(db)
+		_ = District(db)
+		_ = SubDistrict(db)
+		_ = Village(db)
+
 		log2.Log.Debug("SUCCESS TO SEED DATA")
 	}
 

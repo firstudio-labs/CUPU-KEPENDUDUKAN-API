@@ -17,7 +17,7 @@ type UserRepositoryImpl struct {
 	*gorm.DB
 }
 
-func NewUserRepositoryImpl(DB *gorm.DB) *UserRepositoryImpl {
+func NewUserRepository(DB *gorm.DB) *UserRepositoryImpl {
 	return &UserRepositoryImpl{DB: DB}
 }
 

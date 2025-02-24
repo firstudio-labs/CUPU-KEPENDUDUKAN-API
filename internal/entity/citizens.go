@@ -53,14 +53,14 @@ type Village struct {
 
 // Citizen represents the Citizen table
 type Citizen struct {
-	ID                     int           `gorm:"primaryKey;autoIncrement"`
-	NIK                    int           `gorm:"unique;not null;size:16"`
-	KK                     int           `gorm:"not null;size:16"`
-	FullName               string        `gorm:"not null;size:255"`
-	Gender                 GenderOptions `gorm:"type:enum('Laki-Laki', 'Perempuan')"` // Gender enum tag
-	BirthDate              time.Time     `gorm:"type:date;not null"`
-	Age                    int           `gorm:"not null"`
-	BirthPlace             string        `gorm:"not null"`
+	ID                     int       `gorm:"primaryKey;autoIncrement"`
+	NIK                    int       `gorm:"unique;not null;size:16"`
+	KK                     int       `gorm:"not null;size:16"`
+	FullName               string    `gorm:"not null;size:255"`
+	Gender                 string    `gorm:"type:enum('Laki-Laki', 'Perempuan')"` // Gender enum tag
+	BirthDate              time.Time `gorm:"type:date;not null"`
+	Age                    int       `gorm:"not null"`
+	BirthPlace             string    `gorm:"not null"`
 	Address                string
 	ProvinceID             int
 	DistrictID             int
@@ -69,27 +69,27 @@ type Citizen struct {
 	RT                     string
 	RW                     string
 	PostalCode             int
-	CitizenStatus          CitizenStatusOption `gorm:"type:enum('WNA', 'WNI')"` // CitizenStatus enum tag
-	BirthCertificate       AvailableStatus     `gorm:"type:enum('Ada', 'Tidak Ada')"`
-	BirthCertificateNo     int                 `gorm:"null;size:16"`
-	BloodType              BloodType           `gorm:"type:enum('A', 'B', 'AB', 'O', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', 'Tidak Tahu')"`                                         // BloodType enum tag
-	Religion               ReligionOption      `gorm:"type:enum('Islam', 'Kristen', 'Katholik', 'Hindu', 'Buddha', 'Kong Hu Cu', 'Lainya....')"`                                               // Religion enum tag
-	MaritalStatus          MaritalStatusOption `gorm:"type:enum('Belum Kawin', 'Kawin Tercatat', 'Kawin Belum Tercatat', 'Cerai Hidup Tercatat', 'Cerai Hidup Belum Tercatat', 'Cerai Mati')"` // MaritalStatus enum tag
-	MaritalCertificate     AvailableStatus     `gorm:"type:enum('Ada', 'Tidak Ada')"`                                                                                                          // nikah
-	MaritalCertificateNo   int                 `gorm:"null"`                                                                                                                                   // nikah
+	CitizenStatus          string `gorm:"type:enum('WNA', 'WNI')"`       // enum tag
+	BirthCertificate       string `gorm:"type:enum('Ada', 'Tidak Ada')"` // enum tag
+	BirthCertificateNo     int    `gorm:"null;size:16"`
+	BloodType              string `gorm:"type:enum('A', 'B', 'AB', 'O', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', 'Tidak Tahu')"`                                         // BloodType enum tag
+	Religion               string `gorm:"type:enum('Islam', 'Kristen', 'Katholik', 'Hindu', 'Buddha', 'Kong Hu Cu', 'Lainya....')"`                                               // Religion enum tag
+	MaritalStatus          string `gorm:"type:enum('Belum Kawin', 'Kawin Tercatat', 'Kawin Belum Tercatat', 'Cerai Hidup Tercatat', 'Cerai Hidup Belum Tercatat', 'Cerai Mati')"` // MaritalStatus enum tag
+	MaritalCertificate     string `gorm:"type:enum('Ada', 'Tidak Ada')"`                                                                                                          // nikah
+	MaritalCertificateNo   int    `gorm:"null"`                                                                                                                                   // nikah
 	MarriageDate           time.Time
-	DivorceCertificate     AvailableStatus `gorm:"type:enum('Ada', 'Tidak Ada')"` //cerai
-	DivorceCertificateNo   int             `gorm:"not null"`                      //cerai
-	DivorceCertificateDate time.Time       `gorm:"not null"`                      //cerai
-	FamilyStatusID         int             `gorm:"not null"`                      // status dalam keluarga
-	MentalDisorders        AvailableStatus `gorm:"type:enum('Ada', 'Tidak Ada')"`
-	Disabilities           DisablitesStatus
-	EducationStatus        EducationStatusOption `gorm:"type:enum('Tidak/Belum Sekolah', 'Belum tamat SD/Sederajat', 'Tamat SD', 'SLTP/SMP/Sederajat', 'SLTA/SMA/Sederajat', 'Diploma I/II', 'Akademi/Diploma III/ Sarjana Muda', 'Diploma IV/ Strata I/ Strata II', 'Strata III', 'Lainya...')"` // EducationStatus enum tag
-	JobTypeID              int                   `gorm:"not null"`
-	NIKMother              string                `gorm:"size:255"`
-	Mother                 string                `gorm:"size:255"`
-	NIKFather              string                `gorm:"size:255"`
-	Father                 string                `gorm:"size:255"`
+	DivorceCertificate     string    `gorm:"type:enum('Ada', 'Tidak Ada')"` //cerai
+	DivorceCertificateNo   int       `gorm:"not null"`                      //cerai
+	DivorceCertificateDate time.Time `gorm:"not null"`                      //cerai
+	FamilyStatusID         int       `gorm:"not null"`                      // status dalam keluarga
+	MentalDisorders        string    `gorm:"type:enum('Ada', 'Tidak Ada')"`
+	Disabilities           string
+	EducationStatus        string `gorm:"type:enum('Tidak/Belum Sekolah', 'Belum tamat SD/Sederajat', 'Tamat SD', 'SLTP/SMP/Sederajat', 'SLTA/SMA/Sederajat', 'Diploma I/II', 'Akademi/Diploma III/ Sarjana Muda', 'Diploma IV/ Strata I/ Strata II', 'Strata III', 'Lainya...')"` // EducationStatus enum tag
+	JobTypeID              int    `gorm:"not null"`
+	NIKMother              string `gorm:"size:255"`
+	Mother                 string `gorm:"size:255"`
+	NIKFather              string `gorm:"size:255"`
+	Father                 string `gorm:"size:255"`
 	Coordinate             string
 	// Foreign Key Relations
 	FamilyStatus FamilyStatus `gorm:"foreignKey:FamilyStatusID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
@@ -100,90 +100,251 @@ type Citizen struct {
 	Village      Village      `gorm:"foreignKey:VillageID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
 }
 
-type AvailableStatus string
+type AvailableStatus int
 
 const (
-	StatusAvailable    AvailableStatus = "Ada"
-	StatusNotAvailable AvailableStatus = "Tidak Ada"
+	StatusAda AvailableStatus = iota + 1
+	StatusTidakAda
 )
 
-type DisablitesStatus string
+// ToString method for AvailableStatus
+func (s AvailableStatus) ToString() string {
+	switch s {
+	case StatusAda:
+		return "Ada"
+	case StatusTidakAda:
+		return "Tidak Ada"
+	default:
+		return "Unknown"
+	}
+}
 
 const (
-	DisablitesFisik          DisablitesStatus = "Fisik"
-	DisablitesBlind          DisablitesStatus = "Netra/Buta"
-	DisablitesMute           DisablitesStatus = "Rungu/Wicara"
-	DisablitesMentalAndSoul  DisablitesStatus = "Mental/Jiwa"
-	DisablitesMentalAndFisik DisablitesStatus = "Fisik dan Mental"
-	DisablitesOther          DisablitesStatus = "Lainnya"
+	Man GenderOptions = iota + 1
+	Girl
 )
 
-type GenderOptions string
+type GenderOptions int
 
+// CitizenStatus options using iota
 const (
-	Man  GenderOptions = "Laki-Laki"
-	Girl GenderOptions = "Perempuan"
+	WNA CitizenStatusOption = iota + 1
+	WNI
 )
 
-type CitizenStatusOption string
+type CitizenStatusOption int
 
+// BloodType options using iota
 const (
-	WNA CitizenStatusOption = "WNA"
-	WNI CitizenStatusOption = "WNI"
+	A BloodType = iota + 1
+	B
+	AB
+	O
+	APositive
+	ANegative
+	BPositive
+	BNegative
+	ABPositive
+	ABNegative
+	OPositive
+	ONegative
+	BloodTypeUnknown
 )
 
-type BloodType string
+type BloodType int
 
+// Religion options using iota
 const (
-	A                BloodType = "A"
-	B                BloodType = "B"
-	AB               BloodType = "AB"
-	O                BloodType = "O"
-	APositive        BloodType = "A+"
-	ANegative        BloodType = "A-"
-	BPositive        BloodType = "B+"
-	BNegative        BloodType = "B-"
-	ABPositive       BloodType = "AB+"
-	ABNegative       BloodType = "AB-"
-	OPositive        BloodType = "O+"
-	ONegative        BloodType = "O-"
-	BloodTypeUnknown BloodType = "Tidak Tahu"
+	Islam ReligionOption = iota + 1
+	Kristen
+	Katholik
+	Hindu
+	Buddha
+	KongHuCu
+	Etc
 )
 
-type ReligionOption string
+type ReligionOption int
 
+// MaritalStatus options using iota
 const (
-	Islam    ReligionOption = "Islam"
-	Kristen  ReligionOption = "Kristen"
-	Katholik ReligionOption = "Katholik"
-	Hindu    ReligionOption = "Hindu"
-	Buddha   ReligionOption = "Buddha"
-	KongHuCu ReligionOption = "Kong Hu Cu"
-	Etc      ReligionOption = "Lainya...."
+	MaritalStatusUnmarried MaritalStatusOption = iota + 1
+	MaritalStatusRegistered
+	MaritalStatusUnregistered
+	MaritalStatusRegisteredDivorce
+	MaritalStatusUnregisteredDivorce
+	MaritalStatusWidowed
 )
 
-type MaritalStatusOption string
+type MaritalStatusOption int
 
+// Disabilities options using iota
 const (
-	Unmarried            MaritalStatusOption = "Belum Kawin"
-	RegisteredMarriage   MaritalStatusOption = "Kawin Tercatat"
-	UnregisteredMarriage MaritalStatusOption = "Kawin Belum Tercatat"
-	RegisteredDivorce    MaritalStatusOption = "Cerai Hidup Tercatat"
-	UnregisteredDivorce  MaritalStatusOption = "Cerai Hidup Belum Tercatat"
-	Widowed              MaritalStatusOption = "Cerai Mati"
+	DisablitesFisik DisablitesStatus = iota + 1
+	DisablitesBlind
+	DisablitesMute
+	DisablitesMentalAndSoul
+	DisablitesMentalAndFisik
+	DisablitesOther
 )
 
-type EducationStatusOption string
+type DisablitesStatus int
 
+// EducationStatus options using iota
 const (
-	NotInSchool                   EducationStatusOption = "Tidak/Belum Sekolah"
-	NotFinishedElementary         EducationStatusOption = " Belum tamat SD/Sederajat"
-	CompletedElementary           EducationStatusOption = "Tamat SD"
-	JuniorHighSchool              EducationStatusOption = "SLTP/SMP/Sederajat"
-	SeniorHighSchool              EducationStatusOption = "SLTA/SMA/Sederaja"
-	DiplomaIorII                  EducationStatusOption = "Diploma I/II"
-	AcademyOrDiplomaIII           EducationStatusOption = "Akademi/Diploma III/ Sarjana Muda"
-	DiplomaIVOrBachelorsOrMasters EducationStatusOption = "Diploma IV/ Strata I/ Strata II"
-	Doctorate                     EducationStatusOption = "Strata III"
-	OtherEducation                EducationStatusOption = "Lainya..."
+	NotInSchool EducationStatusOption = iota + 1
+	NotFinishedElementary
+	CompletedElementary
+	JuniorHighSchool
+	SeniorHighSchool
+	DiplomaIorII
+	AcademyOrDiplomaIII
+	DiplomaIVOrBachelorsOrMasters
+	Doctorate
+	OtherEducation
 )
+
+type EducationStatusOption int
+
+// ToString methods for each type using iota
+
+func (g GenderOptions) ToString() string {
+	switch g {
+	case Man:
+		return "Laki-Laki"
+	case Girl:
+		return "Perempuan"
+	default:
+		return "Unknown"
+	}
+}
+
+func (cs CitizenStatusOption) ToString() string {
+	switch cs {
+	case WNA:
+		return "WNA"
+	case WNI:
+		return "WNI"
+	default:
+		return "Unknown"
+	}
+}
+
+func (b BloodType) ToString() string {
+	switch b {
+	case A:
+		return "A"
+	case B:
+		return "B"
+	case AB:
+		return "AB"
+	case O:
+		return "O"
+	case APositive:
+		return "A+"
+	case ANegative:
+		return "A-"
+	case BPositive:
+		return "B+"
+	case BNegative:
+		return "B-"
+	case ABPositive:
+		return "AB+"
+	case ABNegative:
+		return "AB-"
+	case OPositive:
+		return "O+"
+	case ONegative:
+		return "O-"
+	case BloodTypeUnknown:
+		return "Tidak Tahu"
+	default:
+		return "Unknown"
+	}
+}
+
+func (r ReligionOption) ToString() string {
+	switch r {
+	case Islam:
+		return "Islam"
+	case Kristen:
+		return "Kristen"
+	case Katholik:
+		return "Katholik"
+	case Hindu:
+		return "Hindu"
+	case Buddha:
+		return "Buddha"
+	case KongHuCu:
+		return "Kong Hu Cu"
+	case Etc:
+		return "Lainya..."
+	default:
+		return "Unknown"
+	}
+}
+
+func (ms MaritalStatusOption) ToString() string {
+	switch ms {
+	case MaritalStatusUnmarried:
+		return "Belum Kawin"
+	case MaritalStatusRegistered:
+		return "Kawin Tercatat"
+	case MaritalStatusUnregistered:
+		return "Kawin Belum Tercatat"
+	case MaritalStatusRegisteredDivorce:
+		return "Cerai Hidup Tercatat"
+	case MaritalStatusUnregisteredDivorce:
+		return "Cerai Hidup Belum Tercatat"
+	case MaritalStatusWidowed:
+		return "Cerai Mati"
+	default:
+		return "Unknown"
+	}
+}
+
+func (d DisablitesStatus) ToString() string {
+	switch d {
+	case DisablitesFisik:
+		return "Fisik"
+	case DisablitesBlind:
+		return "Netra/Buta"
+	case DisablitesMute:
+		return "Rungu/Wicara"
+	case DisablitesMentalAndSoul:
+		return "Mental/Jiwa"
+	case DisablitesMentalAndFisik:
+		return "Fisik dan Mental"
+	case DisablitesOther:
+		return "Lainnya"
+	default:
+		return "Unknown"
+	}
+}
+
+func (e EducationStatusOption) ToString() string {
+	switch e {
+	case NotInSchool:
+		return "Tidak/Belum Sekolah"
+	case NotFinishedElementary:
+		return "Belum tamat SD/Sederajat"
+	case CompletedElementary:
+		return "Tamat SD"
+	case JuniorHighSchool:
+		return "SLTP/SMP/Sederajat"
+	case SeniorHighSchool:
+		return "SLTA/SMA/Sederajat"
+	case DiplomaIorII:
+		return "Diploma I/II"
+	case AcademyOrDiplomaIII:
+		return "Akademi/Diploma III/ Sarjana Muda"
+	case DiplomaIVOrBachelorsOrMasters:
+		return "Diploma IV/ Strata I/ Strata II"
+	case Doctorate:
+		return "Strata III"
+	case OtherEducation:
+		return "Lainya..."
+	default:
+		return "Unknown"
+	}
+}

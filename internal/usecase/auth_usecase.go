@@ -23,7 +23,7 @@ type AuthUsecaseImpl struct {
 	*validator.Validate
 }
 
-func NewAuthUsecaseImpl(userRepository repository.UserRepository, validate *validator.Validate) *AuthUsecaseImpl {
+func NewAuthUsecase(userRepository repository.UserRepository, validate *validator.Validate) *AuthUsecaseImpl {
 	return &AuthUsecaseImpl{UserRepository: userRepository, Validate: validate}
 }
 

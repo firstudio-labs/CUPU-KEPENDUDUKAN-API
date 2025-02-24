@@ -25,9 +25,13 @@ func main() {
 		AllowCredentials: false,
 	}))
 
-	userRepository := repository.NewUserRepositoryImpl(DEBE)
-	authUsecase := usecase.NewAuthUsecaseImpl(userRepository, validate)
-	authHandler := handler.NewAuthHandlerImpl(authUsecase)
+	userRepository := repository.NewUserRepository(DEBE)
+	authUsecase := usecase.NewAuthUsecase(userRepository, validate)
+	authHandler := handler.NewAuthHandler(authUsecase)
+
+	citizensRepository := repository.NewCitizensRepository()
+	citizensUsecase := usecase.NewCitizensUsecase(citizensRepository, validate, DEBE)
+	citizensHandler := handler.NewCitizensHandler(citizensUsecase)
 
 	app.Post("/api/login", authHandler.Login)
 	app.Post("/api/register", authHandler.Register)
@@ -36,6 +40,12 @@ func main() {
 		logger.Log.Debug("GEGEGE")
 		return c.SendString("Hello, World!")
 	})
+
+	protected.Get("/api/citizens/:nik", citizensHandler.FindCitizenByNIK)
+	protected.Get("/api/citizens", citizensHandler.FindCitizenPage) // ini query gw lupa cara nya
+	protected.Post("/api/citizens", citizensHandler.CreateCitizen)
+	protected.Put("/api/citizens", citizensHandler.UpdateCitizenByNIK)
+	protected.Delete("/api/citizens", citizensHandler.DeleteCitizenByNIK)
 
 	app.Listen(fmt.Sprintf(":%s", cfg.GetConfig().Server.Port))
 }
