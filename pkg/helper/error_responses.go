@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"github.com/firstudio-lab/JARITMAS-API/pkg/logger"
 	"github.com/gofiber/fiber/v2"
 	"net/http"
 	"strconv"
@@ -15,6 +16,7 @@ func ExtractHTTPCodeAndMessage(err error) (int, string) {
 	parts := strings.Split(err.Error(), ":")
 	if len(parts) != 2 {
 		// Jika format error tidak sesuai
+		logger.Log.Debug(err)
 		return http.StatusInternalServerError, "unexpected error format"
 	}
 	// Parsing status code

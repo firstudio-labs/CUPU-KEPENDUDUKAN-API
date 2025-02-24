@@ -1,0 +1,105 @@
+### REGISTER
+POST http://localhost:3000/api/register
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "jamal",
+  "password": "jamal",
+  "confirm_password": "jamal"
+}
+
+### LOIGN
+POST http://localhost:3000/api/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "jamal",
+  "password": "jamal"
+}
+
+### GET CITIZEN BY NIK
+GET http://localhost:3000/api/citizens/1234567890123456
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDE5NDY1fQ.a6NVPmqq-9xDNk3pdXHYkD1xl63SbuCD-x7hkRunX3c
+
+### GET CITIZENs per page
+GET http://localhost:3000/api/citizens?page=1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDE5NDY1fQ.a6NVPmqq-9xDNk3pdXHYkD1xl63SbuCD-x7hkRunX3c
+
+
+### CREATE CITIZEN
+POST http://localhost:3000/api/citizens
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDE5NDY1fQ.a6NVPmqq-9xDNk3pdXHYkD1xl63SbuCD-x7hkRunX3c
+
+{
+  "nik": 1234567890123456,
+  "kk": 9876543210987654,
+  "full_name": "John Doe",
+  "gender": 1,
+  "birth_date": "1990-01-15T00:00:00Z",
+  "age": 33,
+  "birth_place": "Jakarta",
+  "address": "Jl. Sudirman No. 123",
+  "province_id": 31,
+  "district_id": 3171,
+  "sub_district_id": 317101,
+  "village_id": 31710101,
+  "rt": "003",
+  "rw": "002",
+  "postal_code": 12345,
+  "citizen_status": 1,
+  "birth_certificate": 1,
+  "birth_certificate_no": 8765432109876543,
+  "blood_type": 1,
+  "religion": 1,
+  "marital_status": 1,
+  "marital_certificate": 1,
+  "marital_certificate_no": 7654321098765432,
+  "marriage_date": "2015-06-20T00:00:00Z",
+  "divorce_certificate": 2,
+  "divorce_certificate_no": 0,
+  "divorce_certificate_date": "0001-01-01T00:00:00Z",
+  "family_status_id": 1,
+  "mental_disorders": 2,
+  "disabilities": 1,
+  "education_status": 5,
+  "job_type_id": 7,
+  "nik_mother": "1234567890123457",
+  "mother": "Jane Doe",
+  "nik_father": "1234567890123458",
+  "father": "Jack Doe",
+  "coordinate": "-6.175392,106.865036"
+}
+
+
+### UPDATE CITIZEN BY NIK
+PUT http://localhost:3000/api/citizens/1234567890123456
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer
+
+### DELETE CITIZENs per page
+DELETE http://localhost:3000/api/citizens/1234567890123456
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDE5NDY1fQ.a6NVPmqq-9xDNk3pdXHYkD1xl63SbuCD-x7hkRunX3c
+
+
+
+///NOTE
+// - TIPE DATA TANGGAL
+// - FILDER KK KTP POKOK NYA YG 16+ ITU KALO SEMPET NANTI UBAH STRING
+// - RESPONSE INFORMATION PAGINATION
+// - RESPONSE, IFIND BY ID
+// - INSERT DATA EXCEL KE -> DB
+// - TEST UPDATE FIELD COBA
+
+// CRUD ADD MASTER PEKERJAAN
+//

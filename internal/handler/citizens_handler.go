@@ -44,8 +44,24 @@ func (h CitizensHandlerImpl) FindCitizenByNIK(ctx *fiber.Ctx) error {
 }
 
 func (h CitizensHandlerImpl) FindCitizenPage(ctx *fiber.Ctx) error {
-	//TODO implement me
-	panic("implement me")
+	query := ctx.Query("page")
+	if query == "" {
+		err := fmt.Errorf("%d:%v", http.StatusBadRequest, "bad value cant get data")
+		return helper.WResponses(ctx, err, "", nil)
+	}
+	atoi, err := strconv.Atoi(query)
+	if err != nil {
+		err := fmt.Errorf("%d:%v", http.StatusBadRequest, "bad value cant get data")
+		return helper.WResponses(ctx, err, "", nil)
+	}
+
+	Citizens, err := h.CitizensUsecase.FindCitizenPage(ctx.Context(), atoi)
+	if err != nil {
+		return helper.WResponses(ctx, err, "", nil)
+	}
+
+	return helper.WResponses(ctx, nil, "getting citizens per page 10 data", Citizens)
+
 }
 
 func (h CitizensHandlerImpl) CreateCitizen(ctx *fiber.Ctx) error {
@@ -64,11 +80,37 @@ func (h CitizensHandlerImpl) CreateCitizen(ctx *fiber.Ctx) error {
 }
 
 func (h CitizensHandlerImpl) UpdateCitizenByNIK(ctx *fiber.Ctx) error {
-	//TODO implement me
-	panic("implement me")
+	var body dto.CitizenReqUpdate
+	params := ctx.Params("nik")
+	atoi, err := strconv.Atoi(params)
+	if err != nil {
+		err := fmt.Errorf("%d:%v", http.StatusBadRequest, "Nik is not suitable")
+		return helper.WResponses(ctx, err, "", nil)
+	}
+	if err := ctx.BodyParser(&body); err != nil {
+		logger.Log.Errorf("Fail to parse body %e", err)
+		err := fmt.Errorf("%d:%v", http.StatusInternalServerError, " failed to parse json")
+		return helper.WResponses(ctx, err, "", nil)
+	}
+
+	if err := h.CitizensUsecase.UpdateCitizenByNIK(ctx.Context(), int64(atoi), body); err != nil {
+		return helper.WResponses(ctx, err, "", nil)
+	}
+
+	return helper.WResponses(ctx, nil, "created new citizen successfully", nil)
 }
 
 func (h CitizensHandlerImpl) DeleteCitizenByNIK(ctx *fiber.Ctx) error {
-	//TODO implement me
-	panic("implement me")
+	params := ctx.Params("nik")
+	atoi, err := strconv.Atoi(params)
+	if err != nil {
+		err := fmt.Errorf("%d:%v", http.StatusBadRequest, "Nik is not suitable")
+		return helper.WResponses(ctx, err, "", nil)
+	}
+
+	if err := h.CitizensUsecase.DeleteCitizenByNIK(ctx.Context(), int64(atoi)); err != nil {
+		return helper.WResponses(ctx, err, "", nil)
+	}
+
+	return helper.WResponses(ctx, nil, "deleted citizen successfully", nil)
 }

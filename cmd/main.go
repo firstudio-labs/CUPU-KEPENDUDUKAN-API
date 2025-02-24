@@ -42,10 +42,10 @@ func main() {
 	})
 
 	protected.Get("/api/citizens/:nik", citizensHandler.FindCitizenByNIK)
-	protected.Get("/api/citizens", citizensHandler.FindCitizenPage) // ini query gw lupa cara nya
-	protected.Post("/api/citizens", citizensHandler.CreateCitizen)
-	protected.Put("/api/citizens", citizensHandler.UpdateCitizenByNIK)
-	protected.Delete("/api/citizens", citizensHandler.DeleteCitizenByNIK)
+	protected.Get("/api/citizens", citizensHandler.FindCitizenPage)         // unclear
+	protected.Post("/api/citizens", citizensHandler.CreateCitizen)          // unclear
+	protected.Put("/api/citizens/:nik", citizensHandler.UpdateCitizenByNIK) // unclear
+	protected.Delete("/api/citizens/:nik", citizensHandler.DeleteCitizenByNIK)
 
 	app.Listen(fmt.Sprintf(":%s", cfg.GetConfig().Server.Port))
 }

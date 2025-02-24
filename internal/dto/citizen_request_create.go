@@ -6,41 +6,41 @@ import (
 )
 
 type CitizenReqCreate struct {
-	NIK                    int64 `validate:"required,min=16,max=16"`
-	KK                     int64 `validate:"required,min=16,max=16"`
-	FullName               string
-	Gender                 entity.GenderOptions `validate:"required,oneof=1 2"`
-	BirthDate              time.Time
-	Age                    int
-	BirthPlace             string
-	Address                string
-	ProvinceID             int
-	DistrictID             int
-	SubDistrictID          int
-	VillageID              int
-	RT                     string
-	RW                     string
-	PostalCode             int
-	CitizenStatus          entity.CitizenStatusOption `validate:"required,oneof=1 2"` //(WNI, WNA)
-	BirthCertificate       entity.AvailableStatus     `validate:"required,oneof=1 2"` // ADA/TIDAK-ADA
-	BirthCertificateNo     int64
-	BloodType              entity.BloodType           `validate:"required,oneof=1 2 3 4 5 6 7 8 9 10 11 12 13"`
-	Religion               entity.ReligionOption      `validate:"required,oneof=1 2 3 4 5 6 7"`
-	MaritalStatus          entity.MaritalStatusOption `validate:"required,oneof=1 2 3 4 5 6"`
-	MaritalCertificate     entity.AvailableStatus     `validate:"required,oneof=1 2"` // ADA/TIDAK-ADA
-	MaritalCertificateNo   int64
-	MarriageDate           time.Time
-	DivorceCertificate     entity.AvailableStatus `validate:"required,oneof=1 2"` // ADA/TIDAK-ADA
-	DivorceCertificateNo   int64
-	DivorceCertificateDate time.Time
-	FamilyStatusID         int
-	MentalDisorders        entity.AvailableStatus       `validate:"required,oneof=1 2"` // ADA/TIDAK-ADA
-	Disabilities           entity.DisablitesStatus      `validate:"required,oneof=1 2 3 4 5 6"`
-	EducationStatus        entity.EducationStatusOption `validate:"required,oneof=1 2 3 4 5 6 7 8 9 10"`
-	JobTypeID              int
-	NIKMother              string
-	Mother                 string
-	NIKFather              string
-	Father                 string
-	Coordinate             string
+	NIK                    int64                        `validate:"required" json:"nik"`
+	KK                     int64                        `validate:"required" json:"kk"`
+	FullName               string                       `json:"full_name"`
+	Gender                 entity.GenderOptions         `validate:"required,oneof=1 2" json:"gender"`
+	BirthDate              time.Time                    `json:"birth_date"`
+	Age                    int                          `json:"age"`
+	BirthPlace             string                       `json:"birth_place"`
+	Address                string                       `json:"address"`
+	ProvinceID             int                          `json:"province_id"`
+	DistrictID             int                          `json:"district_id"`
+	SubDistrictID          int                          `json:"sub_district_id"`
+	VillageID              int                          `json:"village_id"`
+	RT                     string                       `json:"rt"`
+	RW                     string                       `json:"rw"`
+	PostalCode             int                          `json:"postal_code"`
+	CitizenStatus          entity.CitizenStatusOption   `validate:"required,oneof=1 2" json:"citizen_status"`    //(WNI, WNA)
+	BirthCertificate       entity.AvailableStatus       `validate:"required,oneof=1 2" json:"birth_certificate"` // ADA/TIDAK-ADA
+	BirthCertificateNo     int64                        `json:"birth_certificate_no"`
+	BloodType              entity.BloodType             `validate:"required,oneof=1 2 3 4 5 6 7 8 9 10 11 12 13" json:"blood_type"`
+	Religion               entity.ReligionOption        `validate:"required,oneof=1 2 3 4 5 6 7" json:"religion"`
+	MaritalStatus          entity.MaritalStatusOption   `validate:"required,oneof=1 2 3 4 5 6" json:"marital_status"`
+	MaritalCertificate     entity.AvailableStatus       `validate:"required,oneof=1 2" json:"marital_certificate"` // ADA/TIDAK-ADA
+	MaritalCertificateNo   int64                        `json:"marital_certificate_no"`
+	MarriageDate           time.Time                    `json:"marriage_date"`
+	DivorceCertificate     entity.AvailableStatus       `validate:"required,oneof=1 2" json:"divorce_certificate"` // ADA/TIDAK-ADA
+	DivorceCertificateNo   int64                        `json:"divorce_certificate_no"`
+	DivorceCertificateDate time.Time                    `json:"divorce_certificate_date"`
+	FamilyStatusID         int                          `json:"family_status_id"`
+	MentalDisorders        entity.AvailableStatus       `validate:"required,oneof=1 2" json:"mental_disorders"` // ADA/TIDAK-ADA
+	Disabilities           entity.DisablitesStatus      `validate:"required,oneof=1 2 3 4 5 6" json:"disabilities"`
+	EducationStatus        entity.EducationStatusOption `validate:"required,oneof=1 2 3 4 5 6 7 8 9 10" json:"education_status"`
+	JobTypeID              int                          `json:"job_type_id"`
+	NIKMother              string                       `json:"nik_mother"`
+	Mother                 string                       `json:"mother"`
+	NIKFather              string                       `json:"nik_father"`
+	Father                 string                       `json:"father"`
+	Coordinate             string                       `json:"coordinate"`
 }

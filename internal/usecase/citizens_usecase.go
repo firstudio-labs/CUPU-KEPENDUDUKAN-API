@@ -9,6 +9,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"gorm.io/gorm"
 	"net/http"
+	"strings"
 )
 
 type CitizensUsecase interface {
@@ -49,6 +50,17 @@ func (u CitizensUsecaseImpl) FindCitizenPage(ctx context.Context, page int) ([]e
 }
 
 func (u CitizensUsecaseImpl) CreateCitizen(ctx context.Context, request dto.CitizenReqCreate) error {
+	if err := u.Validate.Struct(&request); err != nil {
+		validationErrors := err.(validator.ValidationErrors)
+		var errorMessages []string
+		for _, validationError := range validationErrors {
+			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s", validationError.Field(), validationError.Tag()))
+		}
+
+		s := fmt.Sprintf("validation failed: %s", strings.Join(errorMessages, ", "))
+		return fmt.Errorf("%d:%w", http.StatusBadRequest, s)
+	}
+
 	// MAPPING DATA
 	newCitizen := entity.Citizen{
 		NIK:                    request.NIK,
@@ -101,8 +113,67 @@ func (u CitizensUsecaseImpl) CreateCitizen(ctx context.Context, request dto.Citi
 }
 
 func (u CitizensUsecaseImpl) UpdateCitizenByNIK(ctx context.Context, nik int64, request dto.CitizenReqUpdate) error {
-	//TODO implement me
-	panic("implement me")
+	if err := u.Validate.Struct(&request); err != nil {
+		validationErrors := err.(validator.ValidationErrors)
+		var errorMessages []string
+		for _, validationError := range validationErrors {
+			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s", validationError.Field(), validationError.Tag()))
+		}
+
+		s := fmt.Sprintf("validation failed: %s", strings.Join(errorMessages, ", "))
+		return fmt.Errorf("%d:%w", http.StatusBadRequest, s)
+	}
+
+	if err := u.CitizensRepository.ExistCitizenNIK(ctx, u.DB, nik); err != nil {
+		return fmt.Errorf("%d:%w", http.StatusNotFound, err)
+	}
+
+	//MAPPING
+	updatedCitizen := entity.Citizen{
+		NIK:                    request.NIK,
+		KK:                     request.KK,
+		FullName:               request.FullName,
+		Gender:                 request.Gender.ToString(),
+		BirthDate:              request.BirthDate, // tanggal ntar
+		Age:                    request.Age,
+		BirthPlace:             request.BirthPlace,
+		Address:                request.Address,
+		ProvinceID:             request.ProvinceID,
+		DistrictID:             request.DistrictID,
+		SubDistrictID:          request.SubDistrictID,
+		VillageID:              request.VillageID,
+		RT:                     request.RT,
+		RW:                     request.RW,
+		PostalCode:             request.PostalCode,
+		CitizenStatus:          request.CitizenStatus.ToString(),
+		BirthCertificate:       request.BirthCertificate.ToString(), //ada atau tidak ada
+		BirthCertificateNo:     request.BirthCertificateNo,
+		BloodType:              request.BloodType.ToString(),
+		Religion:               request.Religion.ToString(),
+		MaritalStatus:          request.MaritalStatus.ToString(),
+		MaritalCertificate:     request.MaritalCertificate.ToString(),
+		MaritalCertificateNo:   request.MaritalCertificateNo,
+		MarriageDate:           request.MarriageDate,
+		DivorceCertificate:     request.DivorceCertificate.ToString(),
+		DivorceCertificateNo:   request.DivorceCertificateNo,
+		DivorceCertificateDate: request.DivorceCertificateDate,
+		FamilyStatusID:         request.FamilyStatusID,
+		MentalDisorders:        request.MentalDisorders.ToString(),
+		Disabilities:           request.Disabilities.ToString(),
+		EducationStatus:        request.EducationStatus.ToString(),
+		JobTypeID:              request.JobTypeID,
+		NIKMother:              request.NIKMother,
+		Mother:                 request.Mother,
+		NIKFather:              request.NIKFather,
+		Father:                 request.Father,
+		Coordinate:             request.Coordinate,
+	}
+
+	if err := u.CitizensRepository.UpdateCitizen(ctx, u.DB, nik, updatedCitizen); err != nil {
+		return fmt.Errorf("%d:%w", http.StatusInternalServerError, err)
+	}
+
+	return nil
 }
 
 func (u CitizensUsecaseImpl) DeleteCitizenByNIK(ctx context.Context, nik int64) error {
@@ -111,7 +182,7 @@ func (u CitizensUsecaseImpl) DeleteCitizenByNIK(ctx context.Context, nik int64) 
 	}
 
 	if err := u.CitizensRepository.DeleteCitizenByNIK(ctx, u.DB, nik); err != nil {
-		return fmt.Errorf("%d:%w", http.StatusBadRequest, err)
+		return fmt.Errorf("%d:%w", http.StatusInternalServerError, err)
 	}
 
 	return nil
