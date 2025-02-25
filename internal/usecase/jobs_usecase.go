@@ -39,10 +39,12 @@ func (u JobsUsecaseImpl) CreateJobs(ctx context.Context, request dto.JobReqCreat
 		validationErrors := err.(validator.ValidationErrors)
 		var errorMessages []string
 		for _, validationError := range validationErrors {
-			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s", validationError.Field(), validationError.Tag()))
+			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s %s", validationError.Field(), validationError.Tag(), validationError.Param()))
 		}
 
-		return fmt.Errorf("validation failed: %s", strings.Join(errorMessages, ", "))
+		errValidate := fmt.Sprintf("validation failed: %s", strings.Join(errorMessages, ", "))
+		return fmt.Errorf("%s", errValidate)
+
 	}
 
 	err := u.JobsRepository.ExistJobCode(ctx, request.Code)
@@ -61,10 +63,10 @@ func (u JobsUsecaseImpl) UpdateJobs(ctx context.Context, idjobs int, request dto
 		validationErrors := err.(validator.ValidationErrors)
 		var errorMessages []string
 		for _, validationError := range validationErrors {
-			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s", validationError.Field(), validationError.Tag()))
+			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s %s", validationError.Field(), validationError.Tag(), validationError.Param()))
 		}
-
-		return fmt.Errorf("validation failed: %s", strings.Join(errorMessages, ", "))
+		errValidate := fmt.Sprintf("validation failed: %s", strings.Join(errorMessages, ", "))
+		return fmt.Errorf("%s", errValidate)
 	}
 
 	err := u.JobsRepository.ExistJobCode(ctx, request.Code)

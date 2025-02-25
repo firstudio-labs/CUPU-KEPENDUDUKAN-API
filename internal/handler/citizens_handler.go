@@ -49,6 +49,7 @@ func (h CitizensHandlerImpl) FindCitizenPage(ctx *fiber.Ctx) error {
 		err := fmt.Errorf("%d:%v", http.StatusBadRequest, "bad value cant get data")
 		return helper.WResponses(ctx, err, "", nil)
 	}
+
 	atoi, err := strconv.Atoi(query)
 	if err != nil {
 		err := fmt.Errorf("%d:%v", http.StatusBadRequest, "bad value cant get data")
@@ -61,7 +62,6 @@ func (h CitizensHandlerImpl) FindCitizenPage(ctx *fiber.Ctx) error {
 	}
 
 	return helper.WResponses(ctx, nil, "getting citizens per page 10 data", Citizens)
-
 }
 
 func (h CitizensHandlerImpl) CreateCitizen(ctx *fiber.Ctx) error {
@@ -97,7 +97,7 @@ func (h CitizensHandlerImpl) UpdateCitizenByNIK(ctx *fiber.Ctx) error {
 		return helper.WResponses(ctx, err, "", nil)
 	}
 
-	return helper.WResponses(ctx, nil, "created new citizen successfully", nil)
+	return helper.WResponses(ctx, nil, "update new citizen successfully", nil)
 }
 
 func (h CitizensHandlerImpl) DeleteCitizenByNIK(ctx *fiber.Ctx) error {

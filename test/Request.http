@@ -36,7 +36,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imphb
 POST http://localhost:3000/api/citizens
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDE5NDY1fQ.a6NVPmqq-9xDNk3pdXHYkD1xl63SbuCD-x7hkRunX3c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDg2MTE3fQ.zQd4oi3Qf7Jh-Tp1lxSN6LDHxuWJkkOSH7H_oapb9Cw
 
 {
   "nik": 1234567890123456,
@@ -101,14 +101,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imphb
 // - INSERT DATA EXCEL KE -> DB
 // - TEST UPDATE FIELD COBA
 
-// CRUD ADD MASTER PEKERJAAN
+//
 //
 
 ### GET ALL JOBS
 GET http://localhost:3000/api/jobs
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDY2MDM1fQ.vuEzN3OXDkqPxv54s4rmiFfFuztZbqO5hJm6fewsZrU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDY5ODAwfQ.4PrI2BvxAFzDrArT5KOrDwiVVY_D--4k85tgvCBmFJ8
 
 ### create Job By Id
 POST http://localhost:3000/api/jobs

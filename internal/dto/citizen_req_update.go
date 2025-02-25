@@ -6,10 +6,9 @@ import (
 )
 
 type CitizenReqUpdate struct {
-	NIK                    int64                        `validate:"len=16" json:"nik"`
-	KK                     int64                        `validate:"len=16" json:"kk"`
+	KK                     int64                        `json:"kk"`
 	FullName               string                       `json:"full_name"`
-	Gender                 entity.GenderOptions         `validate:"required,oneof=1 2" json:"gender"`
+	Gender                 entity.GenderOptions         `validate:"oneof=1 2" json:"gender"`
 	BirthDate              time.Time                    `json:"birth_date"`
 	Age                    int                          `json:"age"`
 	BirthPlace             string                       `json:"birth_place"`

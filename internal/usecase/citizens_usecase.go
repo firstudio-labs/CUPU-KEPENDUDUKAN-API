@@ -54,11 +54,11 @@ func (u CitizensUsecaseImpl) CreateCitizen(ctx context.Context, request dto.Citi
 		validationErrors := err.(validator.ValidationErrors)
 		var errorMessages []string
 		for _, validationError := range validationErrors {
-			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s", validationError.Field(), validationError.Tag()))
+			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s %s", validationError.Field(), validationError.Tag(), validationError.Param()))
 		}
 
-		s := fmt.Sprintf("validation failed: %s", strings.Join(errorMessages, ", "))
-		return fmt.Errorf("%d:%w", http.StatusBadRequest, s)
+		errValidate := fmt.Sprintf("validation failed: %s", strings.Join(errorMessages, ", "))
+		return fmt.Errorf("%s", errValidate)
 	}
 
 	// MAPPING DATA
@@ -117,11 +117,11 @@ func (u CitizensUsecaseImpl) UpdateCitizenByNIK(ctx context.Context, nik int64, 
 		validationErrors := err.(validator.ValidationErrors)
 		var errorMessages []string
 		for _, validationError := range validationErrors {
-			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s", validationError.Field(), validationError.Tag()))
+			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s %s", validationError.Field(), validationError.Tag(), validationError.Param()))
 		}
 
-		s := fmt.Sprintf("validation failed: %s", strings.Join(errorMessages, ", "))
-		return fmt.Errorf("%d:%w", http.StatusBadRequest, s)
+		errValidate := fmt.Sprintf("validation failed: %s", strings.Join(errorMessages, ", "))
+		return fmt.Errorf("%s", errValidate)
 	}
 
 	if err := u.CitizensRepository.ExistCitizenNIK(ctx, u.DB, nik); err != nil {
@@ -130,7 +130,6 @@ func (u CitizensUsecaseImpl) UpdateCitizenByNIK(ctx context.Context, nik int64, 
 
 	//MAPPING
 	updatedCitizen := entity.Citizen{
-		NIK:                    request.NIK,
 		KK:                     request.KK,
 		FullName:               request.FullName,
 		Gender:                 request.Gender.ToString(),

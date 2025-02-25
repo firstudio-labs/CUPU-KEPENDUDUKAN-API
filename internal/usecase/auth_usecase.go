@@ -32,7 +32,7 @@ func (a AuthUsecaseImpl) Register(ctx context.Context, request dto.RegisterReque
 		validationErrors := err.(validator.ValidationErrors)
 		var errorMessages []string
 		for _, validationError := range validationErrors {
-			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s", validationError.Field(), validationError.Tag()))
+			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s %s", validationError.Field(), validationError.Tag(), validationError.Param()))
 		}
 
 		return fmt.Errorf("validation failed: %s", strings.Join(errorMessages, ", "))
@@ -61,7 +61,7 @@ func (a AuthUsecaseImpl) Login(ctx context.Context, request dto.LoginRequest) er
 		validationErrors := err.(validator.ValidationErrors)
 		var errorMessages []string
 		for _, validationError := range validationErrors {
-			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s", validationError.Field(), validationError.Tag()))
+			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s %s", validationError.Field(), validationError.Tag(), validationError.Param()))
 		}
 
 		return fmt.Errorf("validation failed: %s", strings.Join(errorMessages, ", "))

@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"fmt"
 	"github.com/firstudio-lab/JARITMAS-API/pkg/logger"
 	"github.com/gofiber/fiber/v2"
 	"net/http"
@@ -8,16 +9,14 @@ import (
 	"strings"
 )
 
+// ExtractHTTPCodeAndMessage parses an error formatted as "<code>:<message>" and returns the code and message
 func ExtractHTTPCodeAndMessage(err error) (int, string) {
-	if err == nil {
-		return http.StatusOK, ""
-	}
 	// Misalkan format error adalah "%d:%e"
 	parts := strings.Split(err.Error(), ":")
 	if len(parts) != 2 {
-		// Jika format error tidak sesuai
+		// Jika format error tidak sesuai, log error dan kembalikan status BadRequest
 		logger.Log.Debug(err)
-		return http.StatusInternalServerError, "unexpected error format"
+		return http.StatusBadRequest, fmt.Sprintf("%s", err)
 	}
 	// Parsing status code
 	httpCode, parseErr := strconv.Atoi(parts[0])
@@ -40,14 +39,18 @@ type NoData struct {
 	Message string `json:"message"`
 }
 
+// WResponses is a helper function to send a standardized response
 func WResponses(ctx *fiber.Ctx, err error, message string, data interface{}) error {
-	code, msgErr := ExtractHTTPCodeAndMessage(err)
-	if msgErr == "" || err == nil {
+	// If no error, return success response
+	if err == nil {
 		if message == "" {
-			ctx.Status(code).JSON(NoData{Status: "OK", Message: message})
+			message = "No message provided" // Default message if none provided
 		}
-		return ctx.Status(code).JSON(UseData{Status: "OK", Message: message, Data: data})
+		return ctx.Status(http.StatusOK).JSON(UseData{Status: "OK", Message: message, Data: data})
 	}
+
+	// If there is an error, extract code and message
+	code, msgErr := ExtractHTTPCodeAndMessage(err)
 	return ctx.Status(code).JSON(NoData{
 		Status:  "ERROR",
 		Message: msgErr,

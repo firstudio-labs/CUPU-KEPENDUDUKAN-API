@@ -10,9 +10,9 @@ type FamilyStatus struct {
 
 // Job represents the jobs table
 type Job struct {
-	ID   int    `gorm:"primaryKey;autoIncrement"`
-	Code string `gorm:"unique"`
-	Name string `gorm:"not null;size:50"`
+	ID   int    `gorm:"primaryKey;autoIncrement" json:"id"`
+	Code string `gorm:"unique" json:"code"`
+	Name string `gorm:"not null;size:50" json:"name"`
 }
 
 // Province represents the province table

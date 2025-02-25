@@ -39,7 +39,10 @@ func (h JobsHandlerImpl) CreateJob(ctx *fiber.Ctx) error {
 		return helper.WResponses(ctx, err, "", nil)
 	}
 
-	return helper.WResponses(ctx, nil, "getting jobs data", nil)
+	return ctx.Status(http.StatusCreated).JSON(helper.NoData{
+		Status:  "CREATED",
+		Message: "successfully create data jobs",
+	})
 }
 
 func (h JobsHandlerImpl) UpdateJobById(ctx *fiber.Ctx) error {
@@ -62,7 +65,10 @@ func (h JobsHandlerImpl) UpdateJobById(ctx *fiber.Ctx) error {
 		return helper.WResponses(ctx, err, "", nil)
 	}
 
-	return helper.WResponses(ctx, nil, "getting jobs data", nil)
+	return ctx.Status(http.StatusCreated).JSON(helper.NoData{
+		Status:  "OK",
+		Message: fmt.Sprintf("successfully update jobs id %d", atoi),
+	})
 }
 
 func (h JobsHandlerImpl) DeleteJobById(ctx *fiber.Ctx) error {
@@ -78,8 +84,10 @@ func (h JobsHandlerImpl) DeleteJobById(ctx *fiber.Ctx) error {
 		return helper.WResponses(ctx, err, "", nil)
 	}
 
-	return helper.WResponses(ctx, nil, "created new citizen successfully", nil)
-
+	return ctx.Status(http.StatusCreated).JSON(helper.NoData{
+		Status:  "OK",
+		Message: fmt.Sprintf("deleted jobs id %d", atoi),
+	})
 }
 
 func (h JobsHandlerImpl) GetJobs(ctx *fiber.Ctx) error {
@@ -88,6 +96,9 @@ func (h JobsHandlerImpl) GetJobs(ctx *fiber.Ctx) error {
 		return helper.WResponses(ctx, err, "", nil)
 	}
 
-	return helper.WResponses(ctx, nil, "created new citizen successfully", data)
-
+	return ctx.Status(http.StatusCreated).JSON(helper.UseData{
+		Status:  "OK",
+		Message: "successfully getting all jobs",
+		Data:    data,
+	})
 }

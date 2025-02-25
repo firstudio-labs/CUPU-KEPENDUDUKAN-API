@@ -42,7 +42,7 @@ func (r JobsRepositoryImpl) CreateJobs(ctx context.Context, newJob entity.Job) e
 	var existingJob entity.Job
 	if err := r.DB.WithContext(ctx).Where("code = ?", newJob.Code).First(&existingJob).Error; err == nil {
 		// Jika ditemukan job dengan code yang sama
-		return fmt.Errorf("job dengan code %s sudah ada", newJob.Code)
+		return fmt.Errorf("job with code %s already exist", newJob.Code)
 	}
 	if err := r.DB.WithContext(ctx).Create(&newJob).Error; err != nil {
 		logger.Log.Debugf("QUERY Error %v", err)
@@ -58,11 +58,11 @@ func (r JobsRepositoryImpl) UpdateJobById(ctx context.Context, id int, UpdateJob
 	if err := r.DB.WithContext(ctx).Where("id =?", id).First(&job).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			// Job tidak ditemukan
-			return fmt.Errorf("job dengan ID %d tidak ditemukan", id)
+			return fmt.Errorf("job with code %s already exist", id)
 		}
 		// Terjadi error lain
 		logger.Log.Debugf("QUERY Error %v", err)
-		return fmt.Errorf("internal error, coba lagi nanti")
+		return fmt.Errorf("internal error, tryagain later")
 	}
 
 	// Validasi apakah job dengan code yang baru sama dengan yang sudah ada

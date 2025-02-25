@@ -15,6 +15,7 @@ select * from villages;
 
 desc citizens;
 
+SELECT * FROM citizens;
 
 desc citizens;
 

@@ -59,7 +59,7 @@ func (r CitizensRepositoryImpl) GetAllCitizenPerPage(ctx context.Context, tx *go
 		Find(&results). // Ambil data
 		Error; err != nil {
 		logger.Log.Errorf("QUERY Error %v", err)
-		return nil, err
+		return nil, fmt.Errorf("data not ready yet")
 	}
 
 	return results, nil
