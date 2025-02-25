@@ -1,7 +1,5 @@
 package entity
 
-import "time"
-
 // FamilyStatus represents the family_status table
 type FamilyStatus struct {
 	ID   int    `gorm:"primaryKey;autoIncrement"`
@@ -54,14 +52,14 @@ type Village struct {
 
 // Citizen represents the Citizen table
 type Citizen struct {
-	ID                     int       `gorm:"primaryKey;autoIncrement"`
-	NIK                    int64     `gorm:"unique;not null"`
-	KK                     int64     `gorm:"not null"`
-	FullName               string    `gorm:"not null;size:255"`
-	Gender                 string    `gorm:"type:enum('Laki-Laki', 'Perempuan')"` // Gender enum tag
-	BirthDate              time.Time `gorm:"type:date;not null"`
-	Age                    int       `gorm:"not null"`
-	BirthPlace             string    `gorm:"not null"`
+	ID                     int    `gorm:"primaryKey;autoIncrement"`
+	NIK                    int64  `gorm:"unique;not null"`
+	KK                     int64  `gorm:"not null"`
+	FullName               string `gorm:"not null;size:255"`
+	Gender                 string `gorm:"type:enum('Laki-Laki', 'Perempuan')"` // Gender enum tag
+	BirthDate              string `gorm:"not null"`
+	Age                    int    `gorm:"not null"`
+	BirthPlace             string `gorm:"not null"`
 	Address                string
 	ProvinceID             int
 	DistrictID             int
@@ -78,12 +76,12 @@ type Citizen struct {
 	MaritalStatus          string `gorm:"type:enum('Belum Kawin', 'Kawin Tercatat', 'Kawin Belum Tercatat', 'Cerai Hidup Tercatat', 'Cerai Hidup Belum Tercatat', 'Cerai Mati')"` // MaritalStatus enum tag
 	MaritalCertificate     string `gorm:"type:enum('Ada', 'Tidak Ada')"`                                                                                                          // nikah
 	MaritalCertificateNo   int64  `gorm:"null"`                                                                                                                                   // nikah
-	MarriageDate           time.Time
-	DivorceCertificate     string    `gorm:"type:enum('Ada', 'Tidak Ada')"` //cerai
-	DivorceCertificateNo   int64     `gorm:"not null"`                      //cerai
-	DivorceCertificateDate time.Time `gorm:"not null"`                      //cerai
-	FamilyStatusID         int       `gorm:"not null"`                      // status dalam keluarga
-	MentalDisorders        string    `gorm:"type:enum('Ada', 'Tidak Ada')"`
+	MarriageDate           string
+	DivorceCertificate     string `gorm:"type:enum('Ada', 'Tidak Ada')"` //cerai
+	DivorceCertificateNo   int64  `gorm:"not null"`                      //cerai
+	DivorceCertificateDate string `gorm:"not null"`                      //cerai
+	FamilyStatusID         int    `gorm:"not null"`                      // status dalam keluarga
+	MentalDisorders        string `gorm:"type:enum('Ada', 'Tidak Ada')"`
 	Disabilities           string
 	EducationStatus        string `gorm:"type:enum('Tidak/Belum Sekolah', 'Belum tamat SD/Sederajat', 'Tamat SD', 'SLTP/SMP/Sederajat', 'SLTA/SMA/Sederajat', 'Diploma I/II', 'Akademi/Diploma III/ Sarjana Muda', 'Diploma IV/ Strata I/ Strata II', 'Strata III', 'Lainya...')"` // EducationStatus enum tag
 	JobTypeID              int    `gorm:"not null"`

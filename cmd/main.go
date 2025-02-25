@@ -39,18 +39,18 @@ func main() {
 
 	app.Post("/api/login", authHandler.Login)
 	app.Post("/api/register", authHandler.Register)
+
+	app.Get("/api/citizens/:nik", citizensHandler.FindCitizenByNIK)
+	app.Get("/api/citizens", citizensHandler.FindCitizenPage)         // unclear
+	app.Post("/api/citizens", citizensHandler.CreateCitizen)          // unclear
+	app.Put("/api/citizens/:nik", citizensHandler.UpdateCitizenByNIK) // unclear
+	app.Delete("/api/citizens/:nik", citizensHandler.DeleteCitizenByNIK)
+
 	protected := app.Group("/", cfg.JWTAuthMiddleware)
 	protected.Get("/", func(c *fiber.Ctx) error {
 		logger.Log.Debug("GEGEGE")
 		return c.SendString("Hello, World!")
 	})
-
-	protected.Get("/api/citizens/:nik", citizensHandler.FindCitizenByNIK)
-	protected.Get("/api/citizens", citizensHandler.FindCitizenPage)         // unclear
-	protected.Post("/api/citizens", citizensHandler.CreateCitizen)          // unclear
-	protected.Put("/api/citizens/:nik", citizensHandler.UpdateCitizenByNIK) // unclear
-	protected.Delete("/api/citizens/:nik", citizensHandler.DeleteCitizenByNIK)
-
 	protected.Delete("/api/jobs/:id", jobsHandler.DeleteJobById)
 	protected.Get("/api/jobs", jobsHandler.GetJobs)
 	protected.Post("/api/jobs", jobsHandler.CreateJob)

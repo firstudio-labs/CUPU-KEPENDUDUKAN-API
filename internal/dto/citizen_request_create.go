@@ -2,7 +2,6 @@ package dto
 
 import (
 	"github.com/firstudio-lab/JARITMAS-API/internal/entity"
-	"time"
 )
 
 type CitizenReqCreate struct {
@@ -10,7 +9,7 @@ type CitizenReqCreate struct {
 	KK                     int64                        `validate:"required" json:"kk"`
 	FullName               string                       `json:"full_name"`
 	Gender                 entity.GenderOptions         `validate:"required,oneof=1 2" json:"gender"`
-	BirthDate              time.Time                    `json:"birth_date"`
+	BirthDate              string                       `json:"birth_date"`
 	Age                    int                          `json:"age"`
 	BirthPlace             string                       `json:"birth_place"`
 	Address                string                       `json:"address"`
@@ -29,10 +28,10 @@ type CitizenReqCreate struct {
 	MaritalStatus          entity.MaritalStatusOption   `validate:"required,oneof=1 2 3 4 5 6" json:"marital_status"`
 	MaritalCertificate     entity.AvailableStatus       `validate:"required,oneof=1 2" json:"marital_certificate"` // ADA/TIDAK-ADA
 	MaritalCertificateNo   int64                        `json:"marital_certificate_no"`
-	MarriageDate           time.Time                    `json:"marriage_date"`
+	MarriageDate           string                       `json:"marriage_date"`
 	DivorceCertificate     entity.AvailableStatus       `validate:"required,oneof=1 2" json:"divorce_certificate"` // ADA/TIDAK-ADA
 	DivorceCertificateNo   int64                        `json:"divorce_certificate_no"`
-	DivorceCertificateDate time.Time                    `json:"divorce_certificate_date"`
+	DivorceCertificateDate string                       `json:"divorce_certificate_date"`
 	FamilyStatusID         int                          `json:"family_status_id"`
 	MentalDisorders        entity.AvailableStatus       `validate:"required,oneof=1 2" json:"mental_disorders"` // ADA/TIDAK-ADA
 	Disabilities           entity.DisablitesStatus      `validate:"required,oneof=1 2 3 4 5 6" json:"disabilities"`

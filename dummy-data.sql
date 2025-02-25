@@ -19,4 +19,6 @@ SELECT * FROM citizens;
 
 desc citizens;
 
+
 select * from jobs;
+

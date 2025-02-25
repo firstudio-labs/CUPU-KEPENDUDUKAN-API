@@ -15,7 +15,6 @@ type CitizensRepository interface {
 	GetAllCitizenPerPage(ctx context.Context, tx *gorm.DB, page int) ([]entity.Citizen, error)
 	UpdateCitizen(ctx context.Context, tx *gorm.DB, nik int64, citizenUpdate entity.Citizen) error
 	DeleteCitizenByNIK(ctx context.Context, tx *gorm.DB, nik int64) error
-	ExistCitizenNIK(ctx context.Context, tx *gorm.DB, nik int64) error
 }
 
 type CitizensRepositoryImpl struct {
@@ -26,9 +25,17 @@ func NewCitizensRepository() *CitizensRepositoryImpl {
 }
 
 func (r CitizensRepositoryImpl) CreateCitizen(ctx context.Context, tx *gorm.DB, citizen entity.Citizen) error {
-	if err := tx.WithContext(ctx).Create(&citizen).Error; err != nil {
-		logger.Log.Debugf("QUERY Error %v", err)
-		return fmt.Errorf("internal error please try again later")
+	var existingCitizen entity.Citizen
+	result := tx.Where("nik = ?", citizen.NIK).First(&existingCitizen)
+
+	// If record found, it means NIK already exists
+	if result.RowsAffected > 0 {
+		return errors.New("citizen with this NIK already exists")
+	}
+
+	// If NIK doesn't exist, create new citizen
+	if err := tx.Create(&citizen).Error; err != nil {
+		return err
 	}
 
 	return nil
@@ -66,6 +73,18 @@ func (r CitizensRepositoryImpl) GetAllCitizenPerPage(ctx context.Context, tx *go
 }
 
 func (r CitizensRepositoryImpl) UpdateCitizen(ctx context.Context, tx *gorm.DB, nik int64, citizenUpdate entity.Citizen) error {
+	// First, check if the citizen exists
+	var existingCitizen entity.Citizen
+	result := tx.WithContext(ctx).Where("nik = ?", nik).First(&existingCitizen)
+
+	// If no record is found, return the custom not found error
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("failed update nik %d notfound", nik)
+		}
+		return fmt.Errorf("Other error")
+	}
+
 	if err := tx.WithContext(ctx).Where("nik = ?", nik).Updates(citizenUpdate).Error; err != nil {
 		logger.Log.Errorf("QUERY Error %v", err)
 		return err
@@ -75,26 +94,22 @@ func (r CitizensRepositoryImpl) UpdateCitizen(ctx context.Context, tx *gorm.DB, 
 }
 
 func (r CitizensRepositoryImpl) DeleteCitizenByNIK(ctx context.Context, tx *gorm.DB, nik int64) error {
-	if err := tx.WithContext(ctx).Where("nik = ?", nik).Delete(&entity.Citizen{}).Error; err != nil {
-		logger.Log.Errorf("QUERY Error %v", err)
+	// Cek apakah citizen dengan NIK tersebut ada
+	var citizen entity.Citizen
+	if err := tx.WithContext(ctx).Where("nik = ?", nik).First(&citizen).Error; err != nil {
+		// Jika error yang terjadi adalah 'record not found', return error custom
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("citizen with NIK %d not found", nik)
+		}
+		// Jika ada error lain, log dan kembalikan error tersebut
+		logger.Log.Errorf("QUERY Error while checking citizen existence: %v", err)
 		return err
 	}
 
-	return nil
-}
-
-func (r CitizensRepositoryImpl) ExistCitizenNIK(ctx context.Context, tx *gorm.DB, nik int64) error {
-	// find onlu oen field biar cepet
-	var exists bool
-	if err := tx.WithContext(ctx).Table("citizens").Select("1").Where("nik = ?", nik).
-		Limit(1).Scan(&exists).Error; err != nil {
-		logger.Log.Errorf("QUERY Error %v", err)
-		return fmt.Errorf("failed to check NIK existence: %w", err)
-	}
-
-	if !exists {
-		//if data not found return error
-		return fmt.Errorf("citizen with NIK %d not found", nik)
+	// Jika citizen ditemukan, lanjutkan untuk menghapusnya
+	if err := tx.WithContext(ctx).Where("nik = ?", nik).Delete(&entity.Citizen{}).Error; err != nil {
+		logger.Log.Errorf("QUERY Error while deleting citizen: %v", err)
+		return err
 	}
 
 	return nil

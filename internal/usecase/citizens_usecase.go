@@ -102,14 +102,11 @@ func (u CitizensUsecaseImpl) CreateCitizen(ctx context.Context, request dto.Citi
 		Coordinate:             request.Coordinate,
 	}
 
-	if err := u.CitizensRepository.ExistCitizenNIK(ctx, u.DB, request.NIK); err != nil {
-		//KARENA TIDAK EXIST KITA CREATE
-		if err := u.CitizensRepository.CreateCitizen(ctx, u.DB, newCitizen); err != nil {
-			return fmt.Errorf("%d:%w", http.StatusInternalServerError, err)
-		}
+	if err := u.CitizensRepository.CreateCitizen(ctx, u.DB, newCitizen); err != nil {
+		return fmt.Errorf("%d:%w", http.StatusBadRequest, err)
 	}
-
 	return nil
+
 }
 
 func (u CitizensUsecaseImpl) UpdateCitizenByNIK(ctx context.Context, nik int64, request dto.CitizenReqUpdate) error {
@@ -122,10 +119,6 @@ func (u CitizensUsecaseImpl) UpdateCitizenByNIK(ctx context.Context, nik int64, 
 
 		errValidate := fmt.Sprintf("validation failed: %s", strings.Join(errorMessages, ", "))
 		return fmt.Errorf("%s", errValidate)
-	}
-
-	if err := u.CitizensRepository.ExistCitizenNIK(ctx, u.DB, nik); err != nil {
-		return fmt.Errorf("%d:%w", http.StatusNotFound, err)
 	}
 
 	//MAPPING
@@ -176,9 +169,6 @@ func (u CitizensUsecaseImpl) UpdateCitizenByNIK(ctx context.Context, nik int64, 
 }
 
 func (u CitizensUsecaseImpl) DeleteCitizenByNIK(ctx context.Context, nik int64) error {
-	if err := u.CitizensRepository.ExistCitizenNIK(ctx, u.DB, nik); err != nil {
-		return fmt.Errorf("%d:%w", http.StatusNotFound, err)
-	}
 
 	if err := u.CitizensRepository.DeleteCitizenByNIK(ctx, u.DB, nik); err != nil {
 		return fmt.Errorf("%d:%w", http.StatusInternalServerError, err)
