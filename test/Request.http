@@ -103,3 +103,32 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imphb
 
 // CRUD ADD MASTER PEKERJAAN
 //
+
+### GET ALL JOBS
+GET http://localhost:3000/api/jobs
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDY2MDM1fQ.vuEzN3OXDkqPxv54s4rmiFfFuztZbqO5hJm6fewsZrU
+
+### create Job By Id
+POST http://localhost:3000/api/jobs
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDY2MDM1fQ.vuEzN3OXDkqPxv54s4rmiFfFuztZbqO5hJm6fewsZrU
+
+{
+  "code": "023",
+  "name": "Quly"
+}
+
+### DELETE Job By Id
+PUT http://localhost:3000/api/jobs/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDY2MDM1fQ.vuEzN3OXDkqPxv54s4rmiFfFuztZbqO5hJm6fewsZrU
+
+### DELETE Job By Id
+DELETE http://localhost:3000/api/jobs/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDY2MDM1fQ.vuEzN3OXDkqPxv54s4rmiFfFuztZbqO5hJm6fewsZrU

@@ -33,6 +33,10 @@ func main() {
 	citizensUsecase := usecase.NewCitizensUsecase(citizensRepository, validate, DEBE)
 	citizensHandler := handler.NewCitizensHandler(citizensUsecase)
 
+	jobsRepository := repository.NewJobsRepository(DEBE)
+	jobsUsecase := usecase.NewJobsUsecase(validate, jobsRepository)
+	jobsHandler := handler.NewJobsHandler(jobsUsecase)
+
 	app.Post("/api/login", authHandler.Login)
 	app.Post("/api/register", authHandler.Register)
 	protected := app.Group("/", cfg.JWTAuthMiddleware)
@@ -46,6 +50,11 @@ func main() {
 	protected.Post("/api/citizens", citizensHandler.CreateCitizen)          // unclear
 	protected.Put("/api/citizens/:nik", citizensHandler.UpdateCitizenByNIK) // unclear
 	protected.Delete("/api/citizens/:nik", citizensHandler.DeleteCitizenByNIK)
+
+	protected.Delete("/api/jobs/:id", jobsHandler.DeleteJobById)
+	protected.Get("/api/jobs", jobsHandler.GetJobs)
+	protected.Post("/api/jobs", jobsHandler.CreateJob)
+	protected.Put("/api/jobs/:id", jobsHandler.UpdateJobById)
 
 	app.Listen(fmt.Sprintf(":%s", cfg.GetConfig().Server.Port))
 }

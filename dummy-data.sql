@@ -18,4 +18,4 @@ desc citizens;
 
 desc citizens;
 
-select * from citizens;
+select * from jobs;

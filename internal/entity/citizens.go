@@ -11,6 +11,7 @@ type FamilyStatus struct {
 // Job represents the jobs table
 type Job struct {
 	ID   int    `gorm:"primaryKey;autoIncrement"`
+	Code string `gorm:"unique"`
 	Name string `gorm:"not null;size:50"`
 }
 
