@@ -20,17 +20,17 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- Table structure for indonesia_provinces
 -- ----------------------------
-DROP TABLE IF EXISTS `indonesia_provinces`;
-CREATE TABLE `indonesia_provinces`  (
-  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-  `code` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `meta` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `indonesia_provinces_code_unique`(`code` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+# DROP TABLE IF EXISTS `indonesia_provinces`;
+# CREATE TABLE `indonesia_provinces`  (
+#   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+#   `code` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+#   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+#   `meta` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+#   `created_at` timestamp NULL DEFAULT NULL,
+#   `updated_at` timestamp NULL DEFAULT NULL,
+#   PRIMARY KEY (`id`) USING BTREE,
+#   UNIQUE INDEX `indonesia_provinces_code_unique`(`code` ASC) USING BTREE
+# ) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of indonesia_provinces

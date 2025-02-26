@@ -1,42 +1,18 @@
-### REGISTER
-POST http://localhost:3000/api/register
-Accept: application/json
-Content-Type: application/json
-
-{
-  "username": "jamal",
-  "password": "jamal",
-  "confirm_password": "jamal"
-}
-
-### LOIGN
-POST http://localhost:3000/api/login
-Accept: application/json
-Content-Type: application/json
-
-{
-  "username": "jamal",
-  "password": "jamal"
-}
-
 ### GET CITIZEN BY NIK
 GET http://localhost:3000/api/citizens/1234567890123456
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDE5NDY1fQ.a6NVPmqq-9xDNk3pdXHYkD1xl63SbuCD-x7hkRunX3c
 
 ### GET CITIZENs per page
 GET http://localhost:3000/api/citizens?page=1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDE5NDY1fQ.a6NVPmqq-9xDNk3pdXHYkD1xl63SbuCD-x7hkRunX3c
 
 
 ### CREATE CITIZEN
 POST http://localhost:3000/api/citizens
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer
 
 {
   "nik": 1234567890123455,
@@ -66,11 +42,11 @@ Authorization: Bearer
   "divorce_certificate": 2,
   "divorce_certificate_no": 0,
   "divorce_certificate_date": "0001-01-01T00:00:00Z",
-  "family_status_id": 1,
+  "family_status": 1,
   "mental_disorders": 1,
   "disabilities": 1,
   "education_status": 1,
-  "job_type_id": 7,
+  "job_type_id": 1,
   "nik_mother": "1234567890123457",
   "mother": "Jane Doe",
   "nik_father": "1234567890123458",
@@ -83,7 +59,6 @@ Authorization: Bearer
 PUT http://localhost:3000/api/citizens/1234567890123455
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer
 
 {
   "kk": 3323121310140010,
@@ -104,8 +79,6 @@ Authorization: Bearer
 DELETE http://localhost:3000/api/citizens/1234567890123456
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbWFsIiwiaXNzIjoia29yaWVicnVoLmFrYUphbWFsIiwiZXhwIjoxNzQwNDE5NDY1fQ.a6NVPmqq-9xDNk3pdXHYkD1xl63SbuCD-x7hkRunX3c
-
 
 
 ///NOTE

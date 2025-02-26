@@ -22,17 +22,17 @@ type CitizenReqCreate struct {
 	PostalCode             int                          `json:"postal_code"`
 	CitizenStatus          entity.CitizenStatusOption   `validate:"required,oneof=1 2" json:"citizen_status"`    //(WNI, WNA)
 	BirthCertificate       entity.AvailableStatus       `validate:"required,oneof=1 2" json:"birth_certificate"` // ADA/TIDAK-ADA
-	BirthCertificateNo     int64                        `json:"birth_certificate_no"`
+	BirthCertificateNo     string                       `json:"birth_certificate_no"`
 	BloodType              entity.BloodType             `validate:"required,oneof=1 2 3 4 5 6 7 8 9 10 11 12 13" json:"blood_type"`
 	Religion               entity.ReligionOption        `validate:"required,oneof=1 2 3 4 5 6 7" json:"religion"`
 	MaritalStatus          entity.MaritalStatusOption   `validate:"required,oneof=1 2 3 4 5 6" json:"marital_status"`
 	MaritalCertificate     entity.AvailableStatus       `validate:"required,oneof=1 2" json:"marital_certificate"` // ADA/TIDAK-ADA
-	MaritalCertificateNo   int64                        `json:"marital_certificate_no"`
+	MaritalCertificateNo   string                       `json:"marital_certificate_no"`
 	MarriageDate           string                       `json:"marriage_date"`
 	DivorceCertificate     entity.AvailableStatus       `validate:"required,oneof=1 2" json:"divorce_certificate"` // ADA/TIDAK-ADA
-	DivorceCertificateNo   int64                        `json:"divorce_certificate_no"`
+	DivorceCertificateNo   string                       `json:"divorce_certificate_no"`
 	DivorceCertificateDate string                       `json:"divorce_certificate_date"`
-	FamilyStatusID         int                          `json:"family_status_id"`
+	FamilyStatus           entity.FamilyStatus          `json:"family_status"`
 	MentalDisorders        entity.AvailableStatus       `validate:"required,oneof=1 2" json:"mental_disorders"` // ADA/TIDAK-ADA
 	Disabilities           entity.DisablitesStatus      `validate:"required,oneof=1 2 3 4 5 6" json:"disabilities"`
 	EducationStatus        entity.EducationStatusOption `validate:"required,oneof=1 2 3 4 5 6 7 8 9 10" json:"education_status"`

@@ -1,54 +1,77 @@
 package entity
 
-// FamilyStatus represents the family_status table
-type FamilyStatus struct {
-	ID   int    `gorm:"primaryKey;autoIncrement"`
-	Name string `gorm:"not null;size:50"`
-}
+import "time"
 
 // Job represents the jobs table
 type Job struct {
 	ID   int    `gorm:"primaryKey;autoIncrement" json:"id"`
 	Code string `gorm:"unique" json:"code"`
-	Name string `gorm:"not null;size:50" json:"name"`
+	Name string `gorm:"not null" json:"name"`
+} // IndonesiaProvince represents the indonesia_provinces table
+type IndonesiaProvince struct {
+	ID        uint64              `gorm:"column:id;primaryKey;autoIncrement"`
+	Code      string              `gorm:"column:code;type:char(2);uniqueIndex"`
+	Name      string              `gorm:"column:name;type:varchar(255)"`
+	Meta      *string             `gorm:"column:meta;type:text"`
+	CreatedAt *time.Time          `gorm:"column:created_at"`
+	UpdatedAt *time.Time          `gorm:"column:updated_at"`
+	Districts []IndonesiaDistrict `gorm:"foreignKey:ProvinceCode;references:Code"`
 }
 
-// Province represents the province table
-type Province struct {
-	ID           int    `gorm:"primaryKey;autoIncrement"`
-	ProvinceCode string `gorm:"unique;size:20"`
-	Name         string `gorm:"size:60"`
-	Coordinate   string `gorm:"size:100"`
+// IndonesiaDistrict represents the indonesia_districts table
+type IndonesiaDistrict struct {
+	ID           uint64                 `gorm:"column:id;primaryKey;autoIncrement"`
+	Code         string                 `gorm:"column:code;type:char(4);uniqueIndex"`
+	ProvinceCode string                 `gorm:"column:province_code;type:char(2)"`
+	Name         string                 `gorm:"column:name;type:varchar(255)"`
+	Meta         *string                `gorm:"column:meta;type:text"`
+	CreatedAt    *time.Time             `gorm:"column:created_at"`
+	UpdatedAt    *time.Time             `gorm:"column:updated_at"`
+	Province     IndonesiaProvince      `gorm:"foreignKey:ProvinceCode;references:Code"`
+	SubDistricts []IndonesiaSubDistrict `gorm:"foreignKey:DistrictCode;references:Code"`
 }
 
-// District represents the district table
-type District struct {
-	ID           int    `gorm:"primaryKey;autoIncrement"`
-	DistrictCode string `gorm:"unique;size:20"`
-	Name         string `gorm:"size:60"`
-	Coordinate   string `gorm:"size:100"`
+// IndonesiaSubDistrict represents the indonesia_sub_districts table
+type IndonesiaSubDistrict struct {
+	ID           uint64             `gorm:"column:id;primaryKey;autoIncrement"`
+	Code         string             `gorm:"column:code;type:char(7);uniqueIndex"`
+	DistrictCode string             `gorm:"column:district_code;type:char(4)"`
+	Name         string             `gorm:"column:name;type:varchar(255)"`
+	Meta         *string            `gorm:"column:meta;type:text"`
+	CreatedAt    *time.Time         `gorm:"column:created_at"`
+	UpdatedAt    *time.Time         `gorm:"column:updated_at"`
+	District     IndonesiaDistrict  `gorm:"foreignKey:DistrictCode;references:Code"`
+	Villages     []IndonesiaVillage `gorm:"foreignKey:SubDistrictCode;references:Code"`
 }
 
-// SubDistrict represents the sub_district table
-type SubDistrict struct {
-	ID              int    `gorm:"primaryKey;autoIncrement"`
-	SubDistrictCode string `gorm:"unique;size:20"`
-	Name            string `gorm:"size:60"`
-	Coordinate      string `gorm:"size:100"`
+// IndonesiaVillage represents the indonesia_villages table
+type IndonesiaVillage struct {
+	ID              uint64               `gorm:"column:id;primaryKey;autoIncrement"`
+	Code            string               `gorm:"column:code;type:char(10);uniqueIndex"`
+	SubDistrictCode string               `gorm:"column:sub_district_code;type:char(7)"`
+	Name            string               `gorm:"column:name;type:varchar(255)"`
+	Meta            *string              `gorm:"column:meta;type:text"`
+	CreatedAt       *time.Time           `gorm:"column:created_at"`
+	UpdatedAt       *time.Time           `gorm:"column:updated_at"`
+	SubDistrict     IndonesiaSubDistrict `gorm:"foreignKey:SubDistrictCode;references:Code"`
 }
 
-// Village represents the village table
-type Village struct {
-	ID          int    `gorm:"primaryKey;autoIncrement"`
-	VillageCode string `gorm:"unique;size:20"`
-	Name        string `gorm:"size:60"`
-	Coordinate  string `gorm:"size:100"`
+// TableName methods to specify custom table names
+func (IndonesiaProvince) TableName() string {
+	return "indonesia_provinces"
 }
 
-//type Coordinate struct {
-//	Longitude string
-//	Latitude  string
-//}
+func (IndonesiaDistrict) TableName() string {
+	return "indonesia_districts"
+}
+
+func (IndonesiaSubDistrict) TableName() string {
+	return "indonesia_sub_districts"
+}
+
+func (IndonesiaVillage) TableName() string {
+	return "indonesia_villages"
+}
 
 // Citizen represents the Citizen table
 type Citizen struct {
@@ -67,21 +90,21 @@ type Citizen struct {
 	VillageID              int
 	RT                     string
 	RW                     string
-	PostalCode             int
+	PostalCode             int    `gorm:"null"`
 	CitizenStatus          string `gorm:"type:enum('WNA', 'WNI')"`       // enum tag
 	BirthCertificate       string `gorm:"type:enum('Ada', 'Tidak Ada')"` // enum tag
-	BirthCertificateNo     int64  `gorm:"null"`
+	BirthCertificateNo     string `gorm:"null"`
 	BloodType              string `gorm:"type:enum('A', 'B', 'AB', 'O', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', 'Tidak Tahu')"`                                         // BloodType enum tag
 	Religion               string `gorm:"type:enum('Islam', 'Kristen', 'Katholik', 'Hindu', 'Buddha', 'Kong Hu Cu', 'Lainya....')"`                                               // Religion enum tag
 	MaritalStatus          string `gorm:"type:enum('Belum Kawin', 'Kawin Tercatat', 'Kawin Belum Tercatat', 'Cerai Hidup Tercatat', 'Cerai Hidup Belum Tercatat', 'Cerai Mati')"` // MaritalStatus enum tag
-	MaritalCertificate     string `gorm:"type:enum('Ada', 'Tidak Ada')"`                                                                                                          // nikah
-	MaritalCertificateNo   int64  `gorm:"null"`                                                                                                                                   // nikah
+	MaritalCertificate     string `gorm:"type:enum('Ada', 'Tidak Ada');"`                                                                                                         // nikah
+	MaritalCertificateNo   string `gorm:"null"`                                                                                                                                   // nikah
 	MarriageDate           string
 	DivorceCertificate     string `gorm:"type:enum('Ada', 'Tidak Ada')"` //cerai
-	DivorceCertificateNo   int64  `gorm:"not null"`                      //cerai
-	DivorceCertificateDate string `gorm:"not null"`                      //cerai
-	FamilyStatusID         int    `gorm:"not null"`                      // status dalam keluarga
-	MentalDisorders        string `gorm:"type:enum('Ada', 'Tidak Ada')"`
+	DivorceCertificateNo   string `gorm:"null"`                          //cerai
+	DivorceCertificateDate string `gorm:"null"`                          //cerai
+	FamilyStatus           string `gorm:"type:enum('KEPALA KELUARGA', 'ISTRI', 'ANAK');not null"`
+	MentalDisorders        string `gorm:"type:enum('Ada', 'Tidak Ada');default:'Tidak Ada';"`
 	Disabilities           string
 	EducationStatus        string `gorm:"type:enum('Tidak/Belum Sekolah', 'Belum tamat SD/Sederajat', 'Tamat SD', 'SLTP/SMP/Sederajat', 'SLTA/SMA/Sederajat', 'Diploma I/II', 'Akademi/Diploma III/ Sarjana Muda', 'Diploma IV/ Strata I/ Strata II', 'Strata III', 'Lainya...')"` // EducationStatus enum tag
 	JobTypeID              int    `gorm:"not null"`
@@ -91,12 +114,35 @@ type Citizen struct {
 	Father                 string `gorm:"size:255"`
 	Coordinate             string
 	// Foreign Key Relations
-	FamilyStatus FamilyStatus `gorm:"foreignKey:FamilyStatusID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
-	Job          Job          `gorm:"foreignKey:JobTypeID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
-	Province     Province     `gorm:"foreignKey:ProvinceID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
-	District     District     `gorm:"foreignKey:DistrictID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
-	SubDistrict  SubDistrict  `gorm:"foreignKey:SubDistrictID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
-	Village      Village      `gorm:"foreignKey:VillageID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	Job         Job                  `gorm:"foreignKey:JobTypeID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	Province    IndonesiaProvince    `gorm:"foreignKey:ProvinceID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	District    IndonesiaDistrict    `gorm:"foreignKey:DistrictID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	SubDistrict IndonesiaSubDistrict `gorm:"foreignKey:SubDistrictID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	Village     IndonesiaVillage     `gorm:"foreignKey:VillageID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+}
+
+type FamilyStatus int
+
+const (
+	Children FamilyStatus = iota + 1
+	HeadFamily
+	Wife
+)
+
+func (fs FamilyStatus) ToString() string {
+	switch fs {
+	case Children:
+		return "ANAK"
+
+	case HeadFamily:
+		return "KEPALA KELUARGA"
+
+	case Wife:
+		return "ISTRI"
+	default:
+		return "hell nah"
+	}
+
 }
 
 type AvailableStatus int
