@@ -8,13 +8,14 @@ import (
 	"github.com/firstudio-lab/JARITMAS-API/internal/repository"
 	"github.com/go-playground/validator/v10"
 	"gorm.io/gorm"
+	"math"
 	"net/http"
 	"strings"
 )
 
 type CitizensUsecase interface {
 	FindCitizenByNIK(ctx context.Context, nik int64) (entity.Citizen, error)
-	FindCitizenPage(ctx context.Context, page int) ([]entity.Citizen, error)
+	FindCitizenPage(ctx context.Context, page int) (dto.CitizenResponse, error)
 	CreateCitizen(ctx context.Context, request dto.CitizenReqCreate) error
 	UpdateCitizenByNIK(ctx context.Context, nik int64, request dto.CitizenReqUpdate) error
 	DeleteCitizenByNIK(ctx context.Context, nik int64) error
@@ -39,13 +40,95 @@ func (u CitizensUsecaseImpl) FindCitizenByNIK(ctx context.Context, nik int64) (e
 	return citizenByNIK, nil
 }
 
-func (u CitizensUsecaseImpl) FindCitizenPage(ctx context.Context, page int) ([]entity.Citizen, error) {
-	perPage, err := u.CitizensRepository.GetAllCitizenPerPage(ctx, u.DB, page)
-	if err != nil {
-		return nil, fmt.Errorf("%d:%w", http.StatusNotFound, err)
+func (u CitizensUsecaseImpl) FindCitizenPage(ctx context.Context, page int) (dto.CitizenResponse, error) {
+	var totalItems int64
+	if err := u.DB.Model(&entity.Citizen{}).Count(&totalItems).Error; err != nil {
+		return dto.CitizenResponse{}, fmt.Errorf("%d:%w", http.StatusInternalServerError, fmt.Errorf("data citizen not found: %w", err))
 	}
 
-	return perPage, nil
+	perPage, err := u.CitizensRepository.GetAllCitizenPerPage(ctx, u.DB, page)
+	if err != nil {
+		return dto.CitizenResponse{}, fmt.Errorf("%d:%w", http.StatusNotFound, err)
+	}
+
+	// Tentukan jumlah item per halaman (sudah fix 10) jika mau edit cek reposiutory ya
+	itemsPerPage := 10
+	totalPage := int(math.Ceil(float64(totalItems) / float64(itemsPerPage)))
+
+	// Tentukan halaman berikutnya dan sebelumnya
+	var nextPage, prevPage int
+	if page < totalPage {
+		nextPage = page + 1
+	} else {
+		nextPage = totalPage
+	}
+
+	if page > 1 {
+		prevPage = page - 1
+	} else {
+		prevPage = 1
+	}
+
+	pagination := dto.Pagination{
+		CurrentPage:  page,
+		TotalPage:    totalPage,
+		TotalItems:   int(totalItems),
+		ItemsPerPage: 10,
+		NextPage:     nextPage,
+		PrevPage:     prevPage,
+	}
+
+	var citizens []dto.CitizensDTO
+	for _, request := range perPage {
+		newCitizen := dto.CitizensDTO{
+			ID:                     request.ID,
+			NIK:                    request.NIK,
+			KK:                     request.KK,
+			FullName:               request.FullName,
+			Gender:                 request.Gender,
+			BirthDate:              request.BirthDate,
+			Age:                    request.Age,
+			BirthPlace:             request.BirthPlace,
+			Address:                request.Address,
+			ProvinceID:             request.ProvinceID,
+			DistrictID:             request.DistrictID,
+			SubDistrictID:          request.SubDistrictID,
+			VillageID:              request.VillageID,
+			RT:                     request.RT,
+			RW:                     request.RW,
+			PostalCode:             request.PostalCode,
+			CitizenStatus:          request.CitizenStatus,
+			BirthCertificate:       request.BirthCertificate,
+			BirthCertificateNo:     request.BirthCertificateNo,
+			BloodType:              request.BloodType,
+			Religion:               request.Religion,
+			MaritalStatus:          request.MaritalStatus,
+			MaritalCertificate:     request.MaritalCertificate,
+			MaritalCertificateNo:   request.MaritalCertificateNo,
+			MarriageDate:           request.MarriageDate,
+			DivorceCertificate:     request.DivorceCertificate,
+			DivorceCertificateNo:   request.DivorceCertificateNo,
+			DivorceCertificateDate: request.DivorceCertificateDate,
+			FamilyStatus:           request.FamilyStatus,
+			MentalDisorders:        request.MentalDisorders,
+			Disabilities:           request.Disabilities,
+			EducationStatus:        request.EducationStatus,
+			JobTypeID:              request.JobTypeID,
+			NIKMother:              request.NIKMother,
+			Mother:                 request.Mother,
+			NIKFather:              request.NIKFather,
+			Father:                 request.Father,
+			Coordinate:             request.Coordinate,
+		}
+		citizens = append(citizens, newCitizen)
+	}
+
+	response := dto.CitizenResponse{
+		Pagination: pagination,
+		Citizens:   citizens,
+	}
+
+	return response, nil
 
 }
 

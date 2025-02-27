@@ -114,12 +114,11 @@ type Citizen struct {
 	Father                 string `gorm:"size:255"`
 	Coordinate             string
 	//// Foreign Key Relations
-	//Job         Job                  `gorm:"foreignKey:JobTypeID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
-	//Province    IndonesiaProvince    `gorm:"foreignKey:ProvinceID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
-	//District    IndonesiaDistrict    `gorm:"foreignKey:DistrictID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
-	//SubDistrict IndonesiaSubDistrict `gorm:"foreignKey:SubDistrictID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
-	//Village     IndonesiaVillage     `gorm:"foreignKey:VillageID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
-
+	Job         Job                  `gorm:"foreignKey:JobTypeID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	Province    IndonesiaProvince    `gorm:"foreignKey:ProvinceID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	District    IndonesiaDistrict    `gorm:"foreignKey:DistrictID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	SubDistrict IndonesiaSubDistrict `gorm:"foreignKey:SubDistrictID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	Village     IndonesiaVillage     `gorm:"foreignKey:VillageID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
 }
 
 type FamilyStatus int

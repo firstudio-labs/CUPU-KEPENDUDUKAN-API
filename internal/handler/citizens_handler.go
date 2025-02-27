@@ -40,7 +40,11 @@ func (h CitizensHandlerImpl) FindCitizenByNIK(ctx *fiber.Ctx) error {
 		return helper.WResponses(ctx, err, "", nil)
 	}
 
-	return helper.WResponses(ctx, nil, "getting citizens data", Citizen)
+	return ctx.Status(http.StatusOK).JSON(helper.UseData{
+		Status:  "OK",
+		Message: "successfully get",
+		Data:    Citizen,
+	})
 }
 
 func (h CitizensHandlerImpl) FindCitizenPage(ctx *fiber.Ctx) error {
@@ -61,7 +65,11 @@ func (h CitizensHandlerImpl) FindCitizenPage(ctx *fiber.Ctx) error {
 		return helper.WResponses(ctx, err, "", nil)
 	}
 
-	return helper.WResponses(ctx, nil, "getting citizens per page 10 data", Citizens)
+	return ctx.Status(http.StatusOK).JSON(helper.UseData{
+		Status:  "OK",
+		Message: "successfully get 10/page",
+		Data:    Citizens,
+	})
 }
 
 func (h CitizensHandlerImpl) CreateCitizen(ctx *fiber.Ctx) error {
@@ -76,7 +84,10 @@ func (h CitizensHandlerImpl) CreateCitizen(ctx *fiber.Ctx) error {
 		return helper.WResponses(ctx, err, "", nil)
 	}
 
-	return helper.WResponses(ctx, nil, "created new citizen successfully", nil)
+	return ctx.Status(http.StatusCreated).JSON(helper.NoData{
+		Status:  "CREATED",
+		Message: "successfully created new Citizen",
+	})
 }
 
 func (h CitizensHandlerImpl) UpdateCitizenByNIK(ctx *fiber.Ctx) error {
@@ -97,7 +108,10 @@ func (h CitizensHandlerImpl) UpdateCitizenByNIK(ctx *fiber.Ctx) error {
 		return helper.WResponses(ctx, err, "", nil)
 	}
 
-	return helper.WResponses(ctx, nil, "update new citizen successfully", nil)
+	return ctx.Status(http.StatusCreated).JSON(helper.NoData{
+		Status:  "OK",
+		Message: "successfully updated Citizen",
+	})
 }
 
 func (h CitizensHandlerImpl) DeleteCitizenByNIK(ctx *fiber.Ctx) error {
@@ -112,5 +126,8 @@ func (h CitizensHandlerImpl) DeleteCitizenByNIK(ctx *fiber.Ctx) error {
 		return helper.WResponses(ctx, err, "", nil)
 	}
 
-	return helper.WResponses(ctx, nil, "deleted citizen successfully", nil)
+	return ctx.Status(http.StatusCreated).JSON(helper.NoData{
+		Status:  "OK",
+		Message: "DELETE Citizen successfully",
+	})
 }

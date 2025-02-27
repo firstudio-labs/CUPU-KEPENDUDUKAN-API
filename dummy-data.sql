@@ -94,10 +94,13 @@ select * from indonesia_districts where name = 'CANDIROTO';
 
 select * from indonesia_sub_districts;
 
-SELECT * FROM indonesia_provinces
-select * from indonesia_sub_districts where name = 'TEMANGGUNG';
-select * from indonesia_villages where name='CANDIROTO';
+SELECT * FROM indonesia_provinces ;
+select * from indonesia_districts where name = 'KABUPATEN TEMANGGUNG';
+select * from indonesia_sub_districts where name = 'CANDIROTO';
 select * from indonesia_villages where name='MENTO';
+
+
+
 
 # DROP TABLE  citizens;
 select * from citizens;
@@ -107,3 +110,12 @@ select * from citizens;
 DESC citizens;
 
 select * from citizens;
+select * from indonesia_districts WHERE name 'GUNUNG KIDUL';
+
+select * from jobs;
+
+SELECT *
+FROM indonesia_districts
+WHERE LOWER(name) LIKE LOWER('KABUPATEN MAS%');
+
+SELECT count(*) FROM `citizens`

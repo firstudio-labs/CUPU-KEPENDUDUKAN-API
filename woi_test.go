@@ -48,7 +48,7 @@ func TestInsertExcel(t *testing.T) {
 			continue
 		}
 
-		fmt.Println("familiy status", record[19])
+		fmt.Println("familiy status ", record[6], "dsada", StrDistrictToInt(db, record[6]))
 
 		citizen := entity.Citizen{
 			NIK:                  cvInt64(record[0]),
@@ -59,10 +59,10 @@ func TestInsertExcel(t *testing.T) {
 			Age:                  cvInt(record[5]),
 			BirthPlace:           record[6],
 			Address:              record[7],
-			ProvinceID:           StrProvinceToInt(db, record[12]),   // JATENG
-			DistrictID:           StrSubDistrictToInt(db, record[6]), // TEMANGUNG
-			SubDistrictID:        StrVillageToInt(db, record[16]),    // CANDIROTO
-			VillageID:            StrVillageToInt(db, record[18]),    //MENTO
+			ProvinceID:           StrProvinceToInt(db, record[12]),    // JATENG bener
+			DistrictID:           StrDistrictToInt(db, record[14]),    // TEMANGUNG
+			SubDistrictID:        StrSubDistrictToInt(db, record[16]), // CANDIROTO
+			VillageID:            StrVillageToInt(db, record[18]),     //MENTO
 			RT:                   record[8],
 			RW:                   record[9],
 			PostalCode:           cvInt(record[10]),
@@ -145,8 +145,10 @@ func StrProvinceToInt(db *gorm.DB, string2 string) int {
 }
 
 func StrDistrictToInt(db *gorm.DB, string2 string) int {
+	ds := fmt.Sprintf("KABUPATEN %s", string2)
+
 	var result entity.IndonesiaDistrict
-	_ = db.Where("name = ?", string2).First(&result)
+	_ = db.Where("name = ?", ds).First(&result)
 	return int(result.ID)
 }
 
