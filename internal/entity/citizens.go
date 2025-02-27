@@ -103,7 +103,7 @@ type Citizen struct {
 	DivorceCertificate     string `gorm:"type:enum('Ada', 'Tidak Ada')"` //cerai
 	DivorceCertificateNo   string `gorm:"null"`                          //cerai
 	DivorceCertificateDate string `gorm:"null"`                          //cerai
-	FamilyStatus           string `gorm:"type:enum('KEPALA KELUARGA', 'ISTRI', 'ANAK');not null"`
+	FamilyStatus           string `gorm:"type:enum('KEPALA KELUARGA', 'ISTRI', 'ANAK', 'MERTUA', 'ORANG TUA', 'CUCU', 'FAMILI LAIN', 'LAINNYA');not null"`
 	MentalDisorders        string `gorm:"type:enum('Ada', 'Tidak Ada');default:'Tidak Ada';"`
 	Disabilities           string
 	EducationStatus        string `gorm:"type:enum('Tidak/Belum Sekolah', 'Belum tamat SD/Sederajat', 'Tamat SD', 'SLTP/SMP/Sederajat', 'SLTA/SMA/Sederajat', 'Diploma I/II', 'Akademi/Diploma III/ Sarjana Muda', 'Diploma IV/ Strata I/ Strata II', 'Strata III', 'Lainya...')"` // EducationStatus enum tag
@@ -113,12 +113,13 @@ type Citizen struct {
 	NIKFather              string `gorm:"size:255"`
 	Father                 string `gorm:"size:255"`
 	Coordinate             string
-	// Foreign Key Relations
-	Job         Job                  `gorm:"foreignKey:JobTypeID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
-	Province    IndonesiaProvince    `gorm:"foreignKey:ProvinceID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
-	District    IndonesiaDistrict    `gorm:"foreignKey:DistrictID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
-	SubDistrict IndonesiaSubDistrict `gorm:"foreignKey:SubDistrictID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
-	Village     IndonesiaVillage     `gorm:"foreignKey:VillageID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	//// Foreign Key Relations
+	//Job         Job                  `gorm:"foreignKey:JobTypeID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	//Province    IndonesiaProvince    `gorm:"foreignKey:ProvinceID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	//District    IndonesiaDistrict    `gorm:"foreignKey:DistrictID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	//SubDistrict IndonesiaSubDistrict `gorm:"foreignKey:SubDistrictID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	//Village     IndonesiaVillage     `gorm:"foreignKey:VillageID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+
 }
 
 type FamilyStatus int

@@ -86,3 +86,22 @@ WHERE LOWER(name) LIKE LOWER('CANDIROTO%');
 
 CANDIROTO
 CANDIROTO
+
+#distict dan sub dictict datanya ke balik
+
+select * from indonesia_districts;
+select * from indonesia_districts where name = 'CANDIROTO';
+
+select * from indonesia_sub_districts;
+
+SELECT * FROM indonesia_provinces
+select * from indonesia_sub_districts where name = 'TEMANGGUNG';
+select * from indonesia_villages where name='CANDIROTO';
+select * from indonesia_villages where name='MENTO';
+
+DROP TABLE  citizens;
+select * from citizens;
+3323092110770003
+DELETE FROM citizens;
+
+DESC citizens;

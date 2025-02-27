@@ -12,6 +12,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -47,7 +48,7 @@ func TestInsertExcel(t *testing.T) {
 			continue
 		}
 
-		fmt.Println("record 13", record[13])
+		fmt.Println("familiy status", record[19])
 
 		citizen := entity.Citizen{
 			NIK:                  cvInt64(record[0]),
@@ -58,10 +59,10 @@ func TestInsertExcel(t *testing.T) {
 			Age:                  cvInt(record[5]),
 			BirthPlace:           record[6],
 			Address:              record[7],
-			ProvinceID:           StrProvinceToInt(db, record[11]),    //
-			DistrictID:           StrSubDistrictToInt(db, record[13]), //
-			SubDistrictID:        StrDistrictToInt(db, record[15]),    //
-			VillageID:            StrVillageToInt(db, record[16]),     //
+			ProvinceID:           StrProvinceToInt(db, record[12]),   // JATENG
+			DistrictID:           StrSubDistrictToInt(db, record[6]), // TEMANGUNG
+			SubDistrictID:        StrVillageToInt(db, record[16]),    // CANDIROTO
+			VillageID:            StrVillageToInt(db, record[18]),    //MENTO
 			RT:                   record[8],
 			RW:                   record[9],
 			PostalCode:           cvInt(record[10]),
@@ -92,7 +93,16 @@ func TestInsertExcel(t *testing.T) {
 		fmt.Println("OIIIIIIIIIIIIII ", citizen.MentalDisorders)
 
 		if err := db.Create(&citizen).Error; err != nil {
-			logger.Log.Printf("ERROR NI DI INDEX KE %d VALUE YG DI INSERT %v", i, citizen)
+			// Cek apakah error yang terjadi adalah duplikat berdasarkan kode error
+			if strings.Contains(err.Error(), "1062") { // Untuk MySQL, error code 1062 adalah duplikat
+				logger.Log.Printf("ERROR DUPEKAT NI DI INDEX KE %d VALUE YG DI INSERT %v: %s", i, citizen, err.Error())
+				// Lanjutkan ke iterasi berikutnya tanpa menghentikan program
+				continue
+			}
+
+			// Jika error bukan karena duplikat, log error secara umum
+			logger.Log.Printf("ERROR NI DI INDEX KE %d VALUE YG DI INSERT %v: %s", i, citizen, err.Error())
+			continue
 		}
 
 	}
