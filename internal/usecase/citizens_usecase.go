@@ -14,7 +14,7 @@ import (
 )
 
 type CitizensUsecase interface {
-	FindCitizenByNIK(ctx context.Context, nik int64) (entity.Citizen, error)
+	FindCitizenByNIK(ctx context.Context, nik int64) (dto.CitizensDTO, error)
 	FindCitizenPage(ctx context.Context, page int) (dto.CitizenResponse, error)
 	CreateCitizen(ctx context.Context, request dto.CitizenReqCreate) error
 	UpdateCitizenByNIK(ctx context.Context, nik int64, request dto.CitizenReqUpdate) error
@@ -31,13 +31,54 @@ func NewCitizensUsecase(citizensRepository repository.CitizensRepository, valida
 	return &CitizensUsecaseImpl{CitizensRepository: citizensRepository, Validate: validate, DB: DB}
 }
 
-func (u CitizensUsecaseImpl) FindCitizenByNIK(ctx context.Context, nik int64) (entity.Citizen, error) {
-	citizenByNIK, err := u.CitizensRepository.GetCitizenByNIK(ctx, u.DB, nik)
+func (u CitizensUsecaseImpl) FindCitizenByNIK(ctx context.Context, nik int64) (dto.CitizensDTO, error) {
+	request, err := u.CitizensRepository.GetCitizenByNIK(ctx, u.DB, nik)
 	if err != nil {
-		return entity.Citizen{}, fmt.Errorf("%d:%w", http.StatusNotFound, err)
+		return dto.CitizensDTO{}, fmt.Errorf("%d:%w", http.StatusNotFound, err)
 	}
 
-	return citizenByNIK, nil
+	Citizen := dto.CitizensDTO{
+		ID:                     request.ID,
+		NIK:                    request.NIK,
+		KK:                     request.KK,
+		FullName:               request.FullName,
+		Gender:                 request.Gender,
+		BirthDate:              request.BirthDate,
+		Age:                    request.Age,
+		BirthPlace:             request.BirthPlace,
+		Address:                request.Address,
+		ProvinceID:             request.ProvinceID,
+		DistrictID:             request.DistrictID,
+		SubDistrictID:          request.SubDistrictID,
+		VillageID:              request.VillageID,
+		RT:                     request.RT,
+		RW:                     request.RW,
+		PostalCode:             request.PostalCode,
+		CitizenStatus:          request.CitizenStatus,
+		BirthCertificate:       request.BirthCertificate,
+		BirthCertificateNo:     request.BirthCertificateNo,
+		BloodType:              request.BloodType,
+		Religion:               request.Religion,
+		MaritalStatus:          request.MaritalStatus,
+		MaritalCertificate:     request.MaritalCertificate,
+		MaritalCertificateNo:   request.MaritalCertificateNo,
+		MarriageDate:           request.MarriageDate,
+		DivorceCertificate:     request.DivorceCertificate,
+		DivorceCertificateNo:   request.DivorceCertificateNo,
+		DivorceCertificateDate: request.DivorceCertificateDate,
+		FamilyStatus:           request.FamilyStatus,
+		MentalDisorders:        request.MentalDisorders,
+		Disabilities:           request.Disabilities,
+		EducationStatus:        request.EducationStatus,
+		JobTypeID:              request.JobTypeID,
+		NIKMother:              request.NIKMother,
+		Mother:                 request.Mother,
+		NIKFather:              request.NIKFather,
+		Father:                 request.Father,
+		Coordinate:             request.Coordinate,
+	}
+
+	return Citizen, nil
 }
 
 func (u CitizensUsecaseImpl) FindCitizenPage(ctx context.Context, page int) (dto.CitizenResponse, error) {

@@ -26,3 +26,5 @@ fmt:
 
 seed:
 	SEED_DATA=true $(GOCMD) run ./cmd/main.go
+
+#docker exec -i mysql mysql -u root -korie123 < /docker-entrypoint-initdb.d/backup.sql

@@ -15,42 +15,42 @@ type Pagination struct {
 }
 
 type CitizensDTO struct {
-	ID                     int
-	NIK                    int64
-	KK                     int64
-	FullName               string
-	Gender                 string
-	BirthDate              string
-	Age                    int
-	BirthPlace             string
-	Address                string
-	ProvinceID             int
-	DistrictID             int
-	SubDistrictID          int
-	VillageID              int
-	RT                     string
-	RW                     string
-	PostalCode             int    `gorm:"null"`
-	CitizenStatus          string `gorm:"type:enum('WNA', 'WNI')"`       // enum tag
-	BirthCertificate       string `gorm:"type:enum('Ada', 'Tidak Ada')"` // enum tag
-	BirthCertificateNo     string `gorm:"null"`
-	BloodType              string `gorm:"type:enum('A', 'B', 'AB', 'O', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', 'Tidak Tahu')"`                                         // BloodType enum tag
-	Religion               string `gorm:"type:enum('Islam', 'Kristen', 'Katholik', 'Hindu', 'Buddha', 'Kong Hu Cu', 'Lainya....')"`                                               // Religion enum tag
-	MaritalStatus          string `gorm:"type:enum('Belum Kawin', 'Kawin Tercatat', 'Kawin Belum Tercatat', 'Cerai Hidup Tercatat', 'Cerai Hidup Belum Tercatat', 'Cerai Mati')"` // MaritalStatus enum tag
-	MaritalCertificate     string `gorm:"type:enum('Ada', 'Tidak Ada');"`                                                                                                         // nikah
-	MaritalCertificateNo   string `gorm:"null"`                                                                                                                                   // nikah
-	MarriageDate           string
-	DivorceCertificate     string `gorm:"type:enum('Ada', 'Tidak Ada')"` //cerai
-	DivorceCertificateNo   string `gorm:"null"`                          //cerai
-	DivorceCertificateDate string `gorm:"null"`                          //cerai
-	FamilyStatus           string `gorm:"type:enum('KEPALA KELUARGA', 'ISTRI', 'ANAK', 'MERTUA', 'ORANG TUA', 'CUCU', 'FAMILI LAIN', 'LAINNYA');not null"`
-	MentalDisorders        string `gorm:"type:enum('Ada', 'Tidak Ada');default:'Tidak Ada';"`
-	Disabilities           string
-	EducationStatus        string `gorm:"type:enum('Tidak/Belum Sekolah', 'Belum tamat SD/Sederajat', 'Tamat SD', 'SLTP/SMP/Sederajat', 'SLTA/SMA/Sederajat', 'Diploma I/II', 'Akademi/Diploma III/ Sarjana Muda', 'Diploma IV/ Strata I/ Strata II', 'Strata III', 'Lainya...')"` // EducationStatus enum tag
-	JobTypeID              int    `gorm:"not null"`
-	NIKMother              string `gorm:"size:255"`
-	Mother                 string `gorm:"size:255"`
-	NIKFather              string `gorm:"size:255"`
-	Father                 string `gorm:"size:255"`
-	Coordinate             string
+	ID                     int    `json:"id"`
+	NIK                    int64  `json:"nik"`
+	KK                     int64  `json:"kk"`
+	FullName               string `json:"full_name"`
+	Gender                 string `json:"gender"`
+	BirthDate              string `json:"birth_date"`
+	Age                    int    `json:"age"`
+	BirthPlace             string `json:"birth_place"`
+	Address                string `json:"address"`
+	ProvinceID             int    `json:"province_id"`
+	DistrictID             int    `json:"district_id"`
+	SubDistrictID          int    `json:"sub_district_id"`
+	VillageID              int    `json:"village_id"`
+	RT                     string `json:"rt"`
+	RW                     string `json:"rw"`
+	PostalCode             int    `json:"postal_code"`
+	CitizenStatus          string `json:"citizen_status"`
+	BirthCertificate       string `json:"birth_certificate"`
+	BirthCertificateNo     string `json:"birth_certificate_no"`
+	BloodType              string `json:"blood_type"`
+	Religion               string `json:"religion"`
+	MaritalStatus          string `json:"marital_status"`
+	MaritalCertificate     string `json:"marital_certificate"`
+	MaritalCertificateNo   string `json:"marital_certificate_no"`
+	MarriageDate           string `json:"marriage_date"`
+	DivorceCertificate     string `json:"divorce_certificate"`
+	DivorceCertificateNo   string `json:"divorce_certificate_no"`
+	DivorceCertificateDate string `json:"divorce_certificate_date"`
+	FamilyStatus           string `json:"family_status"`
+	MentalDisorders        string `json:"mental_disorders"`
+	Disabilities           string `json:"disabilities"`
+	EducationStatus        string `json:"education_status"`
+	JobTypeID              int    `json:"job_type_id"`
+	NIKMother              string `json:"nik_mother"`
+	Mother                 string `json:"mother"`
+	NIKFather              string `json:"nik_father"`
+	Father                 string `json:"father"`
+	Coordinate             string `json:"coordinate"`
 }
