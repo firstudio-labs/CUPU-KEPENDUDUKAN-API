@@ -1,0 +1,141 @@
+### GET CITIZEN BY NIK
+GET http://localhost:3000/api/citizens/1234567890123456
+Accept: application/json
+Content-Type: application/json
+
+
+### GET CITIZENs per page
+GET http://localhost:3000/api/citizens?page=1
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+
+### CREATE CITIZEN
+POST http://localhost:3000/api/citizens
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+{
+  "nik": 1234567890123456,
+  "kk": 9876543210987654,
+  "full_name": "John Doe",
+  "gender": 1,
+  "birth_date": "1990-01-01",
+  "age": 35,
+  "birth_place": "Jakarta",
+  "address": "Jl. Merdeka No. 10, RT 01 RW 02",
+  "province_id": 1,
+  "district_id": 2,
+  "sub_district_id": 3,
+  "village_id": 4,
+  "rt": "01",
+  "rw": "02",
+  "postal_code": 12345,
+  "citizen_status": 1,
+  "birth_certificate": 1,
+  "birth_certificate_no": "BC1234567890",
+  "blood_type": 1,
+  "religion": 1,
+  "marital_status": 1,
+  "marital_certificate": 1,
+  "marital_certificate_no": "MC1234567890",
+  "marriage_date": "2015-06-15",
+  "divorce_certificate": 2,
+  "divorce_certificate_no": "DC1234567890",
+  "divorce_certificate_date": "2020-12-31",
+  "family_status": 1,
+  "mental_disorders": 2,
+  "disabilities": 1,
+  "education_status": 6,
+  "job_type_id": 5,
+  "nik_mother": "9876543210123456",
+  "mother": "Jane Doe",
+  "nik_father": "8765432109876543",
+  "father": "Richard Roe",
+  "coordinate": "-6.200000, 106.816666"
+}
+
+
+
+### UPDATE CITIZEN BY NIK
+PUT http://localhost:3000/api/citizens/1234567890123456
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+{
+  "kk": 9876543210987654,
+  "full_name": "John Doe",
+  "gender": 1,
+  "birth_date": "1990-01-01",
+  "age": 35,
+  "birth_place": "Jakarta",
+  "address": "Jl. Merdeka No. 10, RT 01 RW 02",
+  "province_id": 1,
+  "district_id": 2,
+  "sub_district_id": 3,
+  "village_id": 4,
+  "rt": "01",
+  "rw": "02",
+  "postal_code": 12345,
+  "citizen_status": 1,
+  "birth_certificate": 1,
+  "birth_certificate_no": "BC1234567890",
+  "blood_type": 1,
+  "religion": 1,
+  "marital_status": 1,
+  "marital_certificate": 1,
+  "marital_certificate_no": "MC1234567890",
+  "marriage_date": "2015-06-15",
+  "divorce_certificate": 2,
+  "divorce_certificate_no": "DC1234567890",
+  "divorce_certificate_date": "2020-12-31",
+  "family_status": 1,
+  "mental_disorders": 2,
+  "disabilities": 1,
+  "education_status": 6,
+  "job_type_id": 5,
+  "nik_mother": "9876543210123456",
+  "mother": "Jane Doe",
+  "nik_father": "8765432109876543",
+  "father": "Richard Roe",
+  "coordinate": "-6.200000, 106.816666"
+}
+
+### DELETE CITIZENs per page
+DELETE http://localhost:3000/api/citizens/1234567890123456
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+
+### GET ALL JOBS
+GET http://localhost:3000/api/jobs
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+### create Job By Id
+POST http://localhost:3000/api/jobs
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+{
+  "code": "023",
+  "name": "Quly"
+}
+
+### DELETE Job By Id
+PUT http://localhost:3000/api/jobs/3
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+### DELETE Job By Id
+DELETE http://localhost:3000/api/jobs/3
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
