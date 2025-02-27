@@ -75,8 +75,8 @@ func TestInsertExcel(t *testing.T) {
 			MaritalCertificate:   IfNotNullAvaliable(record[28]),
 			MaritalCertificateNo: record[28],
 			//MarriageDate:           record[],                       //?
-			DivorceCertificate:   IfNotNullAvaliable(record[28]), //
-			DivorceCertificateNo: record[32],                     //
+			DivorceCertificate:   IfNotNullAvaliable(record[30]), //
+			DivorceCertificateNo: record[30],                     //
 			//DivorceCertificateDate: record[],
 			FamilyStatus: record[19], //
 			//MentalDisorders:        record[],

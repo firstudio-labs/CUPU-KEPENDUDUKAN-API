@@ -99,9 +99,11 @@ select * from indonesia_sub_districts where name = 'TEMANGGUNG';
 select * from indonesia_villages where name='CANDIROTO';
 select * from indonesia_villages where name='MENTO';
 
-DROP TABLE  citizens;
+# DROP TABLE  citizens;
 select * from citizens;
 3323092110770003
-DELETE FROM citizens;
+# DELETE FROM citizens;
 
 DESC citizens;
+
+select * from citizens;
