@@ -1,7 +1,7 @@
 # RUN IN PORT 3000
 # DOCUMENTATION API DI
 ```
-./doc/
+./docs/
 ```
 
 # REQUIREMENT
