@@ -1,4 +1,6 @@
-# RUN IN PORT 3000
+api run in port 3000
+untuk import database nya di ./dump/backup.sql
+
 # DOCUMENTATION API DI
 ```
 ./docs/
