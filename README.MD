@@ -55,12 +55,19 @@ go mod tidy
 build and generate binary
 ```bash
 go build -o myapp ./cmd
+
+if err use this
+go build -o myapp -buildvcs=false ./cmd
 ```
 ```bash
 ls -l myapp
 ```
-run binary
+run binary if want see log
 ```bash
 ./myapp
 ``` 
+RUN IN BACKGORUND 
+```bash
+sudo nohup ./myapp &
+```
 
