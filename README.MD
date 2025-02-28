@@ -4,6 +4,7 @@
 ```
 # REQUIREMENT
 - Go version: 1.22.6
+- .env (pastikan setting env)
 
 ## HOW TO RUN IN DOCKER
 ```bash
