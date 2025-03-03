@@ -3,7 +3,7 @@ package helper
 import (
 	"fmt"
 	"github.com/firstudio-lab/JARITMAS-API/pkg/logger"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 	"strings"
@@ -40,18 +40,22 @@ type NoData struct {
 }
 
 // WResponses is a helper function to send a standardized response
-func WResponses(ctx *fiber.Ctx, err error, message string, data interface{}) error {
-	// If no error, return success response
+func WResponses(ctx *gin.Context, err error, message string, data interface{}) {
+	// Jika tidak ada error, kirim response sukses
 	if err == nil {
 		if message == "" {
-			message = "No message provided" // Default message if none provided
+			message = "No message provided"
 		}
-		return ctx.Status(http.StatusOK).JSON(UseData{Status: "OK", Message: message, Data: data})
+		ctx.JSON(http.StatusOK, UseData{
+			Status:  "OK",
+			Message: message,
+			Data:    data,
+		})
+		return
 	}
 
-	// If there is an error, extract code and message
 	code, msgErr := ExtractHTTPCodeAndMessage(err)
-	return ctx.Status(code).JSON(NoData{
+	ctx.JSON(code, NoData{
 		Status:  "ERROR",
 		Message: msgErr,
 	})

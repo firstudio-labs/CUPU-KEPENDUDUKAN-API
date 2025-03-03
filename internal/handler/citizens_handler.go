@@ -1,22 +1,21 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/firstudio-lab/JARITMAS-API/internal/dto"
 	"github.com/firstudio-lab/JARITMAS-API/internal/usecase"
 	"github.com/firstudio-lab/JARITMAS-API/pkg/helper"
 	"github.com/firstudio-lab/JARITMAS-API/pkg/logger"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 )
 
 type CitizenHandler interface {
-	FindCitizenByNIK(ctx *fiber.Ctx) error
-	FindCitizenPage(ctx *fiber.Ctx) error
-	CreateCitizen(ctx *fiber.Ctx) error
-	UpdateCitizenByNIK(ctx *fiber.Ctx) error
-	DeleteCitizenByNIK(ctx *fiber.Ctx) error
+	FindCitizenByNIK(c *gin.Context)
+	FindCitizenPage(c *gin.Context)
+	CreateCitizen(c *gin.Context)
+	UpdateCitizenByNIK(c *gin.Context)
+	DeleteCitizenByNIK(c *gin.Context)
 }
 
 type CitizensHandlerImpl struct {
@@ -27,107 +26,141 @@ func NewCitizensHandler(citizensUsecase usecase.CitizensUsecase) *CitizensHandle
 	return &CitizensHandlerImpl{CitizensUsecase: citizensUsecase}
 }
 
-func (h CitizensHandlerImpl) FindCitizenByNIK(ctx *fiber.Ctx) error {
-	params := ctx.Params("nik")
-	atoi, err := strconv.Atoi(params)
+func (h CitizensHandlerImpl) FindCitizenPage(c *gin.Context) {
+	page := c.Query("page")
+	atoi, err := strconv.ParseInt(page, 10, 64)
 	if err != nil {
-		err := fmt.Errorf("%d:%v", http.StatusBadRequest, "Nik is not suitable")
-		return helper.WResponses(ctx, err, "", nil)
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: "page banggg",
+		})
+		return
 	}
 
-	Citizen, err := h.CitizensUsecase.FindCitizenByNIK(ctx.Context(), int64(atoi))
+	citizenPage, err := h.CitizensUsecase.FindCitizenPage(c.Request.Context(), int(atoi))
 	if err != nil {
-		return helper.WResponses(ctx, err, "", nil)
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: err.Error(),
+		})
+		return
 	}
 
-	return ctx.Status(http.StatusOK).JSON(helper.UseData{
+	c.JSON(http.StatusOK, helper.UseData{
 		Status:  "OK",
-		Message: "successfully get",
+		Message: "Successfully retrieved the citizen",
+		Data:    citizenPage,
+	})
+}
+
+func (h CitizensHandlerImpl) FindCitizenByNIK(c *gin.Context) {
+	nik := c.Param("nik")
+	atoi, err := strconv.ParseInt(nik, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: "NIK is not suitable",
+		})
+		return
+	}
+
+	Citizen, err := h.CitizensUsecase.FindCitizenByNIK(c.Request.Context(), atoi)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, helper.UseData{
+		Status:  "OK",
+		Message: "Successfully retrieved the citizen",
 		Data:    Citizen,
 	})
 }
 
-func (h CitizensHandlerImpl) FindCitizenPage(ctx *fiber.Ctx) error {
-	query := ctx.Query("page")
-	if query == "" {
-		err := fmt.Errorf("%d:%v", http.StatusBadRequest, "bad value cant get data")
-		return helper.WResponses(ctx, err, "", nil)
-	}
-
-	atoi, err := strconv.Atoi(query)
-	if err != nil {
-		err := fmt.Errorf("%d:%v", http.StatusBadRequest, "bad value cant get data")
-		return helper.WResponses(ctx, err, "", nil)
-	}
-
-	Citizens, err := h.CitizensUsecase.FindCitizenPage(ctx.Context(), atoi)
-	if err != nil {
-		return helper.WResponses(ctx, err, "", nil)
-	}
-
-	return ctx.Status(http.StatusOK).JSON(helper.UseData{
-		Status:  "OK",
-		Message: "successfully get 10/page",
-		Data:    Citizens,
-	})
-}
-
-func (h CitizensHandlerImpl) CreateCitizen(ctx *fiber.Ctx) error {
+func (h CitizensHandlerImpl) CreateCitizen(c *gin.Context) {
 	var body dto.CitizenReqCreate
-	if err := ctx.BodyParser(&body); err != nil {
-		logger.Log.Errorf("Fail to parse body %e", err)
-		err := fmt.Errorf("%d:%v", http.StatusInternalServerError, " failed to parse json")
-		return helper.WResponses(ctx, err, "", nil)
+	if err := c.ShouldBindJSON(&body); err != nil {
+		logger.Log.Errorf("Fail to parse body: %v", err)
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: "Failed to parse JSON",
+		})
+		return
 	}
 
-	if err := h.CitizensUsecase.CreateCitizen(ctx.Context(), body); err != nil {
-		return helper.WResponses(ctx, err, "", nil)
+	if err := h.CitizensUsecase.CreateCitizen(c.Request.Context(), body); err != nil {
+		c.JSON(http.StatusInternalServerError, helper.NoData{
+			Status:  "error",
+			Message: err.Error(),
+		})
+		return
 	}
 
-	return ctx.Status(http.StatusCreated).JSON(helper.NoData{
+	c.JSON(http.StatusCreated, helper.NoData{
 		Status:  "CREATED",
-		Message: "successfully created new Citizen",
+		Message: "Successfully created new Citizen",
 	})
 }
 
-func (h CitizensHandlerImpl) UpdateCitizenByNIK(ctx *fiber.Ctx) error {
+func (h CitizensHandlerImpl) UpdateCitizenByNIK(c *gin.Context) {
 	var body dto.CitizenReqUpdate
-	params := ctx.Params("nik")
-	atoi, err := strconv.Atoi(params)
+	nik := c.Param("nik")
+	atoi, err := strconv.ParseInt(nik, 10, 64)
 	if err != nil {
-		err := fmt.Errorf("%d:%v", http.StatusBadRequest, "Nik is not suitable")
-		return helper.WResponses(ctx, err, "", nil)
-	}
-	if err := ctx.BodyParser(&body); err != nil {
-		logger.Log.Errorf("Fail to parse body %e", err)
-		err := fmt.Errorf("%d:%v", http.StatusInternalServerError, " failed to parse json")
-		return helper.WResponses(ctx, err, "", nil)
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: "NIK is not suitable",
+		})
+		return
 	}
 
-	if err := h.CitizensUsecase.UpdateCitizenByNIK(ctx.Context(), int64(atoi), body); err != nil {
-		return helper.WResponses(ctx, err, "", nil)
+	if err := c.ShouldBindJSON(&body); err != nil {
+		logger.Log.Errorf("Fail to parse body: %v", err)
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: "Failed to parse JSON",
+		})
+		return
 	}
 
-	return ctx.Status(http.StatusCreated).JSON(helper.NoData{
+	if err := h.CitizensUsecase.UpdateCitizenByNIK(c.Request.Context(), atoi, body); err != nil {
+		c.JSON(http.StatusInternalServerError, helper.NoData{
+			Status:  "error",
+			Message: err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, helper.NoData{
 		Status:  "OK",
-		Message: "successfully updated Citizen",
+		Message: "Successfully updated Citizen",
 	})
 }
 
-func (h CitizensHandlerImpl) DeleteCitizenByNIK(ctx *fiber.Ctx) error {
-	params := ctx.Params("nik")
-	atoi, err := strconv.Atoi(params)
+func (h CitizensHandlerImpl) DeleteCitizenByNIK(c *gin.Context) {
+	nik := c.Param("nik")
+	atoi, err := strconv.ParseInt(nik, 10, 64)
 	if err != nil {
-		err := fmt.Errorf("%d:%v", http.StatusBadRequest, "Nik is not suitable")
-		return helper.WResponses(ctx, err, "", nil)
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: "NIK is not suitable",
+		})
+		return
 	}
 
-	if err := h.CitizensUsecase.DeleteCitizenByNIK(ctx.Context(), int64(atoi)); err != nil {
-		return helper.WResponses(ctx, err, "", nil)
+	if err := h.CitizensUsecase.DeleteCitizenByNIK(c.Request.Context(), atoi); err != nil {
+		c.JSON(http.StatusInternalServerError, helper.NoData{
+			Status:  "error",
+			Message: err.Error(),
+		})
+		return
 	}
 
-	return ctx.Status(http.StatusCreated).JSON(helper.NoData{
+	c.JSON(http.StatusOK, helper.NoData{
 		Status:  "OK",
-		Message: "DELETE Citizen successfully",
+		Message: "Deleted Citizen successfully",
 	})
 }

@@ -6,16 +6,16 @@ import (
 	"github.com/firstudio-lab/JARITMAS-API/internal/usecase"
 	"github.com/firstudio-lab/JARITMAS-API/pkg/helper"
 	"github.com/firstudio-lab/JARITMAS-API/pkg/logger"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 )
 
 type JobsHandler interface {
-	CreateJob(ctx *fiber.Ctx) error
-	UpdateJobById(ctx *fiber.Ctx) error
-	DeleteJobById(ctx *fiber.Ctx) error
-	GetJobs(ctx *fiber.Ctx) error
+	CreateJob(c *gin.Context)
+	UpdateJobById(c *gin.Context)
+	DeleteJobById(c *gin.Context)
+	GetJobs(c *gin.Context)
 }
 
 type JobsHandlerImpl struct {
@@ -26,79 +26,106 @@ func NewJobsHandler(jobsUsecase usecase.JobsUsecase) *JobsHandlerImpl {
 	return &JobsHandlerImpl{JobsUsecase: jobsUsecase}
 }
 
-func (h JobsHandlerImpl) CreateJob(ctx *fiber.Ctx) error {
+func (h JobsHandlerImpl) CreateJob(c *gin.Context) {
 	var body dto.JobReqCreate
-	if err := ctx.BodyParser(&body); err != nil {
-		logger.Log.Errorf("Fail to parse body %e", err)
-		err := fmt.Errorf("%d:%v", http.StatusInternalServerError, " failed to parse json")
-		return helper.WResponses(ctx, err, "", nil)
+	if err := c.ShouldBindJSON(&body); err != nil {
+		logger.Log.Errorf("Fail to parse body: %v", err)
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: "Failed to parse JSON",
+		})
+		return
 	}
 
-	err := h.JobsUsecase.CreateJobs(ctx.Context(), body)
+	err := h.JobsUsecase.CreateJobs(c.Request.Context(), body)
 	if err != nil {
-		return helper.WResponses(ctx, err, "", nil)
+		c.JSON(http.StatusInternalServerError, helper.NoData{
+			Status:  "error",
+			Message: err.Error(),
+		})
+		return
 	}
 
-	return ctx.Status(http.StatusCreated).JSON(helper.NoData{
+	c.JSON(http.StatusCreated, helper.NoData{
 		Status:  "CREATED",
-		Message: "successfully create data jobs",
+		Message: "Successfully created job data",
 	})
 }
-
-func (h JobsHandlerImpl) UpdateJobById(ctx *fiber.Ctx) error {
-	params := ctx.Params("id")
-	atoi, err := strconv.Atoi(params)
+func (h JobsHandlerImpl) UpdateJobById(c *gin.Context) {
+	id := c.Param("id")
+	atoi, err := strconv.Atoi(id)
 	if err != nil {
-		err := fmt.Errorf("%d:%v", http.StatusBadRequest, "id is in corect")
-		return helper.WResponses(ctx, err, "", nil)
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: "ID is incorrect",
+		})
+		return
 	}
 
 	var body dto.JobReqUpdate
-	if err := ctx.BodyParser(&body); err != nil {
-		logger.Log.Errorf("Fail to parse body %e", err)
-		err := fmt.Errorf("%d:%v", http.StatusInternalServerError, " failed to parse json")
-		return helper.WResponses(ctx, err, "", nil)
+	if err := c.ShouldBindJSON(&body); err != nil {
+		logger.Log.Errorf("Fail to parse body: %v", err)
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: "Failed to parse JSON",
+		})
+		return
 	}
 
-	err = h.JobsUsecase.UpdateJobs(ctx.Context(), atoi, body)
+	err = h.JobsUsecase.UpdateJobs(c.Request.Context(), atoi, body)
 	if err != nil {
-		return helper.WResponses(ctx, err, "", nil)
+		c.JSON(http.StatusInternalServerError, helper.NoData{
+			Status:  "error",
+			Message: err.Error(),
+		})
+		return
 	}
 
-	return ctx.Status(http.StatusCreated).JSON(helper.NoData{
+	c.JSON(http.StatusOK, helper.NoData{
 		Status:  "OK",
-		Message: fmt.Sprintf("successfully update jobs id %d", atoi),
+		Message: fmt.Sprintf("Successfully updated job ID %d", atoi),
 	})
 }
 
-func (h JobsHandlerImpl) DeleteJobById(ctx *fiber.Ctx) error {
-	params := ctx.Params("id")
-	atoi, err := strconv.Atoi(params)
+func (h JobsHandlerImpl) DeleteJobById(c *gin.Context) {
+	id := c.Param("id")
+	atoi, err := strconv.Atoi(id)
 	if err != nil {
-		err := fmt.Errorf("%d:%v", http.StatusBadRequest, "id is not suitable")
-		return helper.WResponses(ctx, err, "", nil)
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: "ID is not suitable",
+		})
+		return
 	}
 
-	err = h.JobsUsecase.DeleteJobs(ctx.Context(), atoi)
+	err = h.JobsUsecase.DeleteJobs(c.Request.Context(), atoi)
 	if err != nil {
-		return helper.WResponses(ctx, err, "", nil)
+		c.JSON(http.StatusInternalServerError, helper.NoData{
+			Status:  "error",
+			Message: err.Error(),
+		})
+		return
 	}
 
-	return ctx.Status(http.StatusCreated).JSON(helper.NoData{
+	c.JSON(http.StatusOK, helper.NoData{
 		Status:  "OK",
-		Message: fmt.Sprintf("deleted jobs id %d", atoi),
+		Message: fmt.Sprintf("Deleted job ID %d successfully", atoi),
 	})
 }
 
-func (h JobsHandlerImpl) GetJobs(ctx *fiber.Ctx) error {
-	data, err := h.JobsUsecase.GetAllJobs(ctx.Context())
+func (h JobsHandlerImpl) GetJobs(c *gin.Context) {
+	data, err := h.JobsUsecase.GetAllJobs(c.Request.Context())
 	if err != nil {
-		return helper.WResponses(ctx, err, "", nil)
+		c.JSON(http.StatusInternalServerError, helper.NoData{
+			Status:  "error",
+			Message: err.Error(),
+		})
+		return
 	}
 
-	return ctx.Status(http.StatusCreated).JSON(helper.UseData{
+	c.JSON(http.StatusOK, helper.UseData{
 		Status:  "OK",
-		Message: "successfully getting all jobs",
+		Message: "Successfully retrieved all jobs",
 		Data:    data,
 	})
 }

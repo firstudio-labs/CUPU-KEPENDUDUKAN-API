@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Raw Citizen Data</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const apiUrl = 'http://localhost:3000/api/citizens?page=1';
+            const apiKey = 'KORIE';
+
+            fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': apiKey
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();  // Menggunakan response.text() untuk mendapatkan respons mentah
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .then(dataText => {
+                    document.getElementById('data-container').textContent = dataText;  // Menampilkan data mentah
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                });
+        });
+    </script>
+</head>
+<body>
+<h1>Raw Citizen Data</h1>
+<pre id="data-container">
+    <!-- JSON data will be displayed here as plain text -->
+</pre>
+</body>
+</html>
