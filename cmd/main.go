@@ -6,24 +6,42 @@ import (
 	"github.com/firstudio-lab/JARITMAS-API/internal/handler"
 	"github.com/firstudio-lab/JARITMAS-API/internal/repository"
 	"github.com/firstudio-lab/JARITMAS-API/internal/usecase"
-	"github.com/firstudio-lab/JARITMAS-API/pkg/helper"
 	"github.com/firstudio-lab/JARITMAS-API/pkg/logger"
-	"github.com/gin-contrib/cors"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"net/http"
-	"time"
 )
 
-// Middleware to validate the API key
-func Middleware(APIKEY string) gin.HandlerFunc {
+func CustomCORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// Getting API key from the request header
+		fmt.Println("CustomCORSMiddleware called")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization, X-API-Key")
+		if c.Request.Method == "OPTIONS" {
+			fmt.Println("Handling OPTIONS method")
+			c.AbortWithStatus(http.StatusOK)
+			return
+		}
+		c.Next()
+	}
+}
+
+func APIKeyMiddleware(APIKEY string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		fmt.Println("APIKeyMiddleware called")
+		if c.Request.Method == "OPTIONS" {
+			fmt.Println("Skipping API key check for OPTIONS method")
+			c.Next()
+			return
+		}
 		key := c.GetHeader("X-API-Key")
 		if key != APIKEY {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, helper.NoData{
-				Status:  "ERROR",
-				Message: "Invalid API key",
+			fmt.Println("Invalid API key provided")
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"status":  "ERROR",
+				"message": "Invalid API key",
 			})
 			return
 		}
@@ -33,24 +51,13 @@ func Middleware(APIKEY string) gin.HandlerFunc {
 
 func main() {
 	logger.InitLogger()
-	r := gin.Default()
-
-	DEBE, _ := cfg.GetPool(cfg.GetConfig()) // Assuming error handling is done within the function
+	DEBE, _ := cfg.GetPool(cfg.GetConfig())
 	validate := validator.New()
 	APIKEY := "KORIE"
 
-	//r.Use(gin.Recovery())
-	// CORS middleware setup for Gin
-	r.Use(cors.New(cors.Config{
-		AllowAllOrigins:  true, // or use AllowOrigins to specify exact origins
-		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization", "X-API-Key"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
-	}))
-
-	r.Use(Middleware(APIKEY))
+	r := gin.Default()
+	r.Use(CustomCORSMiddleware())
+	r.Use(APIKeyMiddleware(APIKEY))
 
 	citizensRepository := repository.NewCitizensRepository()
 	citizensUsecase := usecase.NewCitizensUsecase(citizensRepository, validate, DEBE)
@@ -62,7 +69,7 @@ func main() {
 
 	// Setup routes for Citizens
 	r.GET("/api/citizens/:nik", citizensHandler.FindCitizenByNIK)
-	r.GET("/api/citizens", citizensHandler.FindCitizenPage) // Assuming this is implemented correctly in your handler
+	r.GET("/api/citizens", citizensHandler.FindCitizenPage)
 	r.POST("/api/citizens", citizensHandler.CreateCitizen)
 	r.PUT("/api/citizens/:nik", citizensHandler.UpdateCitizenByNIK)
 	r.DELETE("/api/citizens/:nik", citizensHandler.DeleteCitizenByNIK)

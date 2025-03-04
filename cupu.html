@@ -5,9 +5,10 @@
     <title>Raw Citizen Data</title>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const apiUrl = 'http://localhost:3000/api/citizens?page=1';
+            const apiUrl = 'http://api-kependudukan.desaverse.id:3000/api/citizens?page=1';
             const apiKey = 'KORIE';
 
+            // Menggunakan fetch untuk mengambil data dari API
             fetch(apiUrl, {
                 method: 'GET',
                 headers: {
@@ -16,15 +17,9 @@
                     'X-API-Key': apiKey
                 }
             })
-                .then(response => {
-                    if (response.ok) {
-                        return response.text();  // Menggunakan response.text() untuk mendapatkan respons mentah
-                    } else {
-                        throw new Error('Network response was not ok.');
-                    }
-                })
-                .then(dataText => {
-                    document.getElementById('data-container').textContent = dataText;  // Menampilkan data mentah
+                .then(response => response.json())  // Mengonversi respons ke JSON
+                .then(data => {
+                    document.getElementById('data-container').textContent = JSON.stringify(data, null, 2);  // Menampilkan data JSON yang terformat
                 })
                 .catch(error => {
                     console.error('There has been a problem with your fetch operation:', error);
@@ -35,7 +30,7 @@
 <body>
 <h1>Raw Citizen Data</h1>
 <pre id="data-container">
-    <!-- JSON data will be displayed here as plain text -->
+    <!-- Data JSON akan muncul di sini -->
 </pre>
 </body>
 </html>

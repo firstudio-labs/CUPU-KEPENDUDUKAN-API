@@ -9,13 +9,13 @@ import (
 var Log *logrus.Logger
 
 func InitLogger() {
-	file, err := os.OpenFile("application.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		logrus.Fatalf("failed open log file %e", err)
-	}
+	//file, err := os.OpenFile("application.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	//if err != nil {
+	//	logrus.Fatalf("failed open log file %e", err)
+	//}
 
 	Log = logrus.New()
-	Log.SetOutput(io.MultiWriter(os.Stdout, file))
+	Log.SetOutput(io.MultiWriter(os.Stdout))
 	Log.SetFormatter(&logrus.TextFormatter{
 		FullTimestamp: true,
 	})
