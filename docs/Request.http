@@ -138,7 +138,7 @@ X-API-Key: KORIE
   "name": "Quly"
 }
 
-### DELETE Job By Id
+### UPDATE Job By Id
 PUT http://localhost:3000/api/jobs/3
 Accept: application/json
 Content-Type: application/json

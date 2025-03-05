@@ -7,7 +7,7 @@ untuk import database nya di ./dump/backup.sql
 ```
 
 # REQUIREMENT
-- Go version: 1.22.6
+- Go version: 1.22.6 or more
 - .env (pastikan setting env itu ada env example)
 
 ## HOW TO RUN IN DOCKER
@@ -57,6 +57,7 @@ build and generate binary
 go build -o myapp ./cmd
 
 if err use this
+
 go build -o myapp -buildvcs=false ./cmd
 ```
 ```bash
@@ -71,3 +72,38 @@ RUN IN BACKGORUND
 sudo nohup ./myapp &
 ```
 
+PASTIKAN KILL KALO ADA YG MASIH AKTIF DI PORT 3000
+```
+lsof -i :3000
+```
+```
+netstat -tulnp | grep :3000
+```
+```
+sudo netstat -tulnp | grep :3000
+```
+```
+sudo kill <PID>
+```
+
+JIKA DI DI APP ADA NGINX TAMBHAKAN INI BIAR HEADER TIDAK DI HAPUS AMAN DARI CORS,
+```
+ 
+ location / {
+        proxy_pass http://localhost:3000;
+        proxy_set_header Host $host;
+        
+        # Pastikan CORS tidak dihapus
+        add_header Access-Control-Allow-Origin "*";
+        add_header Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE";
+        add_header Access-Control-Allow-Headers "Content-Type, Authorization, X-API-Key";
+        add_header Access-Control-Allow-Credentials true;
+
+        # Tangani Preflight OPTIONS request
+        if ($request_method = OPTIONS) {
+            add_header Content-Length 0;
+            add_header Content-Type text/plain;
+            return 204;
+        }
+    }
+```

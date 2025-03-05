@@ -253,3 +253,122 @@ RESPONSE ==>
   "message": "citizen with NIK 1234567890123456 not found"
 }
 ```
+
+##### *`FAMILY MEMBER BY KK `*
+```
+GET api/citizens-family/{kk}
+Content-Type: application/json
+X-API-Key: <API_KEY>
+
+{
+    "status": "OK",
+    "message": "Successfully retrieved the citizen",
+    "data": [
+        {
+            "id": 768,
+            "nik": 3323127112590032,
+            "kk": 3323092402072308,
+            "full_name": "SURATI",
+            "gender": "Perempuan",
+            "birth_date": "31/12/1959",
+            "age": 61,
+            "birth_place": "TEMANGGUNG",
+            "address": "MENTO BAWANG",
+            "province_id": 13,
+            "district_id": 210,
+            "sub_district_id": 3048,
+            "village_id": 38269,
+            "rt": "001",
+            "rw": "001",
+            "postal_code": 0,
+            "citizen_status": "WNI",
+            "birth_certificate": "Tidak Ada",
+            "birth_certificate_no": "",
+            "blood_type": "O",
+            "religion": "Islam",
+            "marital_status": "Cerai Hidup Tercatat",
+            "marital_certificate": "Tidak Ada",
+            "marital_certificate_no": "",
+            "marriage_date": "",
+            "divorce_certificate": "Ada",
+            "divorce_certificate_no": "216/AC/1992/PA TMG",
+            "divorce_certificate_date": "",
+            "family_status": "MERTUA",
+            "mental_disorders": "Tidak Ada",
+            "disabilities": "",
+            "education_status": "Belum tamat SD/Sederajat",
+            "job_type_id": 6,
+            "nik_mother": "",
+            "mother": "ROLIYAMAH",
+            "nik_father": "",
+            "father": "MOJOPAWIRO",
+            "coordinate": ""
+        }
+        .......
+    ]
+}
+
+{
+  "status": "ERROR",
+  "message": "kk is not suitable"
+}
+
+```
+
+##### *`GET ALL NO FILTER `*
+```
+GET /api/all-citizens
+Content-Type: application/json
+X-API-Key: <API_KEY>
+
+RESPONSE ==>
+{
+    "status": "OK",
+    "message": "Successfully retrieved the citizen",
+    "data": [
+        {
+            "id": 764,
+            "nik": 3323092110770003,
+            "kk": 3323092402072308,
+            "full_name": "SURATNO",
+            "gender": "Laki-Laki",
+            "birth_date": "22/10/1977",
+            "age": 43,
+            "birth_place": "TEMANGGUNG",
+            "address": "MENTO BAWANG",
+            "province_id": 13,
+            "district_id": 210,
+            "sub_district_id": 3048,
+            "village_id": 38269,
+            "rt": "001",
+            "rw": "001",
+            "postal_code": 0,
+            "citizen_status": "WNI",
+            "birth_certificate": "Ada",
+            "birth_certificate_no": "8118/DIS/2000",
+            "blood_type": "A",
+            "religion": "Islam",
+            "marital_status": "Kawin Tercatat",
+            "marital_certificate": "Ada",
+            "marital_certificate_no": "261/20/XI/2006",
+            "marriage_date": "",
+            "divorce_certificate": "Tidak Ada",
+            "divorce_certificate_no": "",
+            "divorce_certificate_date": "",
+            "family_status": "KEPALA KELUARGA",
+            "mental_disorders": "Tidak Ada",
+            "disabilities": "",
+            "education_status": "SLTP/SMP/Sederajat",
+            "job_type_id": 6,
+            "nik_mother": "",
+            "mother": "DJUMARIYAH",
+            "nik_father": "",
+            "father": "KOMARI",
+            "coordinate": ""
+        }
+        .......
+    ]
+}
+        
+```
+
