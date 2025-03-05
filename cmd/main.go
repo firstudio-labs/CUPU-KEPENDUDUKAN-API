@@ -69,10 +69,12 @@ func main() {
 
 	// Setup routes for Citizens
 	r.GET("/api/citizens/:nik", citizensHandler.FindCitizenByNIK)
-	r.GET("/api/citizens", citizensHandler.FindCitizenPage)
+	r.GET("/api/citizens", citizensHandler.FindCitizenPage) // ?page
 	r.POST("/api/citizens", citizensHandler.CreateCitizen)
 	r.PUT("/api/citizens/:nik", citizensHandler.UpdateCitizenByNIK)
 	r.DELETE("/api/citizens/:nik", citizensHandler.DeleteCitizenByNIK)
+	r.GET("/api/citizens-family/:kk", citizensHandler.FindAllMemberByKK)
+	r.GET("/api/all-citizens", citizensHandler.FindAllCitizens)
 
 	// Setup routes for Jobs
 	r.DELETE("/api/jobs/:id", jobsHandler.DeleteJobById)

@@ -16,6 +16,8 @@ type CitizenHandler interface {
 	CreateCitizen(c *gin.Context)
 	UpdateCitizenByNIK(c *gin.Context)
 	DeleteCitizenByNIK(c *gin.Context)
+	FindAllMemberByKK(c *gin.Context)
+	FindAllCitizens(c *gin.Context)
 }
 
 type CitizensHandlerImpl struct {
@@ -162,5 +164,49 @@ func (h CitizensHandlerImpl) DeleteCitizenByNIK(c *gin.Context) {
 	c.JSON(http.StatusOK, helper.NoData{
 		Status:  "OK",
 		Message: "Deleted Citizen successfully",
+	})
+}
+
+func (h CitizensHandlerImpl) FindAllMemberByKK(c *gin.Context) {
+	nik := c.Param("kk")
+	atoi, err := strconv.ParseInt(nik, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: "kk is not suitable",
+		})
+		return
+	}
+
+	Citizen, err := h.CitizensUsecase.FindMemberByKK(c.Request.Context(), atoi)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, helper.UseData{
+		Status:  "OK",
+		Message: "Successfully retrieved the citizen",
+		Data:    Citizen,
+	})
+}
+
+func (h CitizensHandlerImpl) FindAllCitizens(c *gin.Context) {
+	Citizen, err := h.CitizensUsecase.FindAllCitizens(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, helper.UseData{
+		Status:  "OK",
+		Message: "Successfully retrieved the citizen",
+		Data:    Citizen,
 	})
 }

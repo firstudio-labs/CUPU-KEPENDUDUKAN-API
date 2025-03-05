@@ -3,13 +3,23 @@ GET http://localhost:3000/api/citizens/1234567890123456
 Accept: application/json
 Content-Type: application/json
 
-
 ### GET CITIZENs per page
 GET http://localhost:3000/api/citizens?page=1
 Accept: application/json
 Content-Type: application/json
 X-API-Key: KORIE
 
+### GET CITIZENs rill cuy
+GET http://localhost:3000/api/all-citizens
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+### Get family memeber bY KK
+GET http://localhost:3000/api/citizens-family/3323092402072308
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
 
 ### CREATE CITIZEN
 POST http://localhost:3000/api/citizens
@@ -104,7 +114,7 @@ X-API-Key: KORIE
   "coordinate": "-6.200000, 106.816666"
 }
 
-### DELETE CITIZENs per page
+### DELETE CITIZENs by nik
 DELETE http://localhost:3000/api/citizens/1234567890123456
 Accept: application/json
 Content-Type: application/json

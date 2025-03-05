@@ -119,3 +119,5 @@ FROM indonesia_districts
 WHERE LOWER(name) LIKE LOWER('KABUPATEN MAS%');
 
 SELECT count(*) FROM `citizens`
+
+SELECT * FROM citizens WHERE kk = ;

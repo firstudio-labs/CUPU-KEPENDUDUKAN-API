@@ -19,6 +19,8 @@ type CitizensUsecase interface {
 	CreateCitizen(ctx context.Context, request dto.CitizenReqCreate) error
 	UpdateCitizenByNIK(ctx context.Context, nik int64, request dto.CitizenReqUpdate) error
 	DeleteCitizenByNIK(ctx context.Context, nik int64) error
+	FindMemberByKK(ctx context.Context, kk int64) ([]dto.CitizensDTO, error)
+	FindAllCitizens(ctx context.Context) ([]dto.CitizensDTO, error)
 }
 
 type CitizensUsecaseImpl struct {
@@ -299,4 +301,113 @@ func (u CitizensUsecaseImpl) DeleteCitizenByNIK(ctx context.Context, nik int64) 
 	}
 
 	return nil
+}
+
+func (u CitizensUsecaseImpl) FindMemberByKK(ctx context.Context, kk int64) ([]dto.CitizensDTO, error) {
+	familyMember, err := u.CitizensRepository.FindMemberByKK(ctx, u.DB, kk)
+	if err != nil {
+		return nil, fmt.Errorf("%d:%w", http.StatusInternalServerError, err)
+	}
+
+	var citizens []dto.CitizensDTO
+	for _, request := range familyMember {
+		newCitizen := dto.CitizensDTO{
+			ID:                     request.ID,
+			NIK:                    request.NIK,
+			KK:                     request.KK,
+			FullName:               request.FullName,
+			Gender:                 request.Gender,
+			BirthDate:              request.BirthDate,
+			Age:                    request.Age,
+			BirthPlace:             request.BirthPlace,
+			Address:                request.Address,
+			ProvinceID:             request.ProvinceID,
+			DistrictID:             request.DistrictID,
+			SubDistrictID:          request.SubDistrictID,
+			VillageID:              request.VillageID,
+			RT:                     request.RT,
+			RW:                     request.RW,
+			PostalCode:             request.PostalCode,
+			CitizenStatus:          request.CitizenStatus,
+			BirthCertificate:       request.BirthCertificate,
+			BirthCertificateNo:     request.BirthCertificateNo,
+			BloodType:              request.BloodType,
+			Religion:               request.Religion,
+			MaritalStatus:          request.MaritalStatus,
+			MaritalCertificate:     request.MaritalCertificate,
+			MaritalCertificateNo:   request.MaritalCertificateNo,
+			MarriageDate:           request.MarriageDate,
+			DivorceCertificate:     request.DivorceCertificate,
+			DivorceCertificateNo:   request.DivorceCertificateNo,
+			DivorceCertificateDate: request.DivorceCertificateDate,
+			FamilyStatus:           request.FamilyStatus,
+			MentalDisorders:        request.MentalDisorders,
+			Disabilities:           request.Disabilities,
+			EducationStatus:        request.EducationStatus,
+			JobTypeID:              request.JobTypeID,
+			NIKMother:              request.NIKMother,
+			Mother:                 request.Mother,
+			NIKFather:              request.NIKFather,
+			Father:                 request.Father,
+			Coordinate:             request.Coordinate,
+		}
+		citizens = append(citizens, newCitizen)
+	}
+
+	return citizens, err
+}
+
+func (u CitizensUsecaseImpl) FindAllCitizens(ctx context.Context) ([]dto.CitizensDTO, error) {
+	allCitizens, err := u.CitizensRepository.FindAllCitizens(ctx, u.DB)
+	if err != nil {
+		return nil, fmt.Errorf("%d:%w", http.StatusInternalServerError, err)
+	}
+
+	var citizens []dto.CitizensDTO
+	for _, request := range allCitizens {
+		newCitizen := dto.CitizensDTO{
+			ID:                     request.ID,
+			NIK:                    request.NIK,
+			KK:                     request.KK,
+			FullName:               request.FullName,
+			Gender:                 request.Gender,
+			BirthDate:              request.BirthDate,
+			Age:                    request.Age,
+			BirthPlace:             request.BirthPlace,
+			Address:                request.Address,
+			ProvinceID:             request.ProvinceID,
+			DistrictID:             request.DistrictID,
+			SubDistrictID:          request.SubDistrictID,
+			VillageID:              request.VillageID,
+			RT:                     request.RT,
+			RW:                     request.RW,
+			PostalCode:             request.PostalCode,
+			CitizenStatus:          request.CitizenStatus,
+			BirthCertificate:       request.BirthCertificate,
+			BirthCertificateNo:     request.BirthCertificateNo,
+			BloodType:              request.BloodType,
+			Religion:               request.Religion,
+			MaritalStatus:          request.MaritalStatus,
+			MaritalCertificate:     request.MaritalCertificate,
+			MaritalCertificateNo:   request.MaritalCertificateNo,
+			MarriageDate:           request.MarriageDate,
+			DivorceCertificate:     request.DivorceCertificate,
+			DivorceCertificateNo:   request.DivorceCertificateNo,
+			DivorceCertificateDate: request.DivorceCertificateDate,
+			FamilyStatus:           request.FamilyStatus,
+			MentalDisorders:        request.MentalDisorders,
+			Disabilities:           request.Disabilities,
+			EducationStatus:        request.EducationStatus,
+			JobTypeID:              request.JobTypeID,
+			NIKMother:              request.NIKMother,
+			Mother:                 request.Mother,
+			NIKFather:              request.NIKFather,
+			Father:                 request.Father,
+			Coordinate:             request.Coordinate,
+		}
+		citizens = append(citizens, newCitizen)
+	}
+
+	return citizens, err
+
 }

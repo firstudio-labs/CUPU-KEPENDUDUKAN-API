@@ -15,6 +15,8 @@ type CitizensRepository interface {
 	GetAllCitizenPerPage(ctx context.Context, tx *gorm.DB, page int) ([]entity.Citizen, error)
 	UpdateCitizen(ctx context.Context, tx *gorm.DB, nik int64, citizenUpdate entity.Citizen) error
 	DeleteCitizenByNIK(ctx context.Context, tx *gorm.DB, nik int64) error
+	FindMemberByKK(ctx context.Context, tx *gorm.DB, kk int64) ([]entity.Citizen, error)
+	FindAllCitizens(ctx context.Context, tx *gorm.DB) ([]entity.Citizen, error)
 }
 
 type CitizensRepositoryImpl struct {
@@ -113,4 +115,27 @@ func (r CitizensRepositoryImpl) DeleteCitizenByNIK(ctx context.Context, tx *gorm
 	}
 
 	return nil
+}
+
+func (r CitizensRepositoryImpl) FindMemberByKK(ctx context.Context, tx *gorm.DB, kk int64) ([]entity.Citizen, error) {
+	var familyMember []entity.Citizen
+	if err := tx.WithContext(ctx).Where("kk = ?", kk).Find(&familyMember).Error; err != nil {
+		//ERROR QUERY
+		return nil, fmt.Errorf("try again later")
+	}
+
+	if len(familyMember) == 0 {
+		return nil, fmt.Errorf("no family members found for KK: %d", kk)
+	}
+
+	return familyMember, nil
+}
+
+func (r CitizensRepositoryImpl) FindAllCitizens(ctx context.Context, tx *gorm.DB) ([]entity.Citizen, error) {
+	var citizens []entity.Citizen
+	if err := tx.WithContext(ctx).Find(&citizens).Error; err != nil {
+		return nil, fmt.Errorf("try again later")
+	}
+
+	return citizens, nil
 }
