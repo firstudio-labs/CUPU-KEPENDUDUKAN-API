@@ -21,6 +21,7 @@ type CitizensUsecase interface {
 	DeleteCitizenByNIK(ctx context.Context, nik int64) error
 	FindMemberByKK(ctx context.Context, kk int64) ([]dto.CitizensDTO, error)
 	FindAllCitizens(ctx context.Context) ([]dto.CitizensDTO, error)
+	FindNameSimilar(ctx context.Context, namePattern string) ([]dto.SimilarNameResponse, error)
 }
 
 type CitizensUsecaseImpl struct {
@@ -285,4 +286,19 @@ func (u CitizensUsecaseImpl) FindAllCitizens(ctx context.Context) ([]dto.Citizen
 
 	return citizens, err
 
+}
+
+func (u CitizensUsecaseImpl) FindNameSimilar(ctx context.Context, namePattern string) ([]dto.SimilarNameResponse, error) {
+	similar, err := u.CitizensRepository.FindNameSimilar(ctx, u.DB, namePattern)
+	if err != nil {
+		return nil, fmt.Errorf("%d:%w", http.StatusBadRequest, err)
+	}
+
+	var results []dto.SimilarNameResponse
+	for _, v := range similar {
+		n := dto.SimilarNameResponse{FullName: v.FullName}
+		results = append(results, n)
+	}
+
+	return results, nil
 }

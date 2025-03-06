@@ -16,6 +16,8 @@ type JobsUsecase interface {
 	CreateJobs(ctx context.Context, request dto.JobReqCreate) error
 	UpdateJobs(ctx context.Context, idjobs int, request dto.JobReqUpdate) error
 	DeleteJobs(ctx context.Context, idjobs int) error
+	GetJobsById(ctx context.Context, idjob int) (entity.Job, error)
+	GetJobsSimilarName(ctx context.Context, namePattern string) ([]dto.SimilarJobsResponse, error)
 }
 type JobsUsecaseImpl struct {
 	*validator.Validate
@@ -86,4 +88,29 @@ func (u JobsUsecaseImpl) DeleteJobs(ctx context.Context, idjobs int) error {
 	}
 
 	return nil
+}
+
+func (u JobsUsecaseImpl) GetJobsById(ctx context.Context, idjob int) (entity.Job, error) {
+
+	job, err := u.JobsRepository.FindJobsId(ctx, idjob)
+	if err != nil {
+		return entity.Job{}, fmt.Errorf("%d:%w", http.StatusBadRequest, err)
+	}
+
+	return job, nil
+}
+
+func (u JobsUsecaseImpl) GetJobsSimilarName(ctx context.Context, namePattern string) ([]dto.SimilarJobsResponse, error) {
+	similar, err := u.JobsRepository.FindJobsSimilarName(ctx, namePattern)
+	if err != nil {
+		return nil, fmt.Errorf("%d:%w", http.StatusBadRequest, err)
+	}
+
+	var results []dto.SimilarJobsResponse
+	for _, v := range similar {
+		n := dto.SimilarJobsResponse{Name: v.Name}
+		results = append(results, n)
+	}
+
+	return results, nil
 }

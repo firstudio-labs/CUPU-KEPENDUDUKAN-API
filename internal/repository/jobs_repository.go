@@ -15,6 +15,8 @@ type JobsRepository interface {
 	UpdateJobById(ctx context.Context, id int, UpdateJob entity.Job) error
 	DeleteJobById(ctx context.Context, id int) error
 	ExistJobCode(ctx context.Context, code string) error
+	FindJobsId(ctx context.Context, id int) (entity.Job, error)
+	FindJobsSimilarName(ctx context.Context, namePattern string) ([]entity.Job, error)
 }
 type JobsRepositoryImpl struct {
 	*gorm.DB
@@ -117,4 +119,29 @@ func (r JobsRepositoryImpl) ExistJobCode(ctx context.Context, code string) error
 	}
 
 	return nil
+}
+
+func (r JobsRepositoryImpl) FindJobsId(ctx context.Context, id int) (entity.Job, error) {
+	var result entity.Job
+	if err := r.DB.WithContext(ctx).First(&result, id).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return result, fmt.Errorf("job with id %d not found", id)
+		}
+		return result, fmt.Errorf("failed to find job: %v", err)
+	}
+	return result, nil
+}
+
+func (r JobsRepositoryImpl) FindJobsSimilarName(ctx context.Context, namePattern string) ([]entity.Job, error) {
+	var jobSimilarName []entity.Job
+
+	if err := r.DB.WithContext(ctx).Select("name").Where("name LIKE ?", "%"+namePattern+"%").Find(&jobSimilarName).Error; err != nil {
+		return nil, fmt.Errorf("try again later")
+	}
+
+	if len(jobSimilarName) == 0 {
+		return nil, fmt.Errorf("no jobs found with similar name to: %s", namePattern)
+	}
+
+	return jobSimilarName, nil
 }

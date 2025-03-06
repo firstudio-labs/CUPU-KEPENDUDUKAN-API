@@ -68,7 +68,6 @@ X-API-Key: KORIE
 }
 
 
-
 ### UPDATE CITIZEN BY NIK
 PUT http://localhost:3000/api/citizens/1234567890123456
 Accept: application/json
@@ -120,6 +119,11 @@ Accept: application/json
 Content-Type: application/json
 X-API-Key: KORIE
 
+### SEARCH CITIZEN BY NAME
+GET http://localhost:3000/api/citizens-search/WAHYU
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
 
 ### GET ALL JOBS
 GET http://localhost:3000/api/jobs
@@ -146,6 +150,18 @@ X-API-Key: KORIE
 
 ### DELETE Job By Id
 DELETE http://localhost:3000/api/jobs/3
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+### get Job By Id
+GET http://localhost:3000/api/jobs/3
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+### search jobs
+GET http://localhost:3000//api/jobs-search/u
 Accept: application/json
 Content-Type: application/json
 X-API-Key: KORIE

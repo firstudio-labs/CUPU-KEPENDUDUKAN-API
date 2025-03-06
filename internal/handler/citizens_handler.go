@@ -18,6 +18,7 @@ type CitizenHandler interface {
 	DeleteCitizenByNIK(c *gin.Context)
 	FindAllMemberByKK(c *gin.Context)
 	FindAllCitizens(c *gin.Context)
+	FindSimilarName(c *gin.Context)
 }
 
 type CitizensHandlerImpl struct {
@@ -196,6 +197,25 @@ func (h CitizensHandlerImpl) FindAllMemberByKK(c *gin.Context) {
 
 func (h CitizensHandlerImpl) FindAllCitizens(c *gin.Context) {
 	Citizen, err := h.CitizensUsecase.FindAllCitizens(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusBadRequest, helper.NoData{
+			Status:  "error",
+			Message: err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, helper.UseData{
+		Status:  "OK",
+		Message: "Successfully retrieved the citizen",
+		Data:    Citizen,
+	})
+}
+
+func (h CitizensHandlerImpl) FindSimilarName(c *gin.Context) {
+	namePattern := c.Param("namePattern")
+
+	Citizen, err := h.CitizensUsecase.FindNameSimilar(c.Request.Context(), namePattern)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, helper.NoData{
 			Status:  "error",

@@ -17,6 +17,7 @@ type CitizensRepository interface {
 	DeleteCitizenByNIK(ctx context.Context, tx *gorm.DB, nik int64) error
 	FindMemberByKK(ctx context.Context, tx *gorm.DB, kk int64) ([]entity.Citizen, error)
 	FindAllCitizens(ctx context.Context, tx *gorm.DB) ([]entity.Citizen, error)
+	FindNameSimilar(ctx context.Context, tx *gorm.DB, namePattern string) ([]entity.Citizen, error)
 }
 
 type CitizensRepositoryImpl struct {
@@ -84,7 +85,7 @@ func (r CitizensRepositoryImpl) UpdateCitizen(ctx context.Context, tx *gorm.DB, 
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return fmt.Errorf("failed update nik %d notfound", nik)
 		}
-		return fmt.Errorf("Other error")
+		return fmt.Errorf("other error")
 	}
 
 	if err := tx.WithContext(ctx).Where("nik = ?", nik).Updates(citizenUpdate).Error; err != nil {
@@ -138,4 +139,19 @@ func (r CitizensRepositoryImpl) FindAllCitizens(ctx context.Context, tx *gorm.DB
 	}
 
 	return citizens, nil
+}
+
+func (r CitizensRepositoryImpl) FindNameSimilar(ctx context.Context, tx *gorm.DB, namePattern string) ([]entity.Citizen, error) {
+	var similarName []entity.Citizen
+
+	// Using LIKE operator for MySQL
+	if err := tx.WithContext(ctx).Select("full_name").Where("full_name LIKE ?", "%"+namePattern+"%").Find(&similarName).Error; err != nil {
+		return nil, fmt.Errorf("try again later")
+	}
+
+	if len(similarName) == 0 {
+		return nil, fmt.Errorf("no name similar like %s", namePattern)
+	}
+
+	return similarName, nil
 }

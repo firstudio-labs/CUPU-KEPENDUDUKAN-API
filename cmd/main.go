@@ -75,12 +75,15 @@ func main() {
 	r.DELETE("/api/citizens/:nik", citizensHandler.DeleteCitizenByNIK)
 	r.GET("/api/citizens-family/:kk", citizensHandler.FindAllMemberByKK)
 	r.GET("/api/all-citizens", citizensHandler.FindAllCitizens)
+	r.GET("/api/citizens-search/:namePattern", citizensHandler.FindSimilarName)
 
 	// Setup routes for Jobs
 	r.DELETE("/api/jobs/:id", jobsHandler.DeleteJobById)
 	r.GET("/api/jobs", jobsHandler.GetJobs)
 	r.POST("/api/jobs", jobsHandler.CreateJob)
 	r.PUT("/api/jobs/:id", jobsHandler.UpdateJobById)
+	r.GET("/api/jobs/:id", jobsHandler.GetJobById)
+	r.GET("/api/jobs-search/:namePattern", jobsHandler.GetSimilarJobsName)
 
 	// Start the Gin server
 	port := cfg.GetConfig().Server.Port
