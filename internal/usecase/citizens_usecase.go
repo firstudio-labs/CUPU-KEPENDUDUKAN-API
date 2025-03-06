@@ -39,46 +39,7 @@ func (u CitizensUsecaseImpl) FindCitizenByNIK(ctx context.Context, nik int64) (d
 		return dto.CitizensDTO{}, fmt.Errorf("%d:%w", http.StatusNotFound, err)
 	}
 
-	Citizen := dto.CitizensDTO{
-		ID:                     request.ID,
-		NIK:                    request.NIK,
-		KK:                     request.KK,
-		FullName:               request.FullName,
-		Gender:                 request.Gender,
-		BirthDate:              request.BirthDate,
-		Age:                    request.Age,
-		BirthPlace:             request.BirthPlace,
-		Address:                request.Address,
-		ProvinceID:             request.ProvinceID,
-		DistrictID:             request.DistrictID,
-		SubDistrictID:          request.SubDistrictID,
-		VillageID:              request.VillageID,
-		RT:                     request.RT,
-		RW:                     request.RW,
-		PostalCode:             request.PostalCode,
-		CitizenStatus:          request.CitizenStatus,
-		BirthCertificate:       request.BirthCertificate,
-		BirthCertificateNo:     request.BirthCertificateNo,
-		BloodType:              request.BloodType,
-		Religion:               request.Religion,
-		MaritalStatus:          request.MaritalStatus,
-		MaritalCertificate:     request.MaritalCertificate,
-		MaritalCertificateNo:   request.MaritalCertificateNo,
-		MarriageDate:           request.MarriageDate,
-		DivorceCertificate:     request.DivorceCertificate,
-		DivorceCertificateNo:   request.DivorceCertificateNo,
-		DivorceCertificateDate: request.DivorceCertificateDate,
-		FamilyStatus:           request.FamilyStatus,
-		MentalDisorders:        request.MentalDisorders,
-		Disabilities:           request.Disabilities,
-		EducationStatus:        request.EducationStatus,
-		JobTypeID:              request.JobTypeID,
-		NIKMother:              request.NIKMother,
-		Mother:                 request.Mother,
-		NIKFather:              request.NIKFather,
-		Father:                 request.Father,
-		Coordinate:             request.Coordinate,
-	}
+	Citizen := dto.CitizensDTOtoEntity(request)
 
 	return Citizen, nil
 }
@@ -121,50 +82,7 @@ func (u CitizensUsecaseImpl) FindCitizenPage(ctx context.Context, page int) (dto
 		PrevPage:     prevPage,
 	}
 
-	var citizens []dto.CitizensDTO
-	for _, request := range perPage {
-		newCitizen := dto.CitizensDTO{
-			ID:                     request.ID,
-			NIK:                    request.NIK,
-			KK:                     request.KK,
-			FullName:               request.FullName,
-			Gender:                 request.Gender,
-			BirthDate:              request.BirthDate,
-			Age:                    request.Age,
-			BirthPlace:             request.BirthPlace,
-			Address:                request.Address,
-			ProvinceID:             request.ProvinceID,
-			DistrictID:             request.DistrictID,
-			SubDistrictID:          request.SubDistrictID,
-			VillageID:              request.VillageID,
-			RT:                     request.RT,
-			RW:                     request.RW,
-			PostalCode:             request.PostalCode,
-			CitizenStatus:          request.CitizenStatus,
-			BirthCertificate:       request.BirthCertificate,
-			BirthCertificateNo:     request.BirthCertificateNo,
-			BloodType:              request.BloodType,
-			Religion:               request.Religion,
-			MaritalStatus:          request.MaritalStatus,
-			MaritalCertificate:     request.MaritalCertificate,
-			MaritalCertificateNo:   request.MaritalCertificateNo,
-			MarriageDate:           request.MarriageDate,
-			DivorceCertificate:     request.DivorceCertificate,
-			DivorceCertificateNo:   request.DivorceCertificateNo,
-			DivorceCertificateDate: request.DivorceCertificateDate,
-			FamilyStatus:           request.FamilyStatus,
-			MentalDisorders:        request.MentalDisorders,
-			Disabilities:           request.Disabilities,
-			EducationStatus:        request.EducationStatus,
-			JobTypeID:              request.JobTypeID,
-			NIKMother:              request.NIKMother,
-			Mother:                 request.Mother,
-			NIKFather:              request.NIKFather,
-			Father:                 request.Father,
-			Coordinate:             request.Coordinate,
-		}
-		citizens = append(citizens, newCitizen)
-	}
+	citizens := dto.CitizensDTOtoEntities(perPage)
 
 	response := dto.CitizenResponse{
 		Pagination: pagination,
@@ -363,50 +281,7 @@ func (u CitizensUsecaseImpl) FindAllCitizens(ctx context.Context) ([]dto.Citizen
 		return nil, fmt.Errorf("%d:%w", http.StatusInternalServerError, err)
 	}
 
-	var citizens []dto.CitizensDTO
-	for _, request := range allCitizens {
-		newCitizen := dto.CitizensDTO{
-			ID:                     request.ID,
-			NIK:                    request.NIK,
-			KK:                     request.KK,
-			FullName:               request.FullName,
-			Gender:                 request.Gender,
-			BirthDate:              request.BirthDate,
-			Age:                    request.Age,
-			BirthPlace:             request.BirthPlace,
-			Address:                request.Address,
-			ProvinceID:             request.ProvinceID,
-			DistrictID:             request.DistrictID,
-			SubDistrictID:          request.SubDistrictID,
-			VillageID:              request.VillageID,
-			RT:                     request.RT,
-			RW:                     request.RW,
-			PostalCode:             request.PostalCode,
-			CitizenStatus:          request.CitizenStatus,
-			BirthCertificate:       request.BirthCertificate,
-			BirthCertificateNo:     request.BirthCertificateNo,
-			BloodType:              request.BloodType,
-			Religion:               request.Religion,
-			MaritalStatus:          request.MaritalStatus,
-			MaritalCertificate:     request.MaritalCertificate,
-			MaritalCertificateNo:   request.MaritalCertificateNo,
-			MarriageDate:           request.MarriageDate,
-			DivorceCertificate:     request.DivorceCertificate,
-			DivorceCertificateNo:   request.DivorceCertificateNo,
-			DivorceCertificateDate: request.DivorceCertificateDate,
-			FamilyStatus:           request.FamilyStatus,
-			MentalDisorders:        request.MentalDisorders,
-			Disabilities:           request.Disabilities,
-			EducationStatus:        request.EducationStatus,
-			JobTypeID:              request.JobTypeID,
-			NIKMother:              request.NIKMother,
-			Mother:                 request.Mother,
-			NIKFather:              request.NIKFather,
-			Father:                 request.Father,
-			Coordinate:             request.Coordinate,
-		}
-		citizens = append(citizens, newCitizen)
-	}
+	citizens := dto.CitizensDTOtoEntities(allCitizens)
 
 	return citizens, err
 

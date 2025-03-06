@@ -1,5 +1,9 @@
 package dto
 
+import (
+	"github.com/firstudio-lab/JARITMAS-API/internal/entity"
+)
+
 type CitizenResponse struct {
 	Pagination `json:"pagination"`
 	Citizens   []CitizensDTO `json:"citizens"`
@@ -53,4 +57,96 @@ type CitizensDTO struct {
 	NIKFather              string `json:"nik_father"`
 	Father                 string `json:"father"`
 	Coordinate             string `json:"coordinate"`
+}
+
+func CitizensDTOtoEntity(request entity.Citizen) CitizensDTO {
+	return CitizensDTO{
+		ID:                     request.ID,
+		NIK:                    request.NIK,
+		KK:                     request.KK,
+		FullName:               request.FullName,
+		Gender:                 request.Gender,
+		BirthDate:              request.BirthDate,
+		Age:                    request.Age,
+		BirthPlace:             request.BirthPlace,
+		Address:                request.Address,
+		ProvinceID:             request.ProvinceID,
+		DistrictID:             request.DistrictID,
+		SubDistrictID:          request.SubDistrictID,
+		VillageID:              request.VillageID,
+		RT:                     request.RT,
+		RW:                     request.RW,
+		PostalCode:             request.PostalCode,
+		CitizenStatus:          request.CitizenStatus,
+		BirthCertificate:       request.BirthCertificate,
+		BirthCertificateNo:     request.BirthCertificateNo,
+		BloodType:              request.BloodType,
+		Religion:               request.Religion,
+		MaritalStatus:          request.MaritalStatus,
+		MaritalCertificate:     request.MaritalCertificate,
+		MaritalCertificateNo:   request.MaritalCertificateNo,
+		MarriageDate:           request.MarriageDate,
+		DivorceCertificate:     request.DivorceCertificate,
+		DivorceCertificateNo:   request.DivorceCertificateNo,
+		DivorceCertificateDate: request.DivorceCertificateDate,
+		FamilyStatus:           request.FamilyStatus,
+		MentalDisorders:        request.MentalDisorders,
+		Disabilities:           request.Disabilities,
+		EducationStatus:        request.EducationStatus,
+		JobTypeID:              request.JobTypeID,
+		NIKMother:              request.NIKMother,
+		Mother:                 request.Mother,
+		NIKFather:              request.NIKFather,
+		Father:                 request.Father,
+		Coordinate:             request.Coordinate,
+	}
+
+}
+
+func CitizensDTOtoEntities(c []entity.Citizen) []CitizensDTO {
+	var citizens []CitizensDTO
+	for _, request := range c {
+		newCitizen := CitizensDTO{
+			ID:                     request.ID,
+			NIK:                    request.NIK,
+			KK:                     request.KK,
+			FullName:               request.FullName,
+			Gender:                 request.Gender,
+			BirthDate:              request.BirthDate,
+			Age:                    request.Age,
+			BirthPlace:             request.BirthPlace,
+			Address:                request.Address,
+			ProvinceID:             request.ProvinceID,
+			DistrictID:             request.DistrictID,
+			SubDistrictID:          request.SubDistrictID,
+			VillageID:              request.VillageID,
+			RT:                     request.RT,
+			RW:                     request.RW,
+			PostalCode:             request.PostalCode,
+			CitizenStatus:          request.CitizenStatus,
+			BirthCertificate:       request.BirthCertificate,
+			BirthCertificateNo:     request.BirthCertificateNo,
+			BloodType:              request.BloodType,
+			Religion:               request.Religion,
+			MaritalStatus:          request.MaritalStatus,
+			MaritalCertificate:     request.MaritalCertificate,
+			MaritalCertificateNo:   request.MaritalCertificateNo,
+			MarriageDate:           request.MarriageDate,
+			DivorceCertificate:     request.DivorceCertificate,
+			DivorceCertificateNo:   request.DivorceCertificateNo,
+			DivorceCertificateDate: request.DivorceCertificateDate,
+			FamilyStatus:           request.FamilyStatus,
+			MentalDisorders:        request.MentalDisorders,
+			Disabilities:           request.Disabilities,
+			EducationStatus:        request.EducationStatus,
+			JobTypeID:              request.JobTypeID,
+			NIKMother:              request.NIKMother,
+			Mother:                 request.Mother,
+			NIKFather:              request.NIKFather,
+			Father:                 request.Father,
+			Coordinate:             request.Coordinate,
+		}
+		citizens = append(citizens, newCitizen)
+	}
+	return citizens
 }
