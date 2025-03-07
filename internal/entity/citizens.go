@@ -127,6 +127,10 @@ const (
 	Children FamilyStatus = iota + 1
 	HeadFamily
 	Wife
+	Parents
+	ParentInLaw
+	Grandchild
+	OtherFamilyMember
 )
 
 func (fs FamilyStatus) ToString() string {
@@ -139,10 +143,18 @@ func (fs FamilyStatus) ToString() string {
 
 	case Wife:
 		return "ISTRI"
-	default:
-		return "hell nah"
-	}
+	case Parents:
+		return "ORANG TUA"
+	case ParentInLaw:
+		return "MERTUA"
+	case Grandchild:
+		return "CUCU"
+	case OtherFamilyMember:
+		return "FAMILI LAIN"
 
+	default:
+		return "LAINNYA"
+	}
 }
 
 type AvailableStatus int
