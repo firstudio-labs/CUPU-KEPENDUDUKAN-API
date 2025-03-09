@@ -41,10 +41,7 @@ func (h JobsHandlerImpl) CreateJob(c *gin.Context) {
 
 	err := h.JobsUsecase.CreateJobs(c.Request.Context(), body)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, helper.NoData{
-			Status:  "error",
-			Message: err.Error(),
-		})
+		helper.ErrResponses(c, err)
 		return
 	}
 

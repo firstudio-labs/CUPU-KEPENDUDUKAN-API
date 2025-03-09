@@ -1,12 +1,20 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"github.com/firstudio-lab/JARITMAS-API/cfg"
 	"github.com/firstudio-lab/JARITMAS-API/internal/handler"
 	"github.com/firstudio-lab/JARITMAS-API/internal/repository"
 	"github.com/firstudio-lab/JARITMAS-API/internal/usecase"
 	"github.com/firstudio-lab/JARITMAS-API/pkg/logger"
+	"log"
+	"log/slog"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -55,7 +63,9 @@ func main() {
 	validate := validator.New()
 	APIKEY := "KORIE"
 
-	r := gin.Default()
+	gin.SetMode(gin.ReleaseMode)
+	r := gin.New()
+	r.Use(gin.Recovery())
 	r.Use(CustomCORSMiddleware())
 	r.Use(APIKeyMiddleware(APIKEY))
 
@@ -67,28 +77,64 @@ func main() {
 	jobsUsecase := usecase.NewJobsUsecase(validate, jobsRepository)
 	jobsHandler := handler.NewJobsHandler(jobsUsecase)
 
+	countryHandler := handler.NewCountryHandler(DEBE)
+
 	// Setup routes for Citizens
-	r.GET("/api/citizens/:nik", citizensHandler.FindCitizenByNIK)
-	r.GET("/api/citizens", citizensHandler.FindCitizenPage) // ?page
-	r.POST("/api/citizens", citizensHandler.CreateCitizen)
-	r.PUT("/api/citizens/:nik", citizensHandler.UpdateCitizenByNIK)
-	r.DELETE("/api/citizens/:nik", citizensHandler.DeleteCitizenByNIK)
-	r.GET("/api/citizens-family/:kk", citizensHandler.FindAllMemberByKK)
-	r.GET("/api/all-citizens", citizensHandler.FindAllCitizens)
-	r.GET("/api/citizens-search/:namePattern", citizensHandler.FindSimilarName)
+	v1 := r.Group("/api")
+	{
+		v1.GET("/citizens/:nik", citizensHandler.FindCitizenByNIK)
+		v1.GET("/citizens", citizensHandler.FindCitizenPage) // ?page
+		v1.POST("/citizens", citizensHandler.CreateCitizen)
+		v1.PUT("/citizens/:nik", citizensHandler.UpdateCitizenByNIK)
+		v1.DELETE("/citizens/:nik", citizensHandler.DeleteCitizenByNIK)
+		v1.GET("/citizens-family/:kk", citizensHandler.FindAllMemberByKK)
+		v1.GET("/all-citizens", citizensHandler.FindAllCitizens)
+		v1.GET("/citizens-search/:namePattern", citizensHandler.FindSimilarName)
 
-	// Setup routes for Jobs
-	r.DELETE("/api/jobs/:id", jobsHandler.DeleteJobById)
-	r.GET("/api/jobs", jobsHandler.GetJobs)
-	r.POST("/api/jobs", jobsHandler.CreateJob)
-	r.PUT("/api/jobs/:id", jobsHandler.UpdateJobById)
-	r.GET("/api/jobs/:id", jobsHandler.GetJobById)
-	r.GET("/api/jobs-search/:namePattern", jobsHandler.GetSimilarJobsName)
+		// Setup routes for Jobs
+		v1.DELETE("/jobs/:id", jobsHandler.DeleteJobById)
+		v1.GET("/jobs", jobsHandler.GetJobs)
+		v1.POST("/jobs", jobsHandler.CreateJob)
+		v1.PUT("/jobs/:id", jobsHandler.UpdateJobById)
+		v1.GET("/jobs/:id", jobsHandler.GetJobById)
+		v1.GET("/jobs-search/:namePattern", jobsHandler.GetSimilarJobsName)
 
-	// Start the Gin server
-	port := cfg.GetConfig().Server.Port
-	if port == "" {
-		port = "3000"
+		//
+		v1.GET("/provinces", countryHandler.GetProvince)
+		v1.GET("/districts/:province-code", countryHandler.GetDistrictByProvinceCode)
+		v1.GET("/sub-districts/:district-code", countryHandler.GetSubDistrictByDistrictCode)
+		v1.GET("/villages/:sub-district-code", countryHandler.GetVillageBySUbDistrictCode)
 	}
-	r.Run(fmt.Sprintf(":%s", port))
+
+	// START SERVER
+	port := cfg.GetConfig().Server.Port
+	srv := &http.Server{
+		Addr:    fmt.Sprintf(":%s", port),
+		Handler: r.Handler(),
+	}
+
+	go func() {
+		slog.Info("Listening And Server HTTP on ", slog.String("port", port))
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			slog.Error("Server failed: %s", err)
+			panic(err)
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Println("Shutdown Server ...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatal("Server Shutdown:", err)
+	}
+
+	// catching ctx.Done(). timeout of 5 seconds.
+	select {
+	case <-ctx.Done():
+		log.Println("Server shutdown gracefully")
+	}
 }

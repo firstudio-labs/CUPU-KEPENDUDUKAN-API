@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/firstudio-lab/JARITMAS-API/pkg/logger"
 	"github.com/gin-gonic/gin"
+	"log/slog"
 	"net/http"
 	"strconv"
 	"strings"
@@ -39,24 +40,12 @@ type NoData struct {
 	Message string `json:"message"`
 }
 
-// WResponses is a helper function to send a standardized response
-func WResponses(ctx *gin.Context, err error, message string, data interface{}) {
-	// Jika tidak ada error, kirim response sukses
-	if err == nil {
-		if message == "" {
-			message = "No message provided"
-		}
-		ctx.JSON(http.StatusOK, UseData{
-			Status:  "OK",
-			Message: message,
-			Data:    data,
-		})
-		return
-	}
-
+func ErrResponses(ctx *gin.Context, err error) {
 	code, msgErr := ExtractHTTPCodeAndMessage(err)
 	ctx.JSON(code, NoData{
 		Status:  "ERROR",
 		Message: msgErr,
 	})
+	fmt.Println(code, msgErr)
+	slog.Info("RESULT => ", slog.Int("CODE", code), slog.String("message", msgErr))
 }
