@@ -110,7 +110,7 @@ func (h CountryHandlerImpl) GetDistrictByProvinceCode(ctx *gin.Context) {
 
 	// Query districts by province code
 	var results []entity.IndonesiaDistrict
-	if err := h.DB.WithContext(ctx.Request.Context()).Select("id", "code", "province_code", "meta").
+	if err := h.DB.WithContext(ctx.Request.Context()).Select("id", "code", "province_code", "name", "meta").
 		Where("province_code =?", atoi).Find(&results).Error; err != nil {
 		log.Printf("KENA DINSINI")
 		err = fmt.Errorf("%d:%s", http.StatusInternalServerError, "try again later")
@@ -190,7 +190,7 @@ func (h CountryHandlerImpl) GetSubDistrictByDistrictCode(ctx *gin.Context) {
 
 	// Query subdistricts by district code
 	var results []entity.IndonesiaSubDistrict
-	if err := h.DB.WithContext(ctx.Request.Context()).Select("id", "code", "district_code", "meta").
+	if err := h.DB.WithContext(ctx.Request.Context()).Select("id", "code", "district_code", "name", "meta").
 		Where("district_code =?", atoi).Find(&results).Error; err != nil {
 		err := fmt.Errorf("%d:%s", http.StatusInternalServerError, "try again later")
 		helper.ErrResponses(ctx, err)
@@ -268,7 +268,7 @@ func (h CountryHandlerImpl) GetVillageBySUbDistrictCode(ctx *gin.Context) {
 	}
 
 	var results []entity.IndonesiaVillage
-	if err := h.DB.WithContext(ctx.Request.Context()).Select("id", "code", "sub_district_code", "meta").
+	if err := h.DB.WithContext(ctx.Request.Context()).Select("id", "code", "sub_district_code", "name", "meta").
 		Where("sub_district_code =?", atoi).Find(&results).Error; err != nil {
 		err := fmt.Errorf("%d:%s", http.StatusInternalServerError, "try again later")
 		helper.ErrResponses(ctx, err)
