@@ -1,0 +1,782 @@
+{
+	"info": {
+		"_postman_id": "284fe758-fb58-4d14-8d3a-2b13b20b2eb9",
+		"name": "KEPENDUDUKAN API FINAL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32749485"
+	},
+	"item": [
+		{
+			"name": "PROVINCE",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/provinces",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"provinces"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DISTRICT",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/districts/11",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"districts",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SUB DISTRICT",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/sub-districts/1101",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"sub-districts",
+						"1101"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "VILLAGES",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/villages/110101",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"villages",
+						"110101"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "citizens perpage",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/provinces",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"provinces"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ALL CITIZENS",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/citizens-family/3323092402072308",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"citizens-family",
+						"3323092402072308"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CITIZENS FAMILY BY KK",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/citizens-family/3323092402072308",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"citizens-family",
+						"3323092402072308"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SEARCH-CITIZENS NAME PATTERN",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/citizens-search/ha",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"citizens-search",
+						"ha"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "citizens by nik",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/citizens/3323092110770003",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"citizens",
+						"3323092110770003"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "citizens create",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nik\": 1234567890123471,\r\n  \"kk\": 3323092402072303,\r\n  \"full_name\": \"Namaku\",\r\n  \"gender\": 1,\r\n  \"birth_date\": \"2025-03-09\",\r\n  \"age\": 1,\r\n  \"birth_place\": \"Jakarta\",\r\n  \"address\": \"ppp\",\r\n  \"province_id\": 1,\r\n  \"district_id\": 1,\r\n  \"sub_district_id\": 1,\r\n  \"village_id\": 1,\r\n  \"rt\": \"001\",\r\n  \"rw\": \"001\",\r\n  \"postal_code\": 0,\r\n  \"citizen_status\": 1,\r\n  \"birth_certificate\": 1,\r\n  \"birth_certificate_no\": \"BC1234567872\",\r\n  \"blood_type\": 1,\r\n  \"religion\": 1,\r\n  \"marital_status\": 1,\r\n  \"marital_certificate\": 2,\r\n  \"marital_certificate_no\": \" \",\r\n  \"marriage_date\": \"2025-03-09\",\r\n  \"divorce_certificate\": 2,\r\n  \"divorce_certificate_no\": \" \",\r\n  \"divorce_certificate_date\": \"2025-03-09\",\r\n  \"family_status\": 3,\r\n  \"mental_disorders\": 1,\r\n  \"disabilities\": 1,\r\n  \"education_status\": 1,\r\n  \"job_type_id\": 2,\r\n  \"nik_mother\": \"9876543210123451\",\r\n  \"mother\": \"ibu\",\r\n  \"nik_father\": \"8765432109876542\",\r\n  \"father\": \"ayah\",\r\n  \"coordinate\": \" \"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/citizens",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"citizens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "citizens update by nik",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"kk\": 9876543210987659,\r\n    \"full_name\": \"John Doe DOEELLLLssssssssssssss\",\r\n    \"gender\": 1,\r\n    \"birth_date\": \"1990-01-01\",\r\n    \"age\": 35,\r\n    \"birth_place\": \"Jakarta rAWWWULLL\",\r\n    \"address\": \"Jl. Merdeka No. 10, RT 01 RW 02\",\r\n    \"province_id\": 1,\r\n    \"district_id\": 2,\r\n    \"sub_district_id\": 3,\r\n    \"village_id\": 4,\r\n    \"rt\": \"01\",\r\n    \"rw\": \"02\",\r\n    \"postal_code\": 12345,\r\n    \"citizen_status\": 1,\r\n    \"birth_certificate\": 1,\r\n    \"birth_certificate_no\": \"BC1234567890\",\r\n    \"blood_type\": 1,\r\n    \"religion\": 1,\r\n    \"marital_status\": 1,\r\n    \"marital_certificate\": 1,\r\n    \"marital_certificate_no\": \"MC1234567890\",\r\n    \"marriage_date\": \"2015-06-15\",\r\n    \"divorce_certificate\": 2,\r\n    \"divorce_certificate_no\": \"DC1234567890\",\r\n    \"divorce_certificate_date\": \"2020-12-31\",\r\n    \"family_status\": 1,\r\n    \"mental_disorders\": 2,\r\n    \"disabilities\": 1,\r\n    \"education_status\": 6,\r\n    \"job_type_id\": 5,\r\n    \"nik_mother\": \"9876543210123456\",\r\n    \"mother\": \"Jane Doe\",\r\n    \"nik_father\": \"8765432109876543\",\r\n    \"father\": \"Richard Roe\",\r\n    \"coordinate\": \"-6.200000, 106.816666\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/citizens/1234567890123457",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"citizens",
+						"1234567890123457"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete by nik",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/citizens/1234567890123457",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"citizens",
+						"1234567890123457"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "jobs all",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/jobs-search/k",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"jobs-search",
+						"k"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "jobs BY ID",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/jobs/1",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"jobs",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "jobs update",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"1234FK\",\r\n    \"name\": \"ASSOOOOO\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/jobs/34",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"jobs",
+						"34"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "jobs create",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"1234FK\",\r\n    \"name\": \"ASSOOOOO\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/villages/110117",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"villages",
+						"110117"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "jobs delete",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "KORIE",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-API-Key",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://api-kependudukan.desaverse.id:3000/api/jobs/34",
+					"protocol": "http",
+					"host": [
+						"api-kependudukan",
+						"desaverse",
+						"id"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"jobs",
+						"34"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SEARCH-JOB PATTERN",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
