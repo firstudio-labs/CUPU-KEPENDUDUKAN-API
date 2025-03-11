@@ -44,7 +44,7 @@ func (r JobsRepositoryImpl) CreateJobs(ctx context.Context, newJob entity.Job) e
 	var existingJob entity.Job
 	if err := r.DB.WithContext(ctx).Where("code = ?", newJob.Code).First(&existingJob).Error; err == nil {
 		// Jika ditemukan job dengan code yang sama
-		return fmt.Errorf("job with code %s already exist", newJob.Code)
+		return fmt.Errorf("code %s already exist", newJob.Code)
 	}
 	if err := r.DB.WithContext(ctx).Create(&newJob).Error; err != nil {
 		logger.Log.Debugf("QUERY Error %v", err)
@@ -115,7 +115,7 @@ func (r JobsRepositoryImpl) ExistJobCode(ctx context.Context, code string) error
 
 	if !exists {
 		//if data not found return error
-		return fmt.Errorf("code %d already usage", code)
+		return fmt.Errorf("code %s already usage", code)
 	}
 
 	return nil

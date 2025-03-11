@@ -45,19 +45,14 @@ func (u JobsUsecaseImpl) CreateJobs(ctx context.Context, request dto.JobReqCreat
 		}
 
 		errValidate := fmt.Sprintf("validation failed: %s", strings.Join(errorMessages, ", "))
-		return fmt.Errorf("%s", errValidate)
-
+		return fmt.Errorf("%d:%v", http.StatusBadRequest, errValidate)
 	}
 
-	err := u.JobsRepository.ExistJobCode(ctx, request.Code)
-	if err != nil {
-		if err := u.JobsRepository.CreateJobs(ctx, entity.Job{Code: request.Code, Name: request.Name}); err != nil {
-			return fmt.Errorf("%d:%w", http.StatusBadRequest, err)
-		}
-		return nil
+	if err := u.JobsRepository.CreateJobs(ctx, entity.Job{Code: request.Code, Name: request.Name}); err != nil {
+		return fmt.Errorf("%d:%w", http.StatusBadRequest, err)
 	}
 
-	return fmt.Errorf("%d:%w", http.StatusBadRequest, err)
+	return nil
 }
 
 func (u JobsUsecaseImpl) UpdateJobs(ctx context.Context, idjobs int, request dto.JobReqUpdate) error {
@@ -68,18 +63,14 @@ func (u JobsUsecaseImpl) UpdateJobs(ctx context.Context, idjobs int, request dto
 			errorMessages = append(errorMessages, fmt.Sprintf("Field '%s' is invalid: %s %s", validationError.Field(), validationError.Tag(), validationError.Param()))
 		}
 		errValidate := fmt.Sprintf("validation failed: %s", strings.Join(errorMessages, ", "))
-		return fmt.Errorf("%s", errValidate)
+		return fmt.Errorf("%d:%v", http.StatusBadRequest, errValidate)
 	}
 
-	err := u.JobsRepository.ExistJobCode(ctx, request.Code)
-	if err != nil {
-		//KARENA TIDAK EXIST KITA CREATE
-		if err := u.JobsRepository.UpdateJobById(ctx, idjobs, entity.Job{Code: request.Code, Name: request.Name}); err != nil {
-			return fmt.Errorf("%d:%w", http.StatusBadRequest, err)
-		}
-		return nil
+	if err := u.JobsRepository.UpdateJobById(ctx, idjobs, entity.Job{Code: request.Code, Name: request.Name}); err != nil {
+		return fmt.Errorf("%d:%w", http.StatusBadRequest, err)
 	}
-	return fmt.Errorf("%d:%w", http.StatusBadRequest, err)
+
+	return nil
 }
 
 func (u JobsUsecaseImpl) DeleteJobs(ctx context.Context, idjobs int) error {
@@ -94,7 +85,7 @@ func (u JobsUsecaseImpl) GetJobsById(ctx context.Context, idjob int) (entity.Job
 
 	job, err := u.JobsRepository.FindJobsId(ctx, idjob)
 	if err != nil {
-		return entity.Job{}, fmt.Errorf("%d:%w", http.StatusBadRequest, err)
+		return entity.Job{}, fmt.Errorf("%d:%w", http.StatusNotFound, err)
 	}
 
 	return job, nil

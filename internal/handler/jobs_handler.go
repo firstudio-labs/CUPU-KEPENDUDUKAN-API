@@ -32,10 +32,8 @@ func (h JobsHandlerImpl) CreateJob(c *gin.Context) {
 	var body dto.JobReqCreate
 	if err := c.ShouldBindJSON(&body); err != nil {
 		logger.Log.Errorf("Fail to parse body: %v", err)
-		c.JSON(http.StatusBadRequest, helper.NoData{
-			Status:  "error",
-			Message: "Failed to parse JSON",
-		})
+		err = fmt.Errorf("%d:%s", http.StatusBadRequest, "failed to parse json")
+		helper.ErrResponses(c, err)
 		return
 	}
 
@@ -64,10 +62,8 @@ func (h JobsHandlerImpl) UpdateJobById(c *gin.Context) {
 	var body dto.JobReqUpdate
 	if err := c.ShouldBindJSON(&body); err != nil {
 		logger.Log.Errorf("Fail to parse body: %v", err)
-		c.JSON(http.StatusBadRequest, helper.NoData{
-			Status:  "error",
-			Message: "Failed to parse JSON",
-		})
+		err = fmt.Errorf("%d:%s", http.StatusBadRequest, "failed to parse json")
+		helper.ErrResponses(c, err)
 		return
 	}
 
@@ -99,10 +95,7 @@ func (h JobsHandlerImpl) DeleteJobById(c *gin.Context) {
 
 	err = h.JobsUsecase.DeleteJobs(c.Request.Context(), atoi)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, helper.NoData{
-			Status:  "error",
-			Message: err.Error(),
-		})
+		helper.ErrResponses(c, err)
 		return
 	}
 
@@ -141,10 +134,7 @@ func (h JobsHandlerImpl) GetJobById(c *gin.Context) {
 	}
 	data, err := h.JobsUsecase.GetJobsById(c.Request.Context(), atoi)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, helper.NoData{
-			Status:  "error",
-			Message: err.Error(),
-		})
+		helper.ErrResponses(c, err)
 		return
 	}
 
