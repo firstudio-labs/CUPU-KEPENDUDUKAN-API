@@ -69,10 +69,7 @@ func (h JobsHandlerImpl) UpdateJobById(c *gin.Context) {
 
 	err = h.JobsUsecase.UpdateJobs(c.Request.Context(), atoi, body)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, helper.NoData{
-			Status:  "error",
-			Message: err.Error(),
-		})
+		helper.ErrResponses(c, err)
 		return
 	}
 
@@ -108,10 +105,7 @@ func (h JobsHandlerImpl) DeleteJobById(c *gin.Context) {
 func (h JobsHandlerImpl) GetJobs(c *gin.Context) {
 	data, err := h.JobsUsecase.GetAllJobs(c.Request.Context())
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, helper.NoData{
-			Status:  "error",
-			Message: err.Error(),
-		})
+		helper.ErrResponses(c, err)
 		return
 	}
 
