@@ -674,7 +674,7 @@ func (h CountryHandlerImpl) VillagesPagination(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, helper.UseData{
 		Status:  "OK",
-		Message: "successfully get subs_districts",
+		Message: "successfully get village",
 		Data: struct {
 			Pagination *dto.Pagination `json:"pagination"`
 			Villages   interface{}     `json:"villages"`
@@ -689,7 +689,7 @@ func catchPage(ctx *gin.Context) (int, error) {
 	page := ctx.Query("page")
 	atoi, err := strconv.ParseInt(page, 10, 64)
 	if err != nil {
-		err = fmt.Errorf("%d:%s", http.StatusNotFound, fmt.Sprintf("data with sub-district-code %v", atoi))
+		err = fmt.Errorf("%d:%s", http.StatusNotFound, fmt.Sprintf("make sure page param number %v", atoi))
 		return 0, err
 	}
 
