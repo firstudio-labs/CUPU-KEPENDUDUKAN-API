@@ -161,7 +161,7 @@ Content-Type: application/json
 X-API-Key: KORIE
 
 ### search jobs
-GET http://localhost:3000//api/jobs-search/u
+GET http://localhost:3000/api/jobs-search/u
 Accept: application/json
 Content-Type: application/json
 X-API-Key: KORIE
@@ -169,25 +169,50 @@ X-API-Key: KORIE
 
 
 ### search provinces
-GET http://localhost:3000//api/provinces
+GET http://localhost:3000/api/provinces
 Accept: application/json
 Content-Type: application/json
 X-API-Key: KORIE
 
 ### search dictrict by kode province
-GET http://localhost:3000//api/districts/71
+GET http://localhost:3000/api/districts/71
 Accept: application/json
 Content-Type: application/json
 X-API-Key: KORIE
 
 ### search sub-dictricts by kode district
-GET http://localhost:3000//api/sub-districts/7105
+GET http://localhost:3000/api/sub-districts/7105
 Accept: application/json
 Content-Type: application/json
 X-API-Key: KORIE
 
 ### search villages by kode sub-district
-GET http://localhost:3000//api/villages/710517
+GET http://localhost:3000/api/villages/710517
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+
+### search provinces by page
+GET http://localhost:3000/api/province?page=1
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+### search districts by page
+GET http://localhost:3000/api/districts?page=1
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+### search sub_district by page
+GET http://localhost:3000/api/sub-districts?page=1
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+### search village by page
+GET http://localhost:3000/api/villages?page=1
 Accept: application/json
 Content-Type: application/json
 X-API-Key: KORIE

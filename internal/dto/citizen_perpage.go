@@ -2,6 +2,7 @@ package dto
 
 import (
 	"github.com/firstudio-lab/JARITMAS-API/internal/entity"
+	"math"
 )
 
 type CitizenResponse struct {
@@ -16,6 +17,32 @@ type Pagination struct {
 	ItemsPerPage int `json:"items_per_page"`
 	NextPage     int `json:"next_page"`
 	PrevPage     int `json:"prev_page"`
+}
+
+func NewPagination(totalItems int64, currentPage int, itemPerPage int) *Pagination {
+	totalPage := int(math.Ceil(float64(totalItems) / float64(itemPerPage)))
+	// Tentukan halaman berikutnya dan sebelumnya
+	var nextPage, prevPage int
+	if currentPage < totalPage {
+		nextPage = currentPage + 1
+	} else {
+		nextPage = totalPage
+	}
+
+	if currentPage > 1 {
+		prevPage = currentPage - 1
+	} else {
+		prevPage = 1
+	}
+
+	return &Pagination{
+		CurrentPage:  currentPage,
+		TotalPage:    totalPage,
+		TotalItems:   int(totalItems),
+		ItemsPerPage: itemPerPage,
+		NextPage:     nextPage,
+		PrevPage:     prevPage,
+	}
 }
 
 type CitizensDTO struct {

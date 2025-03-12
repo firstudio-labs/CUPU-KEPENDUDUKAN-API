@@ -29,7 +29,7 @@ func CustomCORSMiddleware() gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization, X-API-Key")
 		if c.Request.Method == "OPTIONS" {
 			fmt.Println("Handling OPTIONS method")
-			c.AbortWithStatus(http.StatusOK)
+			c.AbortWithStatus(http.StatusNoContent)
 			return
 		}
 		c.Next()
@@ -104,6 +104,11 @@ func main() {
 		v1.GET("/districts/:province-code", countryHandler.GetDistrictByProvinceCode)
 		v1.GET("/sub-districts/:district-code", countryHandler.GetSubDistrictByDistrictCode)
 		v1.GET("/villages/:sub-district-code", countryHandler.GetVillageBySUbDistrictCode)
+
+		v1.GET("/province", countryHandler.ProvincesPagination)
+		v1.GET("/districts", countryHandler.DistrictsPagination)
+		v1.GET("/sub-districts", countryHandler.SubDistrictsPagination)
+		v1.GET("/villages", countryHandler.VillagesPagination)
 	}
 
 	// START SERVER

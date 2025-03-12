@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/firstudio-lab/JARITMAS-API/internal/dto"
 	"github.com/firstudio-lab/JARITMAS-API/internal/entity"
 	"github.com/firstudio-lab/JARITMAS-API/pkg/helper"
 	"github.com/gin-gonic/gin"
@@ -17,6 +18,10 @@ type CountryHandler interface {
 	GetDistrictByProvinceCode(ctx *gin.Context)
 	GetSubDistrictByDistrictCode(ctx *gin.Context)
 	GetVillageBySUbDistrictCode(ctx *gin.Context)
+	ProvincesPagination(ctx *gin.Context)
+	DistrictsPagination(ctx *gin.Context)
+	SubDistrictsPagination(ctx *gin.Context)
+	VillagesPagination(ctx *gin.Context)
 }
 
 type CountryHandlerImpl struct {
@@ -327,5 +332,366 @@ func (h CountryHandlerImpl) GetVillageBySUbDistrictCode(ctx *gin.Context) {
 		})
 	}
 	ctx.JSON(http.StatusOK, helper.UseData{Status: "OK", Message: fmt.Sprintf("retrieve data sub_district where sub_district code %d", atoi), Data: villages})
+}
 
+func (h CountryHandlerImpl) ProvincesPagination(ctx *gin.Context) {
+	pageFind, err := catchPage(ctx)
+	if err != nil {
+		helper.ErrResponses(ctx, err)
+		return
+	}
+
+	var totalItem int64
+	if err = h.DB.WithContext(ctx.Request.Context()).Model(&entity.IndonesiaProvince{}).Count(&totalItem).Error; err != nil {
+		err = fmt.Errorf("%d:%s", http.StatusInternalServerError, "try again later")
+		helper.ErrResponses(ctx, err)
+		return
+	}
+
+	itemPerPage := 10
+	pagination := dto.NewPagination(totalItem, pageFind, itemPerPage)
+	offset := (pageFind - 1) * itemPerPage
+
+	var results []entity.IndonesiaProvince
+	if err := h.DB.WithContext(ctx.Request.Context()).Limit(itemPerPage).Offset(offset).Select("id", "code", "name", "meta").
+		Find(&results).Error; err != nil {
+		err := fmt.Errorf("%d:%s", http.StatusInternalServerError, "try again later")
+		helper.ErrResponses(ctx, err)
+		return
+	}
+
+	if len(results) == 0 {
+		err := fmt.Errorf("%d:%s", http.StatusNotFound, fmt.Sprintf("data in province not ready yet"))
+		helper.ErrResponses(ctx, err)
+		return
+	}
+
+	// Process the results and map Meta to Lat/Long
+	var provinces []struct {
+		ID   int    `json:"id"`
+		Code string `json:"code"`
+		Name string `json:"name"`
+		Meta struct {
+			Lat  string `json:"lat"`
+			Long string `json:"long"`
+		} `json:"meta"`
+	}
+
+	for _, province := range results {
+		// Parse the Meta JSON field
+		var meta map[string]string
+		if err := json.Unmarshal([]byte(*province.Meta), &meta); err != nil {
+			// Handle error if Meta field can't be parsed
+			log.Printf("Failed to parse Meta field for province %s: %v", province.Name, err)
+			meta = make(map[string]string)
+		}
+
+		// Add province to the mapped result
+		provinces = append(provinces, struct {
+			ID   int    `json:"id"`
+			Code string `json:"code"`
+			Name string `json:"name"`
+			Meta struct {
+				Lat  string `json:"lat"`
+				Long string `json:"long"`
+			} `json:"meta"`
+		}{
+			ID:   int(province.ID),
+			Code: province.Code,
+			Name: province.Name,
+			Meta: struct {
+				Lat  string `json:"lat"`
+				Long string `json:"long"`
+			}{
+				Lat:  meta["lat"],
+				Long: meta["long"],
+			},
+		})
+	}
+
+	if len(provinces) == 0 {
+		err := fmt.Errorf("%d:%s", http.NotFound, "try again later")
+		helper.ErrResponses(ctx, err)
+		return
+	}
+
+	// Return the provinces with the correct structure
+	ctx.JSON(http.StatusOK, helper.UseData{
+		Status:  "OK",
+		Message: "successfully get provinces",
+		Data: struct {
+			Pagination *dto.Pagination `json:"pagination"`
+			Provinces  interface{}     `json:"provinces"`
+		}{
+			pagination, provinces,
+		},
+	})
+
+}
+
+func (h CountryHandlerImpl) DistrictsPagination(ctx *gin.Context) {
+	pageFind, err := catchPage(ctx)
+	if err != nil {
+		helper.ErrResponses(ctx, err)
+		return
+	}
+
+	var totalItem int64
+	if err = h.DB.WithContext(ctx.Request.Context()).Model(&entity.IndonesiaDistrict{}).Count(&totalItem).Error; err != nil {
+		err = fmt.Errorf("%d:%s", http.StatusInternalServerError, "try again later")
+		helper.ErrResponses(ctx, err)
+		return
+	}
+
+	itemPerPage := 10
+	pagination := dto.NewPagination(totalItem, pageFind, itemPerPage)
+	offset := (pageFind - 1) * itemPerPage
+
+	var results []entity.IndonesiaDistrict
+	if err := h.DB.WithContext(ctx.Request.Context()).Limit(itemPerPage).Offset(offset).Select("id", "code", "province_code", "name", "meta").
+		Find(&results).Error; err != nil {
+		err := fmt.Errorf("%d:%s", http.StatusInternalServerError, "try again later")
+		helper.ErrResponses(ctx, err)
+		return
+	}
+
+	// Process the results and map Meta to Lat/Long
+	var districts []struct {
+		ID           int    `json:"id"`
+		Code         string `json:"code"`
+		ProvinceCode string `json:"province_code"`
+		Name         string `json:"name"`
+		Meta         struct {
+			Lat  string `json:"lat"`
+			Long string `json:"long"`
+		} `json:"meta"`
+	}
+
+	// Loop through each district and process Meta field
+	for _, dist := range results {
+		// Parse the Meta JSON field
+		var meta map[string]string
+		if err := json.Unmarshal([]byte(*dist.Meta), &meta); err != nil {
+			// Handle error if Meta field can't be parsed
+			log.Printf("Failed to parse Meta field for district %s: %v", dist.Name, err)
+			meta = make(map[string]string) // Set meta as empty if parsing fails
+		}
+
+		// Add district to the mapped result
+		districts = append(districts, struct {
+			ID           int    `json:"id"`
+			Code         string `json:"code"`
+			ProvinceCode string `json:"province_code"`
+			Name         string `json:"name"`
+			Meta         struct {
+				Lat  string `json:"lat"`
+				Long string `json:"long"`
+			} `json:"meta"`
+		}{
+			ID:           int(dist.ID),
+			Code:         dist.Code,
+			ProvinceCode: dist.ProvinceCode,
+			Name:         dist.Name,
+			Meta: struct {
+				Lat  string `json:"lat"`
+				Long string `json:"long"`
+			}{
+				Lat:  meta["lat"],  // Use latitude from Meta
+				Long: meta["long"], // Use longitude from Meta
+			},
+		})
+	}
+
+	ctx.JSON(http.StatusOK, helper.UseData{
+		Status:  "OK",
+		Message: "successfully get districts",
+		Data: struct {
+			Pagination *dto.Pagination `json:"pagination"`
+			Districts  interface{}     `json:"districts"`
+		}{
+			pagination, districts,
+		},
+	})
+
+}
+
+func (h CountryHandlerImpl) SubDistrictsPagination(ctx *gin.Context) {
+	pageFind, err := catchPage(ctx)
+	if err != nil {
+		helper.ErrResponses(ctx, err)
+		return
+	}
+
+	var totalItem int64
+	if err = h.DB.WithContext(ctx.Request.Context()).Model(&entity.IndonesiaSubDistrict{}).Count(&totalItem).Error; err != nil {
+		err = fmt.Errorf("%d:%s", http.StatusInternalServerError, "try again later")
+		helper.ErrResponses(ctx, err)
+		return
+	}
+
+	itemPerPage := 10
+	pagination := dto.NewPagination(totalItem, pageFind, itemPerPage)
+	offset := (pageFind - 1) * itemPerPage
+
+	var results []entity.IndonesiaSubDistrict
+	if err := h.DB.WithContext(ctx.Request.Context()).Limit(itemPerPage).Offset(offset).Select("id", "code", "district_code", "name", "meta").
+		Find(&results).Error; err != nil {
+		err := fmt.Errorf("%d:%s", http.StatusInternalServerError, "try again later")
+		helper.ErrResponses(ctx, err)
+		return
+	}
+
+	// Process the results and map Meta to Lat/Long
+	var subdistricts []struct {
+		ID           int    `json:"id"`
+		Code         string `json:"code"`
+		DistrictCode string `json:"district_code"`
+		Name         string `json:"name"`
+		Meta         struct {
+			Lat  string `json:"lat"`
+			Long string `json:"long"`
+		} `json:"meta"`
+	}
+
+	// Loop through each subdistrict and process Meta field
+	for _, subdist := range results {
+		// Parse the Meta JSON field
+		var meta map[string]string
+		if err := json.Unmarshal([]byte(*subdist.Meta), &meta); err != nil {
+			// Handle error if Meta field can't be parsed
+			log.Printf("Failed to parse Meta field for subdistrict %s: %v", subdist.Name, err)
+			meta = make(map[string]string) // Set meta as empty if parsing fails
+		}
+
+		// Add subdistrict to the mapped result
+		subdistricts = append(subdistricts, struct {
+			ID           int    `json:"id"`
+			Code         string `json:"code"`
+			DistrictCode string `json:"district_code"`
+			Name         string `json:"name"`
+			Meta         struct {
+				Lat  string `json:"lat"`
+				Long string `json:"long"`
+			} `json:"meta"`
+		}{
+			ID:           int(subdist.ID),
+			Code:         subdist.Code,
+			DistrictCode: subdist.DistrictCode,
+			Name:         subdist.Name,
+			Meta: struct {
+				Lat  string `json:"lat"`
+				Long string `json:"long"`
+			}{
+				Lat:  meta["lat"],  // Use latitude from Meta
+				Long: meta["long"], // Use longitude from Meta
+			},
+		})
+	}
+
+	ctx.JSON(http.StatusOK, helper.UseData{
+		Status:  "OK",
+		Message: "successfully get subs_districts",
+		Data: struct {
+			Pagination    *dto.Pagination `json:"pagination"`
+			SubsDistricts interface{}     `json:"subs_districts"`
+		}{
+			pagination, subdistricts,
+		},
+	})
+
+}
+
+func (h CountryHandlerImpl) VillagesPagination(ctx *gin.Context) {
+	pageFind, err := catchPage(ctx)
+	if err != nil {
+		helper.ErrResponses(ctx, err)
+		return
+	}
+
+	var totalItem int64
+	if err = h.DB.WithContext(ctx.Request.Context()).Model(&entity.IndonesiaVillage{}).Count(&totalItem).Error; err != nil {
+		err = fmt.Errorf("%d:%s", http.StatusInternalServerError, "try again later")
+		helper.ErrResponses(ctx, err)
+		return
+	}
+
+	itemPerPage := 10
+	pagination := dto.NewPagination(totalItem, pageFind, itemPerPage)
+	offset := (pageFind - 1) * itemPerPage
+
+	var results []entity.IndonesiaVillage
+	if err := h.DB.WithContext(ctx.Request.Context()).Limit(itemPerPage).Offset(offset).Select("id", "code", "sub_district_code", "name", "meta").
+		Find(&results).Error; err != nil {
+		err := fmt.Errorf("%d:%s", http.StatusInternalServerError, "try again later")
+		helper.ErrResponses(ctx, err)
+		return
+	}
+
+	var villages []struct {
+		ID              int    `json:"id"`
+		Code            string `json:"code"`
+		SubDistrictCode string `json:"sub_district_code"`
+		Name            string `json:"name"`
+		Meta            struct {
+			Lat  string `json:"lat"`
+			Long string `json:"long"`
+		} `json:"meta"`
+	}
+
+	for _, village := range results {
+		// Parse the Meta JSON field
+		var meta map[string]string
+		if err := json.Unmarshal([]byte(*village.Meta), &meta); err != nil {
+			// Handle error if Meta field can't be parsed
+			log.Printf("Failed to parse Meta field for village %s: %v", village.Name, err)
+			meta = make(map[string]string) // Set meta as empty if parsing fails
+		}
+
+		// Add village to the mapped result
+		villages = append(villages, struct {
+			ID              int    `json:"id"`
+			Code            string `json:"code"`
+			SubDistrictCode string `json:"sub_district_code"`
+			Name            string `json:"name"`
+			Meta            struct {
+				Lat  string `json:"lat"`
+				Long string `json:"long"`
+			} `json:"meta"`
+		}{
+			ID:              int(village.ID),
+			Code:            village.Code,
+			SubDistrictCode: village.SubDistrictCode,
+			Name:            village.Name,
+			Meta: struct {
+				Lat  string `json:"lat"`
+				Long string `json:"long"`
+			}{
+				Lat:  meta["lat"],  // Use latitude from Meta
+				Long: meta["long"], // Use longitude from Meta
+			},
+		})
+	}
+
+	ctx.JSON(http.StatusOK, helper.UseData{
+		Status:  "OK",
+		Message: "successfully get subs_districts",
+		Data: struct {
+			Pagination *dto.Pagination `json:"pagination"`
+			Villages   interface{}     `json:"villages"`
+		}{
+			pagination, villages,
+		},
+	})
+
+}
+
+func catchPage(ctx *gin.Context) (int, error) {
+	page := ctx.Query("page")
+	atoi, err := strconv.ParseInt(page, 10, 64)
+	if err != nil {
+		err = fmt.Errorf("%d:%s", http.StatusNotFound, fmt.Sprintf("data with sub-district-code %v", atoi))
+		return 0, err
+	}
+
+	return int(atoi), nil
 }
