@@ -90,7 +90,7 @@ type Citizen struct {
 	VillageID              int
 	RT                     string
 	RW                     string
-	PostalCode             int    `gorm:"null"`
+	PostalCode             *int   `gorm:"null"`
 	CitizenStatus          string `gorm:"type:enum('WNA', 'WNI')"`       // enum tag
 	BirthCertificate       string `gorm:"type:enum('Ada', 'Tidak Ada')"` // enum tag
 	BirthCertificateNo     string `gorm:"null"`
@@ -113,6 +113,16 @@ type Citizen struct {
 	NIKFather              string `gorm:"size:255"`
 	Father                 string `gorm:"size:255"`
 	Coordinate             string
+	///SOMETHING NEW
+	Telephone         *string `gorm:"default:NULL"`
+	Email             *string `gorm:"default:NULL"`
+	Hamlet            *string `gorm:"default:NULL"` // DUSUN
+	ForeignAddress    *string `gorm:"default:NULL"`
+	City              *string `gorm:"default:NULL"`
+	State             *string `gorm:"default:NULL"` // PROVINCE OR STATE
+	Country           *string `gorm:"default:NULL"`
+	ForeignPostalCode *string `gorm:"default:NULL"`
+	Status            *string `gorm:"default:NULL"`
 	//// Foreign Key Relations
 	Job         Job                  `gorm:"foreignKey:JobTypeID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
 	Province    IndonesiaProvince    `gorm:"foreignKey:ProvinceID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`

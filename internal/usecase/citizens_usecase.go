@@ -108,6 +108,7 @@ func (u CitizensUsecaseImpl) CreateCitizen(ctx context.Context, request dto.Citi
 
 	// MAPPING DATA
 	newCitizen := entity.Citizen{
+		ID:                     0,
 		NIK:                    request.NIK,
 		KK:                     request.KK,
 		FullName:               request.FullName,
@@ -145,6 +146,16 @@ func (u CitizensUsecaseImpl) CreateCitizen(ctx context.Context, request dto.Citi
 		NIKFather:              request.NIKFather,
 		Father:                 request.Father,
 		Coordinate:             request.Coordinate,
+		//NEW
+		Telephone:         request.Telephone,
+		Email:             request.Email,
+		Hamlet:            request.Hamlet,
+		ForeignAddress:    request.ForeignAddress,
+		City:              request.City,
+		State:             request.State,
+		Country:           request.Country,
+		ForeignPostalCode: request.ForeignPostalCode,
+		Status:            request.Status,
 	}
 
 	if err := u.CitizensRepository.CreateCitizen(ctx, u.DB, newCitizen); err != nil {
@@ -204,6 +215,16 @@ func (u CitizensUsecaseImpl) UpdateCitizenByNIK(ctx context.Context, nik int64, 
 		NIKFather:              request.NIKFather,
 		Father:                 request.Father,
 		Coordinate:             request.Coordinate,
+		//NEW
+		Telephone:         request.Telephone,
+		Email:             request.Email,
+		Hamlet:            request.Hamlet,
+		ForeignAddress:    request.ForeignAddress,
+		City:              request.City,
+		State:             request.State,
+		Country:           request.Country,
+		ForeignPostalCode: request.ForeignPostalCode,
+		Status:            request.Status,
 	}
 
 	if err := u.CitizensRepository.UpdateCitizen(ctx, u.DB, nik, updatedCitizen); err != nil {
@@ -269,6 +290,16 @@ func (u CitizensUsecaseImpl) FindMemberByKK(ctx context.Context, kk int64) ([]dt
 			NIKFather:              request.NIKFather,
 			Father:                 request.Father,
 			Coordinate:             request.Coordinate,
+			//NEW
+			Telephone:         request.Telephone,
+			Email:             request.Email,
+			Hamlet:            request.Hamlet,
+			ForeignAddress:    request.ForeignAddress,
+			City:              request.City,
+			State:             request.State,
+			Country:           request.Country,
+			ForeignPostalCode: request.ForeignPostalCode,
+			Status:            request.Status,
 		}
 		citizens = append(citizens, newCitizen)
 	}

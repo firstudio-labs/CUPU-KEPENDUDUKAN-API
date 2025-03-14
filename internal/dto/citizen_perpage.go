@@ -61,7 +61,7 @@ type CitizensDTO struct {
 	VillageID              int    `json:"village_id"`
 	RT                     string `json:"rt"`
 	RW                     string `json:"rw"`
-	PostalCode             int    `json:"postal_code"`
+	PostalCode             *int   `json:"postal_code"`
 	CitizenStatus          string `json:"citizen_status"`
 	BirthCertificate       string `json:"birth_certificate"`
 	BirthCertificateNo     string `json:"birth_certificate_no"`
@@ -84,6 +84,16 @@ type CitizensDTO struct {
 	NIKFather              string `json:"nik_father"`
 	Father                 string `json:"father"`
 	Coordinate             string `json:"coordinate"`
+	//NEW
+	Telephone         *string `json:"telephone"`
+	Email             *string `json:"email"`
+	Hamlet            *string `json:"hamlet"` //DUSUN
+	ForeignAddress    *string `json:"foreign_address"`
+	City              *string `json:"city"`
+	State             *string `json:"state"` // PROVINCE OT NEGARA BAGIAN
+	Country           *string `json:"country"`
+	ForeignPostalCode *string `json:"foreign_postal_code"`
+	Status            *string `json:"status"`
 }
 
 func CitizensDTOtoEntity(request entity.Citizen) CitizensDTO {
@@ -126,6 +136,16 @@ func CitizensDTOtoEntity(request entity.Citizen) CitizensDTO {
 		NIKFather:              request.NIKFather,
 		Father:                 request.Father,
 		Coordinate:             request.Coordinate,
+		//NEW
+		Telephone:         request.Telephone,
+		Email:             request.Email,
+		Hamlet:            request.Hamlet,
+		ForeignAddress:    request.ForeignAddress,
+		City:              request.City,
+		State:             request.State,
+		Country:           request.Country,
+		ForeignPostalCode: request.ForeignPostalCode,
+		Status:            request.Status,
 	}
 
 }
@@ -172,6 +192,16 @@ func CitizensDTOtoEntities(c []entity.Citizen) []CitizensDTO {
 			NIKFather:              request.NIKFather,
 			Father:                 request.Father,
 			Coordinate:             request.Coordinate,
+			//NEW
+			Telephone:         request.Telephone,
+			Email:             request.Email,
+			Hamlet:            request.Hamlet,
+			ForeignAddress:    request.ForeignAddress,
+			City:              request.City,
+			State:             request.State,
+			Country:           request.Country,
+			ForeignPostalCode: request.ForeignPostalCode,
+			Status:            request.Status,
 		}
 		citizens = append(citizens, newCitizen)
 	}

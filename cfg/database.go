@@ -33,7 +33,7 @@ func GetPool(config *Config) (*gorm.DB, error) {
 			dbErr = fmt.Errorf("failed to connect to the database: %v", err)
 		}
 
-		// AUTO MIGRATE
+		//// AUTO MIGRATE
 		//if err = db.AutoMigrate(
 		//	&entity.IndonesiaProvince{},
 		//	&entity.IndonesiaDistrict{},
@@ -44,7 +44,7 @@ func GetPool(config *Config) (*gorm.DB, error) {
 		//	//MAIN
 		//	&entity.Citizen{},
 		//); err != nil {
-		//	return nil, fmt.Errorf("failed auto migrate bcs %e", err)
+		//	err = fmt.Errorf("failed auto migrate bcs %e", err)
 		//}
 
 		// SET CONNECTION POOL

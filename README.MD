@@ -89,21 +89,31 @@ sudo kill <PID>
 JIKA DI DI APP ADA NGINX TAMBHAKAN INI BIAR HEADER TIDAK DI HAPUS AMAN DARI CORS,
 ```
  
- location / {
-        proxy_pass http://localhost:3000;
-        proxy_set_header Host $host;
-        
-        # Pastikan CORS tidak dihapus
-        add_header Access-Control-Allow-Origin "*";
-        add_header Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE";
-        add_header Access-Control-Allow-Headers "Content-Type, Authorization, X-API-Key";
-        add_header Access-Control-Allow-Credentials true;
+location / {
+      add_header 'Access-Control-Allow-Origin' '*' always;
+      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
+      add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,X-Api-Key' always;
+      add_header 'Access-Control-Allow-Credentials' 'true' always;
+      add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range' always;
+      
+      # Penting: ini akan merespon OPTIONS langsung tanpa proxy ke aplikasi
+      if ($request_method = 'OPTIONS') {
+          add_header 'Access-Control-Allow-Origin' '*';
+          add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+          add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,X-Api-Key';
+          add_header 'Access-Control-Max-Age' 1728000;
+          add_header 'Content-Type' 'text/plain charset=UTF-8';
+          add_header 'Content-Length' 0;
+          return 204;
+      }
+  
+      # Sisanya proxy ke aplikasi Anda
+      proxy_hide_header Access-Control-Allow-Origin;
+      proxy_hide_header Access-Control-Allow-Methods;
+      proxy_hide_header Access-Control-Allow-Headers;
+      proxy_pass http://localhost:3000;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+}
 
-        # Tangani Preflight OPTIONS request
-        if ($request_method = OPTIONS) {
-            add_header Content-Length 0;
-            add_header Content-Type text/plain;
-            return 204;
-        }
-    }
 ```

@@ -19,7 +19,7 @@ type CitizenReqCreate struct {
 	VillageID              int                          `json:"village_id"`
 	RT                     string                       `json:"rt"`
 	RW                     string                       `json:"rw"`
-	PostalCode             int                          `json:"postal_code"`
+	PostalCode             *int                         `json:"postal_code"`
 	CitizenStatus          entity.CitizenStatusOption   `validate:"required,oneof=1 2" json:"citizen_status"`    //(WNI, WNA)
 	BirthCertificate       entity.AvailableStatus       `validate:"required,oneof=1 2" json:"birth_certificate"` // ADA/TIDAK-ADA
 	BirthCertificateNo     string                       `json:"birth_certificate_no"`
@@ -42,4 +42,14 @@ type CitizenReqCreate struct {
 	NIKFather              string                       `json:"nik_father"`
 	Father                 string                       `json:"father"`
 	Coordinate             string                       `json:"coordinate"`
+	///NEW
+	Telephone         *string `json:"telephone"`
+	Email             *string `json:"email"`
+	Hamlet            *string `json:"hamlet"` //DUSUN
+	ForeignAddress    *string `json:"foreign_address"`
+	City              *string `json:"city"`
+	State             *string `json:"state"` // PROVINCE OT NEGARA BAGIAN
+	Country           *string `json:"country"`
+	ForeignPostalCode *string `json:"foreign_postal_code"`
+	Status            *string `json:"status"`
 }
