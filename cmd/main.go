@@ -78,6 +78,7 @@ func main() {
 	jobsHandler := handler.NewJobsHandler(jobsUsecase)
 
 	countryHandler := handler.NewCountryHandler(DEBE)
+	relocationHandler := handler.NewRelocationHandler(validate, DEBE)
 
 	// Setup routes for Citizens
 	v1 := r.Group("/api")
@@ -109,6 +110,13 @@ func main() {
 		v1.GET("/districts", countryHandler.DistrictsPagination)
 		v1.GET("/sub-districts", countryHandler.SubDistrictsPagination)
 		v1.GET("/villages", countryHandler.VillagesPagination)
+
+		v1.GET("/relocations", relocationHandler.GetPerPage)
+		v1.POST("/relocations", relocationHandler.AddRelocation)
+		v1.PUT("/relocations", relocationHandler.UpdateRelocation)
+		v1.DELETE("/relocations/:id", relocationHandler.DeleteRelocation)
+		v1.GET("/relocations/:id/approved", relocationHandler.ApproveRelocation)
+
 	}
 
 	// START SERVER
