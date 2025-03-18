@@ -59,7 +59,7 @@ func (r RelocationHandlerImpl) AddRelocation(c *gin.Context) {
 	// @TRANSACTION
 	err := r.DB.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
 		//checking kk exists
-		if err := r.DB.Where("no_kk = ?", body.KKRequest).First(&entity.Citizen{}).Error; err != nil {
+		if err := r.DB.Where("kk = ?", body.KKRequest).First(&entity.Citizen{}).Error; err != nil {
 			return fmt.Errorf("%d:%s", http.StatusNotFound, "KK not found")
 		}
 
@@ -87,8 +87,10 @@ func (r RelocationHandlerImpl) AddRelocation(c *gin.Context) {
 
 		//MAPPING FIRST
 		requestToEntity := dto.RelocationRequestToEntity(body)
-		err := tx.Create(&requestToEntity).Error
+		fmt.Println(requestToEntity)
+		err := tx.Debug().Create(&requestToEntity).Error
 		if err != nil {
+			fmt.Println(err)
 			return fmt.Errorf("%d:%s", http.StatusInternalServerError, "Failed to create relocation")
 		}
 
@@ -130,7 +132,7 @@ func (r RelocationHandlerImpl) GetPerPage(c *gin.Context) {
 	page := c.Query("page")
 	pageFind, err := strconv.ParseInt(page, 10, 64)
 	if err != nil {
-		err = fmt.Errorf("%d:%s", http.StatusBadRequest, fmt.Sprintf("make sure page param number %v", pageFind))
+		err = fmt.Errorf("%d:%s", http.StatusBadRequest, fmt.Sprintf("make sure query ?page={number} %v", pageFind))
 		helper.ErrResponses(c, err)
 		return
 	}
@@ -148,7 +150,7 @@ func (r RelocationHandlerImpl) GetPerPage(c *gin.Context) {
 
 	/// TAKE DATA FROM DATABASE WITH PAGINATION AND NOT SOFT DELETE
 	var relocations []entity.Relocation
-	if err = r.DB.WithContext(c.Request.Context()).Where("deleted_at IS NULL").Limit(itemPerPage).Offset(int(offset)).Find(&relocations).Error; err != nil {
+	if err = r.DB.WithContext(c.Request.Context()).Where("deleted_at = 0").Limit(itemPerPage).Offset(int(offset)).Find(&relocations).Error; err != nil {
 		err = fmt.Errorf("%d:%s", http.StatusInternalServerError, "try again later")
 		helper.ErrResponses(c, err)
 		return
@@ -172,8 +174,8 @@ func (r RelocationHandlerImpl) DeleteRelocation(c *gin.Context) {
 	}
 
 	//DOING SOFT DELETE
-	if err := r.DB.WithContext(c.Request.Context()).Model(&entity.Relocation{}).Where("id = ?", atoi).Update("deleted_at", time.Now().UnixNano()); err != nil {
-		err := fmt.Errorf("%d:%s", http.StatusInternalServerError, "Failed to delete relocation")
+	if err := r.DB.WithContext(c.Request.Context()).Model(&entity.Relocation{}).Where("id = ?", atoi).Update("deleted_at", time.Now().UnixNano()).Error; err != nil {
+		err = fmt.Errorf("%d:%s", http.StatusInternalServerError, "Failed to delete relocation")
 		helper.ErrResponses(c, err)
 		return
 	}

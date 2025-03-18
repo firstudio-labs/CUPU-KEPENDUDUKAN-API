@@ -7,25 +7,25 @@ type Relocation struct {
 	ReasonMoving             string `gorm:"type:enum('PEKERJAAN','KEAMANAN','KESEHATAN','PENDIDIKAN','KELUARGA LAIN','KEBUTUHAN LAIN','PERUMAHAN')"`
 	ClassificationRelocation string `gorm:"type:enum('DALAM DESA/KELURAHAN','DESA/KELURAHAN','ANTAR KECAMATAN','ANTAR KABUPATEN','ANTAR PROVINSI')"`
 	MovingDate               string
-	RelocationType           string   `gorm:"type:enum('KEPALA KELUARGA DAN SELURUH', 'KEPALA KELUARGA', 'KEPALA KELUARGA DAN SEBAGIA','ANGOTA KELUARGA')"`
-	StatusKKMove             string   `gorm:"type:enum('BUAT KK BARU','NUMPANG KK','SEMUA KELUARGA PINDAH','NO KK TETAP')"`
-	NIKFamilyMove            []*int64 `gorm:"type:json"`
-	StatusKKStay             string   `gorm:"type:enum('BUAT KK BARU','NUMPANG KK','SEMUA KELUARGA PINDAH','NO KK TETAP','NO-KK DAN KEPALA KELUARGA')"`
-	NewProvinceID            int      `gorm:"default:null"`
-	NewDistrictID            int      `gorm:"default:null"`
-	NewSubDistrictID         int      `gorm:"default:null"`
-	NewVillageID             int      `gorm:"default:null"`
+	RelocationType           string `gorm:"type:enum('KEPALA KELUARGA DAN SELURUH', 'KEPALA KELUARGA', 'KEPALA KELUARGA DAN SEBAGIA','ANGOTA KELUARGA')"`
+	StatusKKMove             string `gorm:"type:enum('BUAT KK BARU','NUMPANG KK','SEMUA KELUARGA PINDAH','NO KK TETAP')"`
+	NIKFamilyMove            string `gorm:"type:json"`
+	StatusKKStay             string `gorm:"type:enum('BUAT KK BARU','NUMPANG KK','SEMUA KELUARGA PINDAH','NO KK TETAP','NO-KK DAN KEPALA KELUARGA')"`
+	NewProvinceID            int    `gorm:"default:null"`
+	NewDistrictID            int    `gorm:"default:null"`
+	NewSubDistrictID         int    `gorm:"default:null"`
+	NewVillageID             int    `gorm:"default:null"`
 	NewRT                    string
 	NewRW                    string
 	///
-	NewKK             *int64   `gorm:"default:null"`
-	NewHeadOfFamily   *int64   `gorm:"default:null"`
-	NIKFamilyStay     []*int64 `gorm:"type:json"`
-	ProvinceIDStay    *int     `gorm:"default:null"`
-	DistrictIDStay    *int     `gorm:"default:null"`
-	SubDistrictIDStay *int     `gorm:"default:null"`
-	VillageIDStay     *int     `gorm:"default:null"`
-	CreatedAt         int64    `gorm:"column:created_at;type:bigint;default:0"`
+	NewKK             *int64  `gorm:"default:null"`
+	NewHeadOfFamily   *int64  `gorm:"default:null"`
+	NIKFamilyStay     *string `gorm:"type:json"`
+	ProvinceIDStay    *int    `gorm:"default:null"`
+	DistrictIDStay    *int    `gorm:"default:null"`
+	SubDistrictIDStay *int    `gorm:"default:null"`
+	VillageIDStay     *int    `gorm:"default:null"`
+	CreatedAt         int64   `gorm:"column:created_at;type:bigint;default:0"`
 	///
 	VerificationStatus bool
 	UpdatedAt          *int64 `gorm:"column:updated_at;type:bigint;default:0"`

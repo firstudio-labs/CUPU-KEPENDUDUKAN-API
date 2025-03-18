@@ -216,3 +216,66 @@ GET http://localhost:3000/api/villages?page=1
 Accept: application/json
 Content-Type: application/json
 X-API-Key: KORIE
+
+
+### relocations get per page
+GET http://localhost:3000/api/relocations?page=1
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+### relocations CREATE REPORT
+POST http://localhost:3000/api/relocations
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+{
+  "kk_request": 3323092402072308,
+  "reason_moving": 1,
+  "classification_relocation": 2,
+  "moving_date": "2025-03-25",
+  "relocation_type": 1,
+  "status_kk_move": 3,
+  "nik_family_move": [
+    3323092110770003,
+    3323124211860002,
+    3323120512140001,
+    3323121509070002,
+    3323127112590032
+  ],
+  "status_kk_stay": 1,
+  "new_province_id": 10,
+  "new_district_id": 20,
+  "new_sub_district_id": 30,
+  "new_village_id": 40,
+  "new_rt": "001",
+  "new_rw": "002",
+  "new_kk": 0,
+  "new_head_of_family": null,
+  "nik_family_stay": [],
+  "province_id_stay": 15,
+  "district_id_stay": null,
+  "sub_district_id_stay": null,
+  "village_id_stay": null
+}
+
+
+### relocations UPODATE REPORT
+PUT http://localhost:3000/api/relocations?page=1
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+### relocations DELETEW
+DELETE http://localhost:3000/api/relocations/1
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+
+### relocations APROVE
+POST http://localhost:3000/api/relocations?page=1
+Accept: application/json
+Content-Type: application/json
+X-API-Key: KORIE
+

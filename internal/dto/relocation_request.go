@@ -1,6 +1,7 @@
 package dto
 
 import (
+	"encoding/json"
 	"github.com/firstudio-lab/JARITMAS-API/internal/entity"
 	"time"
 )
@@ -32,6 +33,12 @@ type RelocationRequest struct {
 }
 
 func RelocationRequestToEntity(request RelocationRequest) *entity.Relocation {
+	move, _ := json.Marshal(request.NIKFamilyMove)
+	stay, _ := json.Marshal(request.NIKFamilyStay)
+
+	moveString := string(move)
+	stayString := string(stay)
+
 	return &entity.Relocation{
 		KKRequest:                request.KKRequest,
 		ReasonMoving:             request.ReasonMoving.ToString(),
@@ -39,7 +46,7 @@ func RelocationRequestToEntity(request RelocationRequest) *entity.Relocation {
 		MovingDate:               request.MovingDate,
 		RelocationType:           request.RelocationType.ToString(),
 		StatusKKMove:             request.StatusKKMove.ToString(),
-		NIKFamilyMove:            request.NIKFamilyMove,
+		NIKFamilyMove:            moveString,
 		StatusKKStay:             request.StatusKKStay.ToString(),
 		NewProvinceID:            request.NewProvinceID,
 		NewDistrictID:            request.NewDistrictID,
@@ -49,7 +56,7 @@ func RelocationRequestToEntity(request RelocationRequest) *entity.Relocation {
 		NewRW:                    request.NewRW,
 		NewKK:                    request.NewKK,
 		NewHeadOfFamily:          request.NewHeadOfFamily,
-		NIKFamilyStay:            request.NIKFamilyStay,
+		NIKFamilyStay:            &stayString,
 		ProvinceIDStay:           request.ProvinceIDStay,
 		DistrictIDStay:           request.DistrictIDStay,
 		SubDistrictIDStay:        request.SubDistrictIDStay,
