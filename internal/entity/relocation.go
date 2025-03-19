@@ -66,29 +66,51 @@ func (r RelocationType) ToString() string {
 	}
 }
 
-//UNTUK STATUS NO KK PINDAH DAN YG TIDAK PINDAH
-
-type StatusKK int
+type StatusKKStay int
 
 const (
-	SharedKK StatusKK = iota + 1
-	CreateNewKK
-	FullFamily
-	NoChangeKK
-	NoKKHeadFamily
+	SharedKKStay StatusKKStay = iota + 1
+	CreateNewKKStay
+	FullFamilyStay
+	NoChangeKKStay
 )
 
-func (s StatusKK) ToString() string {
+func (s StatusKKStay) ToString() string {
 	switch s {
-	case CreateNewKK:
+	case CreateNewKKStay:
 		return "BUAT KK BARU"
-	case SharedKK:
+	case SharedKKStay:
 		return "NUMPANG KK"
-	case FullFamily:
+	case FullFamilyStay:
 		return "SEMUA KELUARGA PINDAH"
-	case NoChangeKK:
+	case NoChangeKKStay:
 		return "NO KK TETAP"
-	case NoKKHeadFamily:
+	default:
+		return "NULL"
+	}
+}
+
+type StatusKKMove int
+
+const (
+	SharedKKMove StatusKKMove = iota + 1
+	CreateNewKKMove
+	FullFamilyMove
+	NoChangeKKMove
+	NoKKHeadFamilyMove
+)
+
+func (s StatusKKMove) ToString() string {
+	switch s {
+	case CreateNewKKMove:
+		return "BUAT KK BARU"
+	case SharedKKMove:
+		return "NUMPANG KK"
+	case FullFamilyMove:
+		return "SEMUA KELUARGA PINDAH"
+	case NoChangeKKMove:
+		return "NO KK TETAP"
+	case NoKKHeadFamilyMove:
 		return "NO KK DAN KEPALA KELUARGA"
 	default:
 		return "NULL"

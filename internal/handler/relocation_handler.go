@@ -87,10 +87,8 @@ func (r RelocationHandlerImpl) AddRelocation(c *gin.Context) {
 
 		//MAPPING FIRST
 		requestToEntity := dto.RelocationRequestToEntity(body)
-		fmt.Println(requestToEntity)
 		err := tx.Debug().Create(&requestToEntity).Error
 		if err != nil {
-			fmt.Println(err)
 			return fmt.Errorf("%d:%s", http.StatusInternalServerError, "Failed to create relocation")
 		}
 
@@ -114,17 +112,59 @@ func (r RelocationHandlerImpl) UpdateRelocation(c *gin.Context) {
 		return
 	}
 
-	var body entity.Relocation // letter we make dto for fast
+	var body dto.RelocationRequest // letter we make dto for fast
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, helper.NoData{Status: "error", Message: "Failed to parse JSON"})
 		return
 	}
 
-	if err = r.DB.WithContext(c.Request.Context()).Model(&entity.Relocation{}).Where("id = ?", atoi).Updates(&body).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, helper.NoData{Status: "error", Message: "Failed to update relocation"})
+	err = r.DB.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
+		//Check if the relocation exists and is not already deleted
+		if err = r.DB.WithContext(c.Request.Context()).Model(&entity.Relocation{}).Where("id = ? AND deleted_at = 0", atoi).First(&entity.Relocation{}).Error; err != nil {
+			return fmt.Errorf("%d:%s", http.StatusNotFound, "Relocation not found")
+		}
+
+		//checking kk exists
+		if err = r.DB.Where("kk = ?", body.KKRequest).First(&entity.Citizen{}).Error; err != nil {
+			return fmt.Errorf("%d:%s", http.StatusNotFound, "KK not found")
+		}
+
+		//checking family move
+		if len(body.NIKFamilyMove) != 0 {
+			for _, v := range body.NIKFamilyMove {
+				var citizen entity.Citizen
+				if err = tx.Where("nik = ?", v).First(&citizen).Error; err != nil {
+					return fmt.Errorf("%d:%s", http.StatusNotFound, fmt.Sprintf("Family with NIK %v not found", v))
+				}
+			}
+		} else {
+			return fmt.Errorf("%d:%s", http.StatusBadRequest, "Family Move is required atleast insert 1 nik")
+		}
+
+		//checking family stay
+		if len(body.NIKFamilyStay) != 0 {
+			for _, v := range body.NIKFamilyStay {
+				var citizen entity.Citizen
+				if err = tx.Where("nik = ?", v).First(&citizen).Error; err != nil {
+					return fmt.Errorf("%d:%s", http.StatusNotFound, fmt.Sprintf("Family with NIK %v not found", v))
+				}
+			}
+		}
+
+		//MAPPING FIRST
+		requestToEntity := dto.RelocationRequestToEntity(body)
+		if err = r.DB.WithContext(c.Request.Context()).Model(&entity.Relocation{}).Where("id = ?", atoi).Updates(&requestToEntity).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, helper.NoData{Status: "error", Message: "Failed to update relocation"})
+		}
+		return nil
+	})
+
+	if err != nil {
+		helper.ErrResponses(c, err)
+		return
 	}
 
-	c.JSON(http.StatusCreated, helper.NoData{Status: "CREATED", Message: "Successfully created relocation"})
+	c.JSON(http.StatusCreated, helper.NoData{Status: "CREATED", Message: fmt.Sprintf("Successfully updated relocation with ID %v", atoi)})
 
 }
 
@@ -155,12 +195,13 @@ func (r RelocationHandlerImpl) GetPerPage(c *gin.Context) {
 		helper.ErrResponses(c, err)
 		return
 	}
+	entityToDTO := dto.RelocationsEntityToDTO(&relocations)
 
 	c.JSON(http.StatusOK, helper.UseData{Status: "OK", Message: "Successfully get data",
 		Data: struct {
-			Pagination  *dto.Pagination     `json:"pagination"`
-			Relocations []entity.Relocation `json:"relocations"`
-		}{pagination, relocations},
+			Pagination  *dto.Pagination          `json:"pagination"`
+			Relocations []dto.RelocationResponse `json:"relocations"`
+		}{pagination, entityToDTO},
 	})
 }
 
@@ -173,8 +214,15 @@ func (r RelocationHandlerImpl) DeleteRelocation(c *gin.Context) {
 		return
 	}
 
-	//DOING SOFT DELETE
-	if err := r.DB.WithContext(c.Request.Context()).Model(&entity.Relocation{}).Where("id = ?", atoi).Update("deleted_at", time.Now().UnixNano()).Error; err != nil {
+	// Check if the relocation exists and is not already deleted
+	if err = r.DB.WithContext(c.Request.Context()).Model(&entity.Relocation{}).Where("id = ? AND deleted_at = 0", atoi).First(&entity.Relocation{}).Error; err != nil {
+		err = fmt.Errorf("%d:%s", http.StatusNotFound, "Relocation not found")
+		helper.ErrResponses(c, err)
+		return
+	}
+
+	// Perform soft delete
+	if err = r.DB.WithContext(c.Request.Context()).Model(&entity.Relocation{}).Where("id = ?", atoi).Update("deleted_at", time.Now().UnixNano()).Error; err != nil {
 		err = fmt.Errorf("%d:%s", http.StatusInternalServerError, "Failed to delete relocation")
 		helper.ErrResponses(c, err)
 		return

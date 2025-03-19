@@ -13,9 +13,9 @@ type RelocationRequest struct {
 	ClassificationRelocation entity.ClassificationRelocation `json:"classification_relocation" validate:"oneof=1 2 3 4 5"`
 	MovingDate               string                          `json:"moving_date" validate:"required"`
 	RelocationType           entity.RelocationType           `json:"relocation_type" validate:"oneof=1 2 3 4"`
-	StatusKKMove             entity.StatusKK                 `json:"status_kk_move" validate:"oneof=1 2 3 4"`
+	StatusKKMove             entity.StatusKKStay             `json:"status_kk_move" validate:"oneof=1 2 3 4"`
 	NIKFamilyMove            []*int64                        `json:"nik_family_move" validate:"required"`
-	StatusKKStay             entity.StatusKK                 `json:"status_kk_stay" validate:"oneof=1 2 3 5"`
+	StatusKKStay             entity.StatusKKMove             `json:"status_kk_stay" validate:"oneof=1 2 3 4 5"`
 	NewProvinceID            int                             `json:"new_province_id" validate:"required"`
 	NewDistrictID            int                             `json:"new_district_id" validate:"required"`
 	NewSubDistrictID         int                             `json:"new_sub_district_id" json:"new_sub_district_id"`

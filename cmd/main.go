@@ -111,10 +111,10 @@ func main() {
 		v1.GET("/sub-districts", countryHandler.SubDistrictsPagination)
 		v1.GET("/villages", countryHandler.VillagesPagination)
 
-		v1.GET("/relocations", relocationHandler.GetPerPage)                      //BENARKAN MAPPING  RESPONSE DONG
-		v1.POST("/relocations", relocationHandler.AddRelocation)                  // ALMOST DONE TINGGAL PERBAIKI OPTION FIELD YG 12345 ITU LUPA
-		v1.PUT("/relocations", relocationHandler.UpdateRelocation)                // NUNGGU CLREATE AJA
-		v1.DELETE("/relocations/:id", relocationHandler.DeleteRelocation)         // DONE, TAMBAHIN CHGEK IF ALREADY DELETED
+		v1.GET("/relocations", relocationHandler.GetPerPage)
+		v1.POST("/relocations", relocationHandler.AddRelocation)
+		v1.PUT("/relocations/:id", relocationHandler.UpdateRelocation)
+		v1.DELETE("/relocations/:id", relocationHandler.DeleteRelocation)
 		v1.POST("/relocations/:id/approved", relocationHandler.ApproveRelocation) // SAMSEK
 
 	}
