@@ -70,7 +70,7 @@ func (r RelocationHandlerImpl) ApproveRelocation(c *gin.Context) {
 			{
 				var citizens []entity.Citizen
 				if err = tx.WithContext(c.Request.Context()).Where("kk = ?", relocation.KKRequest).Find(&citizens).Error; err != nil {
-					return fmt.Errorf("%d:%s", http.StatusInternalServerError, "Failed to get family members")
+					return fmt.Errorf("%d:%s", http.StatusInternalServerError, "failed to get family members")
 				}
 
 				for _, u := range citizens {
@@ -87,12 +87,21 @@ func (r RelocationHandlerImpl) ApproveRelocation(c *gin.Context) {
 					if err := tx.WithContext(c.Request.Context()).Model(&entity.Citizen{}).
 						Where("nik = ?", u.NIK).
 						Updates(updates).Error; err != nil {
-						return fmt.Errorf("%d:%s", http.StatusInternalServerError, "Failed to update family members")
+						return fmt.Errorf("%d:%s", http.StatusInternalServerError, "failed to update family members")
 					}
 				}
 
 				if err = tx.WithContext(c.Request.Context()).Create(&body).Error; err != nil {
-					return fmt.Errorf("%d:%s", http.StatusInternalServerError, "Failed to create approved")
+					return fmt.Errorf("%d:%s", http.StatusInternalServerError, "failed to create approved")
+				}
+
+				// UBAH VERIVICAITON STATUS DAN JADI SOFT DELETE
+				success := map[string]interface{}{
+					"verification_status": true,
+					"deleted_at":          time.Now().UnixNano(),
+				}
+				if err = tx.WithContext(c.Request.Context()).Model(&entity.Relocation{}).Where("id = ?", atoi).Updates(success).Error; err != nil {
+					return fmt.Errorf("%d:%s", http.StatusInternalServerError, "failed to create approved")
 				}
 
 				return nil
@@ -106,6 +115,13 @@ func (r RelocationHandlerImpl) ApproveRelocation(c *gin.Context) {
 
 		return nil
 	})
+
+	if err != nil {
+		helper.ErrResponses(c, err)
+		return
+	}
+
+	c.JSON(http.StatusCreated, helper.NoData{Status: "UPDATE APPROVED", Message: "Successfully approved relocation"})
 
 }
 
