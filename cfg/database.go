@@ -2,7 +2,6 @@ package cfg
 
 import (
 	"fmt"
-	"github.com/firstudio-lab/JARITMAS-API/internal/entity"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -35,20 +34,20 @@ func GetPool(config *Config) (*gorm.DB, error) {
 		}
 
 		// AUTO MIGRATE
-		if err = db.AutoMigrate(
-			&entity.IndonesiaProvince{},
-			&entity.IndonesiaDistrict{},
-			&entity.IndonesiaSubDistrict{},
-			&entity.IndonesiaVillage{},
-			&entity.Job{},
-
-			//MAIN
-			&entity.Citizen{},
-			&entity.Relocation{},
-			&entity.Approved{},
-		); err != nil {
-			err = fmt.Errorf("failed auto migrate bcs %e", err)
-		}
+		//if err = db.AutoMigrate(
+		//	&entity.IndonesiaProvince{},
+		//	&entity.IndonesiaDistrict{},
+		//	&entity.IndonesiaSubDistrict{},
+		//	&entity.IndonesiaVillage{},
+		//	&entity.Job{},
+		//
+		//	//MAIN
+		//	&entity.Citizen{},
+		//	&entity.Relocation{},
+		//	&entity.Approved{},
+		//); err != nil {
+		//	err = fmt.Errorf("failed auto migrate bcs %e", err)
+		//}
 
 		// SET CONNECTION POOL
 		sqlPool, err := db.DB()

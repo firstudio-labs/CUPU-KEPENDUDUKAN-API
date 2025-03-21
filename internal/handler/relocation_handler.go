@@ -32,9 +32,81 @@ func NewRelocationHandler(validate *validator.Validate, DB *gorm.DB) *Relocation
 }
 
 func (r RelocationHandlerImpl) ApproveRelocation(c *gin.Context) {
+	relocationID := c.Params.ByName("id")
+	atoi, err := strconv.Atoi(relocationID)
+	if err != nil {
+		err = fmt.Errorf("%d:%s", http.StatusBadRequest, "failed to parse ID")
+		helper.ErrResponses(c, err)
+		return
+	}
 
-	//TODO implement me
-	panic("implement me")
+	var body entity.Approved
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, helper.NoData{Status: "error", Message: "failed to parse JSON"})
+		return
+	}
+
+	if relocationID != strconv.Itoa(int(body.RelocationID)) {
+		err = fmt.Errorf("%d:%s", http.StatusBadRequest, "Relocation ID must be same")
+		helper.ErrResponses(c, err)
+		return
+	}
+
+	//@TRANSACTION
+	err = r.DB.WithContext(c.Request.Context()).Transaction(func(tx *gorm.DB) error {
+		//Check if the relocation exists and is not already deleted
+		if err = r.DB.WithContext(c.Request.Context()).Model(&entity.Relocation{}).Where("id = ? AND deleted_at = 0", atoi).First(&entity.Relocation{}).Error; err != nil {
+			return fmt.Errorf("%d:%s", http.StatusNotFound, "relocation not found")
+		}
+
+		//take data from db
+		var relocation entity.Relocation
+		if err = tx.Where("id = ?", atoi).First(&relocation).Error; err != nil {
+			return fmt.Errorf("%d:%s", http.StatusInternalServerError, "Failed to get relocation")
+		}
+
+		switch relocation.RelocationType {
+		case entity.HeadOfFamilyAndAll.ToString():
+			{
+				var citizens []entity.Citizen
+				if err = tx.WithContext(c.Request.Context()).Where("kk = ?", relocation.KKRequest).Find(&citizens).Error; err != nil {
+					return fmt.Errorf("%d:%s", http.StatusInternalServerError, "Failed to get family members")
+				}
+
+				for _, u := range citizens {
+					updates := map[string]interface{}{
+						"province_id":     relocation.NewProvinceID,
+						"district_id":     relocation.NewDistrictID,
+						"sub_district_id": relocation.NewSubDistrictID,
+						"village_id":      relocation.NewVillageID,
+						"rt":              relocation.NewRT,
+						"rw":              relocation.NewRW,
+						"address":         relocation.NewAddress,
+					}
+
+					if err := tx.WithContext(c.Request.Context()).Model(&entity.Citizen{}).
+						Where("nik = ?", u.NIK).
+						Updates(updates).Error; err != nil {
+						return fmt.Errorf("%d:%s", http.StatusInternalServerError, "Failed to update family members")
+					}
+				}
+
+				if err = tx.WithContext(c.Request.Context()).Create(&body).Error; err != nil {
+					return fmt.Errorf("%d:%s", http.StatusInternalServerError, "Failed to create approved")
+				}
+
+				return nil
+			}
+		case entity.HeadOfFamilyOnly.ToString():
+		case entity.HeadOfFamilyAndPartial.ToString():
+		case entity.FamilyMemberOnly.ToString():
+		default:
+			return fmt.Errorf("%d:%s", http.StatusBadRequest, "Relocation type not found")
+		}
+
+		return nil
+	})
+
 }
 
 func (r RelocationHandlerImpl) AddRelocation(c *gin.Context) {

@@ -22,6 +22,7 @@ type RelocationRequest struct {
 	NewVillageID             int                             `json:"new_village_id" validate:"required"`
 	NewRT                    string                          `json:"new_rt" validate:"required"`
 	NewRW                    string                          `json:"new_rw" validate:"required"`
+	NewAddress               string                          `json:"new_address" validate:"required"`
 	///
 	NewKK             *int64   `json:"new_kk"`
 	NewHeadOfFamily   *int64   `json:"new_head_of_family"`
@@ -55,6 +56,7 @@ func RelocationRequestToEntity(request RelocationRequest) *entity.Relocation {
 		NewRT:                    request.NewRT,
 		NewRW:                    request.NewRW,
 		NewKK:                    request.NewKK,
+		NewAddress:               request.NewAddress,
 		NewHeadOfFamily:          request.NewHeadOfFamily,
 		NIKFamilyStay:            &stayString,
 		ProvinceIDStay:           request.ProvinceIDStay,

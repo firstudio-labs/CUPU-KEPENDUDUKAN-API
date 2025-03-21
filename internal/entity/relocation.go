@@ -17,6 +17,7 @@ type Relocation struct {
 	NewVillageID             int    `gorm:"default:null"`
 	NewRT                    string
 	NewRW                    string
+	NewAddress               string
 	///
 	NewKK             *int64  `gorm:"default:null"`
 	NewHeadOfFamily   *int64  `gorm:"default:null"`

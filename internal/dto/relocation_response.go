@@ -21,6 +21,7 @@ type RelocationResponse struct {
 	NewVillageID             int    `json:"new_village_id"`
 	NewRT                    string `json:"new_rt"`
 	NewRW                    string `json:"new_rw"`
+	NewAddress               string `json:"new_address"`
 	///
 	NewKK              *int64 `json:"new_kk"`
 	NewHeadOfFamily    *int64 `json:"new_head_of_family"`
@@ -52,6 +53,7 @@ func RelocationsEntityToDTO(request *[]entity.Relocation) []RelocationResponse {
 			NewRT:                    i.NewRT,
 			NewRW:                    i.NewRW,
 			NewKK:                    i.NewKK,
+			NewAddress:               i.NewAddress,
 			NewHeadOfFamily:          i.NewHeadOfFamily,
 			NIKFamilyStay:            *i.NIKFamilyStay,
 			ProvinceIDStay:           i.ProvinceIDStay,
